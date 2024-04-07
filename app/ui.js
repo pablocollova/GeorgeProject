@@ -10,9 +10,10 @@ function showWelcomeMessage(username) {
     // Reconfiguring DOM elements
     cardDiv.style.display = 'initial';
     welcomeDiv.innerHTML = `Welcome ${username}`;
-    signInButton.setAttribute("onclick", "signOut();");
-    signInButton.setAttribute('class', "btn btn-success")
-    signInButton.innerHTML = "Sign Out";
+   // signInButton.setAttribute("onclick", "signOut();");
+   // signInButton.setAttribute('class', "btn btn-success")
+   // signInButton.innerHTML = "Sign Out";
+   signInButton.style.display = 'none';
 }
 
 function updateUI(data, endpoint) {
