@@ -44,7 +44,12 @@ function signIn() {
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
      * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
      */
-
+    function signIn() {
+        // Tu código de inicio de sesión aquí
+      
+        // Después de que el usuario haya iniciado sesión, actualiza el correo electrónico
+        document.getElementById('userEmail').textContent = 'Email: ' + userEmail;
+      }
     myMSALObj.loginPopup(loginRequest)
         .then(handleResponse)
         .catch(error => {

@@ -5,8 +5,10 @@ const cardDiv = document.getElementById("card-div");
 const mailButton = document.getElementById("readMail");
 const profileButton = document.getElementById("seeProfile");
 const profileDiv = document.getElementById("profile-div");
+var usernamee = "";
 
 function showWelcomeMessage(username) {
+    usernamee = username;
     // Reconfiguring DOM elements
     cardDiv.style.display = 'initial';
     welcomeDiv.innerHTML = `Welcome ${username}`;
@@ -24,7 +26,7 @@ function updateUI(data, endpoint) {
         const title = document.createElement('p');
         title.innerHTML = "<strong>Title: </strong>" + data.jobTitle;
         const email = document.createElement('p');
-        email.innerHTML = "<strong>Mail: </strong>" + data.mail;
+        userEmail.innerHTML = "<strong>Mail: </strong>" + usernamee;//data.mail;
         const phone = document.createElement('p');
         phone.innerHTML = "<strong>Phone: </strong>" + data.businessPhones[0];
         const address = document.createElement('p');
@@ -33,6 +35,11 @@ function updateUI(data, endpoint) {
         profileDiv.appendChild(email);
         profileDiv.appendChild(phone);
         profileDiv.appendChild(address);
+
+           // Actualiza el correo electrónico en el menú desplegable
+           document.getElementById('userEmail').textContent ="usernamee";
+
+  
 
     } else if (endpoint === graphConfig.graphMailEndpoint) {
         if (!data.value) {
