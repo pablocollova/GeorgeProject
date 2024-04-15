@@ -1,0 +1,928 @@
+
+
+// en directorio raiz tenemos (/)
+//package.json
+{
+  "name": "ms-identity-javascript-v2",
+  "version": "1.0.0",
+  "description": "A JavaScript single-page application calling Microsoft Graph API using MSAL.js (w/ AAD v2 endpoint)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azure-Samples/ms-identity-javascript-v2.git"
+  },
+  "keywords": [
+    "javascript",
+    "msal",
+    "authorization",
+    "code",
+    "authentication",
+    "microsoft",
+    "ms-identity",
+    "azure-ad",
+    "spa",
+    "node.js",
+    "msal.js"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azure-Samples/ms-identity-javascript-v2/issues"
+  },
+  "homepage": "https://github.com/Azure-Samples/ms-identity-javascript-v2#readme",
+  "dependencies": {
+    "@azure/msal-browser": "^3.11.1",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
+
+
+
+//server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const path = require('path');
+const mysql = require('mysql');
+const dbConfig = require('./config/db.config');
+
+console.log('server');
+// Inicializar express
+const app = express();
+
+// Configurar morgan para registrar todas las solicitudes
+app.use(morgan('dev'));
+
+// Configurar body-parser para manejar los cuerpos de las solicitudes
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configurar la carpeta pública para servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Configurar tus rutas y middleware
+const kontakteRoutes = require('./routes/kontakte.routes');
+app.use('/api/kontakte', kontakteRoutes);
+
+// Setup app folders.
+app.use(express.static('app'));
+
+// Set up a route for index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+// Iniciar el servidor
+const PORT = process.env.PORT || 5501;
+app.listen(PORT, () => {
+  console.log(`El servidor está escuchando en el puerto ${PORT}...`);
+});
+
+
+//en la carpeta app (/app)
+//archivo authconfig.js
+/**
+ * Configuration object to be passed to MSAL instance on creation. 
+ * For a full list of MSAL.js configuration parameters, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
+ */
+const msalConfig = {
+    auth: {
+        // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
+        clientId: "39393b87-50d6-46eb-8596-2e2780239cb1",
+        // Full directory URL, in the form of https://login.microsoftonline.com/41ff5037-e573-4ceb-a64d-f02a6f056649<tenant-id>
+        authority: "https://login.microsoftonline.com/41ff5037-e573-4ceb-a64d-f02a6f056649",
+        // Full redirect URL, in form of http://localhost:3000
+        redirectUri: `${window.location.origin}/app/index.html`,
+    },
+    cache: {
+        cacheLocation: "sessionStorage", // This configures where your cache will be stored
+        storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+    },
+    system: {	
+        loggerOptions: {	
+            loggerCallback: (level, message, containsPii) => {	
+                if (containsPii) {		
+                    return;		
+                }		
+                switch (level) {		
+                    case msal.LogLevel.Error:		
+                        console.error(message);		
+                        return;		
+                    case msal.LogLevel.Info:		
+                        console.info(message);		
+                        return;		
+                    case msal.LogLevel.Verbose:		
+                        console.debug(message);		
+                        return;		
+                    case msal.LogLevel.Warning:		
+                        console.warn(message);		
+                        return;		
+                }	
+            }	
+        }	
+    }
+};
+
+/**
+ * Scopes you add here will be prompted for user consent during sign-in.
+ * By default, MSAL.js will add OIDC scopes (openid, profile, email) to any login request.
+ * For more information about OIDC scopes, visit: 
+ * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+ */
+const loginRequest = {
+    scopes: ["User.Read"]
+};
+
+/**
+ * Add here the scopes to request when obtaining an access token for MS Graph API. For more information, see:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
+ */
+const tokenRequest = {
+    scopes: ["User.Read", "Mail.Read"],
+    forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
+};
+
+//archivo authPopup.js
+// Create the main myMSALObj instance
+// configuration parameters are located at authConfig.js
+const myMSALObj = new msal.PublicClientApplication(msalConfig);
+
+let username = "";
+
+function selectAccount() {
+
+    /**
+     * See here for more info on account retrieval: 
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+     */
+
+    const currentAccounts = myMSALObj.getAllAccounts();
+    if (currentAccounts.length === 0) {
+        return;
+    } else if (currentAccounts.length > 1) {
+        // Add choose account code here
+        console.warn("Multiple accounts detected.");
+    } else if (currentAccounts.length === 1) {
+        username = currentAccounts[0].username;
+        showWelcomeMessage(username);
+    }
+}
+
+function handleResponse(response) {
+
+    /**
+     * To see the full list of response object properties, visit:
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#response
+     */
+
+    if (response !== null) {
+        username = response.account.username;
+        showWelcomeMessage(username);
+    } else {
+        selectAccount();
+    }
+}
+
+function signIn() {
+
+    /**
+     * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
+     */
+    function signIn() {
+        // Tu código de inicio de sesión aquí
+      
+        // Después de que el usuario haya iniciado sesión, actualiza el correo electrónico
+        document.getElementById('userEmail').textContent = 'Email: ' + userEmail;
+      }
+    myMSALObj.loginPopup(loginRequest)
+        .then(handleResponse)
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+function signOut() {
+
+    /**
+     * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
+     */
+
+    const logoutRequest = {
+        account: myMSALObj.getAccountByUsername(username),
+        postLogoutRedirectUri: msalConfig.auth.redirectUri,
+        mainWindowRedirectUri: msalConfig.auth.redirectUri
+    };
+
+    myMSALObj.logoutPopup(logoutRequest);
+}
+
+function getTokenPopup(request) {
+
+    /**
+     * See here for more info on account retrieval: 
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+     */
+    request.account = myMSALObj.getAccountByUsername(username);
+    
+    return myMSALObj.acquireTokenSilent(request)
+        .catch(error => {
+            console.warn("silent token acquisition fails. acquiring token using popup");
+            if (error instanceof msal.InteractionRequiredAuthError) {
+                // fallback to interaction when silent call fails
+                return myMSALObj.acquireTokenPopup(request)
+                    .then(tokenResponse => {
+                        console.log(tokenResponse);
+                        return tokenResponse;
+                    }).catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                console.warn(error);   
+            }
+    });
+}
+
+function getTokenPopup(request) {
+
+    /**
+     * See here for more info on account retrieval: 
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+     */
+    request.account = myMSALObj.getAccountByUsername(username);
+    
+    return myMSALObj.acquireTokenSilent(request)
+    .then(tokenResponse => {
+        // Imprime el objeto tokenResponse en la consola
+        console.log(tokenResponse);
+
+        // Actualiza el nombre de usuario con el correo electrónico del usuario
+        updateUserName(tokenResponse.account.username);
+        return tokenResponse;
+    })
+        .catch(error => {
+            console.warn("silent token acquisition fails. acquiring token using popup");
+            if (error instanceof msal.InteractionRequiredAuthError) {
+                // fallback to interaction when silent call fails
+                return myMSALObj.acquireTokenPopup(request)
+                    .then(tokenResponse => {
+                         // Imprime el objeto tokenResponse en la consola
+                        console.log(tokenResponse);
+                        // Actualiza el nombre de usuario con el correo electrónico del usuario
+                        updateUserName(tokenResponse.account.username);
+                        console.log(tokenResponse);
+                        return tokenResponse;
+                    }).catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                console.warn(error);   
+            }
+    });
+}
+
+function seeProfile() {
+    getTokenPopup(loginRequest)
+        .then(response => {
+            callMSGraph(graphConfig.graphMeEndpoint, response.accessToken, updateUI);
+        }).catch(error => {
+            console.error(error);
+        });
+}
+
+function readMail() {
+    getTokenPopup(tokenRequest)
+        .then(response => {
+            callMSGraph(graphConfig.graphMailEndpoint, response.accessToken, updateUI);
+        }).catch(error => {
+            console.error(error);
+        });
+}
+
+selectAccount();
+
+
+//archivo authRedirect.js
+// Create the main myMSALObj instance
+// configuration parameters are located at authConfig.js
+const myMSALObj = new msal.PublicClientApplication(msalConfig);
+
+let username = "";
+
+/**
+ * A promise handler needs to be registered for handling the
+ * response returned from redirect flow. For more information, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/acquire-token.md
+ */
+myMSALObj.handleRedirectPromise()
+    .then(handleResponse)
+    .catch((error) => {
+        console.error(error);
+    });
+
+function selectAccount () {
+
+    /**
+     * See here for more info on account retrieval: 
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+     */
+
+    const currentAccounts = myMSALObj.getAllAccounts();
+
+    if (currentAccounts.length === 0) {
+        return;
+    } else if (currentAccounts.length > 1) {
+        // Add your account choosing logic here
+        console.warn("Multiple accounts detected.");
+    } else if (currentAccounts.length === 1) {
+        username = currentAccounts[0].username;
+        showWelcomeMessage(username);
+    }
+}
+
+function handleResponse(response) {
+    if (response !== null) {
+        username = response.account.username;
+        showWelcomeMessage(username);
+    } else {
+        selectAccount();
+    }
+}
+
+function signIn() {
+
+    /**
+     * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
+     */
+
+    myMSALObj.loginRedirect(loginRequest);
+}
+
+function signOut() {
+
+    /**
+     * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
+     */
+
+    const logoutRequest = {
+        account: myMSALObj.getAccountByUsername(username),
+        postLogoutRedirectUri: msalConfig.auth.redirectUri,
+    };
+
+    myMSALObj.logoutRedirect(logoutRequest);
+}
+
+function getTokenRedirect(request) {
+    /**
+     * See here for more info on account retrieval: 
+     * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+     */
+    request.account = myMSALObj.getAccountByUsername(username);
+
+    return myMSALObj.acquireTokenSilent(request)
+        .catch(error => {
+            console.warn("silent token acquisition fails. acquiring token using redirect");
+            if (error instanceof msal.InteractionRequiredAuthError) {
+                // fallback to interaction when silent call fails
+                return myMSALObj.acquireTokenRedirect(request);
+            } else {
+                console.warn(error);   
+            }
+        });
+}
+
+function seeProfile() {
+    getTokenRedirect(loginRequest)
+        .then(response => {
+            callMSGraph(graphConfig.graphMeEndpoint, response.accessToken, updateUI);
+        }).catch(error => {
+            console.error(error);
+        });
+}
+
+function readMail() {
+    getTokenRedirect(tokenRequest)
+        .then(response => {
+            callMSGraph(graphConfig.graphMailEndpoint, response.accessToken, updateUI);
+        }).catch(error => {
+            console.error(error);
+        });
+}
+
+
+//archivo favicon.svg
+<svg id="bdb56329-4717-4410-aa13-4505ecaa4e46" xmlns="http://www.w3.org/2000/svg"  width="18" height="18" viewBox="0 0 18 18">
+  <defs>
+    <linearGradient id="ba2610c3-a45a-4e7e-a0c0-285cfd7e005d" x1="13.25" y1="13.02" x2="8.62" y2="4.25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1988d9"/>
+      <stop offset="0.9" stop-color="#54aef0"/>
+    </linearGradient>
+    <linearGradient id="bd8f618b-4f2f-4cb7-aff0-2fd2d211326d" x1="11.26" y1="10.47" x2="14.46" y2="15.99" gradientUnits="userSpaceOnUse">
+      <stop offset="0.1" stop-color="#54aef0"/>
+      <stop offset="0.29" stop-color="#4fabee"/>
+      <stop offset="0.51" stop-color="#41a2e9"/>
+      <stop offset="0.74" stop-color="#2a93e0"/>
+      <stop offset="0.88" stop-color="#1988d9"/>
+    </linearGradient>
+  </defs>
+  <title>Icon-identity-221</title>
+  <polygon points="1.01 10.19 8.93 15.33 16.99 10.17 18 11.35 8.93 17.19 0 11.35 1.01 10.19" fill="#50e6ff"/>
+  <polygon points="1.61 9.53 8.93 0.81 16.4 9.54 8.93 14.26 1.61 9.53" fill="#fff"/>
+  <polygon points="8.93 0.81 8.93 14.26 1.61 9.53 8.93 0.81" fill="#50e6ff"/>
+  <polygon points="8.93 0.81 8.93 14.26 16.4 9.54 8.93 0.81" fill="url(#ba2610c3-a45a-4e7e-a0c0-285cfd7e005d)"/>
+  <polygon points="8.93 7.76 16.4 9.54 8.93 14.26 8.93 7.76" fill="#53b1e0"/>
+  <polygon points="8.93 14.26 1.61 9.53 8.93 7.76 8.93 14.26" fill="#9cebff"/>
+  <polygon points="8.93 17.19 18 11.35 16.99 10.17 8.93 15.33 8.93 17.19" fill="url(#bd8f618b-4f2f-4cb7-aff0-2fd2d211326d)"/>
+</svg>
+
+
+//archivo graph.js
+/** 
+ * Helper function to call MS Graph API endpoint
+ * using the authorization bearer token scheme
+*/
+function callMSGraph(endpoint, token, callback) {
+    const headers = new Headers();
+    const bearer = `Bearer ${token}`;
+
+    headers.append("Authorization", bearer);
+
+    const options = {
+        method: "GET",
+        headers: headers
+    };
+
+    console.log('request made to Graph API at: ' + new Date().toString());
+
+    fetch(endpoint, options)
+        .then(response => response.json())
+        .then(response => callback(response, endpoint))
+        .catch(error => console.log(error));
+}
+
+
+//archivo graphConfig.js
+// Add here the endpoints for MS Graph API services you would like to use.
+const graphConfig = {
+    graphMeEndpoint: "https://graph.microsoft.com/v1.0/me",
+    graphMailEndpoint: "https://graph.microsoft.com/v1.0/me/messages"
+};
+
+
+//archivo index.html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>George Project</title>
+  <link rel="SHORTCUT ICON" href="./favicon.svg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+   <!-- msal.min.js can be used in the place of msal.js; included msal.js to make debug easy -->
+  <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js"
+    integrity="sha384-o4ufwq3oKqc7IoCcR08YtZXmgOljhTggRwxP2CLbSqeXGtitAxwYaUln/05nJjit"
+    crossorigin="anonymous"></script>
+  
+  <!-- adding Bootstrap 4 for UI components  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="SHORTCUT ICON" href="https://c.s-microsoft.com/favicon.ico?v2" type="image/x-icon">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">George Project</a>
+    <div class="btn-group ml-auto dropleft">
+      <button type="button" id="SignIn" class="btn btn-secondary" onclick="signIn()">
+        Sign In
+      </button>
+    </div>
+    <div class="navbar-nav ml-auto">
+      <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i> <span id="userName">User</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <a class="dropdown-item" id="userEmail">Email: </a> <!-- Aquí es donde se mostrará el correo electrónico del usuario -->
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" onclick="signOut()">Sign Out</a>
+        </div>
+      </div>
+      <!-- Iconos de ejemplo -->
+     
+    </div>
+  </nav>
+  <br>
+  <h5 class="card-header text-center">DevelopersAdmin Project</h5>
+  <br>
+  <div class="row justify-content-center" style="margin:auto">
+    <div id="card-div" class="col-md-12" style="display:none">
+      <div class="nav-item d-flex justify-content-between">
+        <a class="nav-link" href="#"><i class="fas fa-address-book fa-3x" data-content="contactos"></i></a>
+        <a class="nav-link" href="#"><i class="fas fa-briefcase fa-3x" data-content="proyectos"></i></a>
+        <a class="nav-link" href="#"><i class="fas fa-money-check-alt fa-3x" data-content="movimientos"></i></a>
+        <a class="nav-link" href="#"><i class="fas fa-users fa-3x" data-content="usuarios"></i></a>
+      </div>
+      
+      <div class="card text-center w-100">
+        <div class="card-body">
+          <h5 class="card-title" id="WelcomeMessage">DevelopersAdmin Project</h5>
+          <div id="profile-div"></div>
+          <br>
+          <br>
+          <button class="btn btn-primary" id="seeProfile" onclick="seeProfile()">See Profile</button>
+          <br>
+          <br>
+          <button class="btn btn-primary" id="readMail" onclick="readMail()">Read Mails</button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-4">
+      <div class="list-group" id="list-tab" role="tablist">
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="tab-content" id="nav-tabContent">
+      </div>
+      <div id="tabla-container"></div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- importing bootstrap.js and supporting js libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+  <!-- importing app scripts (load order is important) -->
+  <script type="text/javascript" src="./authConfig.js"></script>
+  <script type="text/javascript" src="./graphConfig.js"></script>
+  <script type="text/javascript" src="./ui.js"></script>
+
+  <!-- <script type="text/javascript" src="./authRedirect.js"></script>   -->
+  <!-- uncomment the above line and comment the line below if you would like to use the redirect flow -->
+  <script type="text/javascript" src="./authPopup.js"></script>
+  <script type="text/javascript" src="./graph.js"></script>
+  <script src="kontaktetable.js"></script>
+</body>
+
+</html>
+
+//archivo kontaktetable.js
+
+// kontaktetable.js
+
+
+// Esta función se llamará automáticamente cuando se cargue la página.
+document.addEventListener('DOMContentLoaded', function() {
+  // Realiza una solicitud a la API para obtener los datos de 'kontakte'.
+  fetch('/api/kontakte')
+    .then(response => {console.log(response);
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then(datos => {
+      console.log('Datos recibidos:', datos); // Agrega este console.log para ver los datos recibidos.
+      // Llama a la función para crear la tabla con los datos recibidos.
+      crearYMostrarTabla(datos);
+    })
+    .catch(error => {
+      console.error('Error al obtener los datos:', error);
+    });
+});
+
+// Función para crear y mostrar la tabla con los datos.
+function crearYMostrarTabla(datos) {
+  // Crear la tabla y el thead.
+  var tabla = document.createElement('table');
+  var thead = document.createElement('thead');
+  tabla.appendChild(thead);
+
+  // Asumiendo que 'datos' es un array de objetos donde las claves son los nombres de las columnas.
+  var columnas = Object.keys(datos[0]);
+
+  // Crear la fila de encabezado.
+  var tr = document.createElement('tr');
+  columnas.forEach(function(columna) {
+    var th = document.createElement('th');
+    th.textContent = columna;
+    tr.appendChild(th);
+  });
+  thead.appendChild(tr);
+
+  // Crear el tbody.
+  var tbody = document.createElement('tbody');
+  tabla.appendChild(tbody);
+
+  // Llenar el cuerpo de la tabla con los datos.
+  datos.forEach(function(objeto) {
+    var tr = document.createElement('tr');
+    columnas.forEach(function(columna) {
+      var td = document.createElement('td');
+      td.textContent = objeto[columna];
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // Añadir la tabla al DOM, por ejemplo, a un div con id 'tabla-container'.
+  var contenedor = document.getElementById('tabla-container');
+  if (contenedor) {
+    contenedor.innerHTML = ''; // Limpiar el contenedor antes de añadir la nueva tabla.
+    contenedor.appendChild(tabla);
+  } else {
+    console.error('No se encontró el elemento contenedor para la tabla.');
+  }
+}
+
+//archivo ui.js
+// Select DOM elements to work with
+const welcomeDiv = document.getElementById("WelcomeMessage");
+const signInButton = document.getElementById("SignIn");
+const cardDiv = document.getElementById("card-div");
+const mailButton = document.getElementById("readMail");
+const profileButton = document.getElementById("seeProfile");
+const profileDiv = document.getElementById("profile-div");
+var usernamee = "";
+
+function showWelcomeMessage(username) {
+    usernamee = username;
+    // Reconfiguring DOM elements
+    cardDiv.style.display = 'initial';
+    welcomeDiv.innerHTML = `Welcome ${username}`;
+   // signInButton.setAttribute("onclick", "signOut();");
+   // signInButton.setAttribute('class', "btn btn-success")
+   // signInButton.innerHTML = "Sign Out";
+   signInButton.style.display = 'none';
+}
+
+function updateUI(data, endpoint) {
+    console.log('Graph API responded at: ' + new Date().toString());
+
+    if (endpoint === graphConfig.graphMeEndpoint) {
+        profileDiv.innerHTML = ''
+        const title = document.createElement('p');
+        title.innerHTML = "<strong>Title: </strong>" + data.jobTitle;
+        const email = document.createElement('p');
+        userEmail.innerHTML = "<strong>Mail: </strong>" + usernamee;//data.mail;
+        const phone = document.createElement('p');
+        phone.innerHTML = "<strong>Phone: </strong>" + data.businessPhones[0];
+        const address = document.createElement('p');
+        address.innerHTML = "<strong>Location: </strong>" + data.officeLocation;
+        profileDiv.appendChild(title);
+        profileDiv.appendChild(email);
+        profileDiv.appendChild(phone);
+        profileDiv.appendChild(address);
+
+           // Actualiza el correo electrónico en el menú desplegable
+           document.getElementById('userEmail').textContent ="usernamee";
+
+  
+
+    } else if (endpoint === graphConfig.graphMailEndpoint) {
+        if (!data.value) {
+            alert("You do not have a mailbox!")
+        } else if (data.value.length < 1) {
+            alert("Your mailbox is empty!")
+        } else {
+            const tabContent = document.getElementById("nav-tabContent");
+            const tabList = document.getElementById("list-tab");
+            tabList.innerHTML = ''; // clear tabList at each readMail call
+
+            data.value.map((d, i) => {
+                // Keeping it simple
+                if (i < 10) {
+                    const listItem = document.createElement("a");
+                    listItem.setAttribute("class", "list-group-item list-group-item-action")
+                    listItem.setAttribute("id", "list" + i + "list")
+                    listItem.setAttribute("data-toggle", "list")
+                    listItem.setAttribute("href", "#list" + i)
+                    listItem.setAttribute("role", "tab")
+                    listItem.setAttribute("aria-controls", i)
+                    listItem.innerHTML = d.subject;
+                    tabList.appendChild(listItem)
+
+                    const contentItem = document.createElement("div");
+                    contentItem.setAttribute("class", "tab-pane fade")
+                    contentItem.setAttribute("id", "list" + i)
+                    contentItem.setAttribute("role", "tabpanel")
+                    contentItem.setAttribute("aria-labelledby", "list" + i + "list")
+                    contentItem.innerHTML = "<strong> from: " + d.from.emailAddress.address + "</strong><br><br>" + d.bodyPreview + "...";
+                    tabContent.appendChild(contentItem);
+                }
+            });
+        }
+    }
+}
+
+
+//carpeta config (/config)
+//archivo db.config.js
+module.exports = {
+    HOST: "88.99.102.39",
+    USER: "root",
+    PASSWORD: "Argus&2024",
+    DB: "Argus_db"
+  };
+
+
+//archivo db.js
+
+const mysql = require('mysql');
+const dbConfig = require('./db.config.js');
+
+const connection = mysql.createConnection({
+  host: dbConfig.HOST,
+  user: dbConfig.USER,
+  password: dbConfig.PASSWORD,
+  database: dbConfig.DB
+});
+
+connection.connect(error => {
+  if (error) {
+    console.error('Error al conectar a la base de datos:', error);
+    return;
+  }
+  console.log('Conexión exitosa a la base de datos.');
+});
+  
+
+module.exports = connection;
+
+
+  
+
+  //carpeta controller (/controller)
+  //archivo kontakte.controller.js
+ 
+const KontakteModel = require('../models/kontakte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
+console.log("cotroller"  ) ;   
+// Crear y guardar un nuevo Kontakte
+exports.create = (req, res) => {
+  // Validar solicitud
+  if (!req.body) {
+    res.status(400).send({
+      message: "El contenido no puede estar vacío"
+    });
+    return; // Asegúrate de retornar después de enviar la respuesta para no continuar con la ejecución.
+  }
+
+  // Crear un Kontakte
+ const kontakte = new KontakteModel({
+    Abteilung: req.body.Abteilung,
+    Adressblock: req.body.Adressblock,
+    // ... otros campos
+  });
+
+  // Guardar Kontakte en la base de datos
+  KontakteModel.create(kontakte, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || "Ocurrió un error al crear el registro en Kontakte."
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};
+
+// Obtener todos los Kontakte
+exports.getAll = (req, res) => {
+  KontakteModel.getAll((error, kontakte) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Error al obtener los kontakte: ' + error.message
+      });
+    } else {
+      res.send(kontakte);
+    }
+  });
+};
+
+// ... otros controladores CRUD
+
+
+//carpera models
+//archivo kontakte.model.js
+
+const sql = require('../config/db.js');
+console.log("model"  ) ;   
+// Constructor del objeto Kontakte
+const Kontakte = function(kontakte) {
+  this.Abteilung = kontakte.Abteilung;
+  this.Adressblock = kontakte.Adressblock;
+  this.Ähnlicher_Firmenschlüssel = kontakte.Ähnlicher_Firmenschlüssel;
+  this.Ähnlicher_Namensschlüssel = kontakte.Ähnlicher_Namensschlüssel;
+  this.Ähnlichkeit_nach = kontakte.Ähnlichkeit_nach;
+  this.ÄhnlichkeitsMultiKey = kontakte.ÄhnlichkeitsMultiKey;
+  this.Ähnlichkeitsschlüssel = kontakte.Ähnlichkeitsschlüssel;
+  this.ÄhnlichkeitsTabEtikett = kontakte.ÄhnlichkeitsTabEtikett;
+  this.Ähnlichkeitszählung = kontakte.Ähnlichkeitszählung;
+  this.Anrede = kontakte.Anrede;
+  this.Auswahlliste = kontakte.Auswahlliste;
+  this.Bild = kontakte.Bild;
+  this.Email_1 = kontakte.Email_1;
+  this.Email_2 = kontakte.Email_2;
+  this.EmailAdresse_mit_Name = kontakte.EmailAdresse_mit_Name;
+  this.Erstellt_von = kontakte.Erstellt_von;
+  this.Fax = kontakte.Fax;
+  this.Firma = kontakte.Firma;
+  this.Hinweise = kontakte.Hinweise;
+  this.Kontaktblock_Firma_Name_Vorname = kontakte.Kontaktblock_Firma_Name_Vorname;
+  this.Kontaktblock_klein = kontakte.Kontaktblock_klein;
+  this.Kontaktblock_Name_Vorname = kontakte.Kontaktblock_Name_Vorname;
+  this.KontaktID = kontakte.KontaktID;
+  this.Kunde = kontakte.Kunde;
+  this.Land = kontakte.Land;
+  this.Land_1 = kontakte.Land_1;
+  this.Land_2 = kontakte.Land_2;
+  this.Mobil_1 = kontakte.Mobil_1;
+  this.Nachname = kontakte.Nachname;
+  this.Name = kontakte.Name;
+  this.Ort_1 = kontakte.Ort_1;
+  this.Ort_2 = kontakte.Ort_2;
+  this.Postfach = kontakte.Postfach;
+  this.Postleitzahl_1 = kontakte.Postleitzahl_1;
+  this.Postleitzahl_2 = kontakte.Postleitzahl_2;
+  this.Privat_Mobil = kontakte.Privat_Mobil;
+  this.Privat_Telefon = kontakte.Privat_Telefon;
+  this.Pstatus_ak = kontakte.Pstatus_ak;
+  this.Pstatus_an = kontakte.Pstatus_an;
+  this.Pstatus_pr = kontakte.Pstatus_pr;
+  this.Straße_1 = kontakte.Straße_1;
+  this.Straße_2 = kontakte.Straße_2;
+  this.Telefon_1 = kontakte.Telefon_1;
+  this.Telefonblock = kontakte.Telefonblock;
+  this.Temp_Daten = kontakte.Temp_Daten;
+  this.test = kontakte.test;
+  this.Titel = kontakte.Titel;
+  this.Typ = kontakte.Typ;
+  this.Verantwortlicher = kontakte.Verantwortlicher;
+  this.Vorname = kontakte.Vorname;
+  this.Vorschau = kontakte.Vorschau;
+  this.Webadresse = kontakte.Webadresse;
+};
+console.log(sql ) ;
+// Método para obtener todos los registros de Kontakte
+Kontakte.getAll = function(callback) {
+  sql.query('SELECT * FROM Kontakte;', function(error, results, fields) {
+    console.log("rrrrr"+results);
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+// Método para crear un nuevo registro en la tabla Kontakte
+Kontakte.create = (newKontakte, result) => {
+  sql.query("INSERT INTO kontakte SET ?", newKontakte, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      console.log("Kontakte creado: ", { id: res.insertId, ...newKontakte });
+      result(null, { id: res.insertId, ...newKontakte });
+    }
+  });
+};
+
+// ... otros métodos CRUD
+
+module.exports = Kontakte;
+
+// Aquí puedes añadir los métodos para operaciones CRUD, como getAll y create, que ya hemos discutido.
+
+module.exports = Kontakte;
