@@ -41,8 +41,18 @@ const kontakteRoutes = require('./routes/kontakte.routes');
 app.use('/api/kontakte', kontakteRoutes);
 
 // Configurar una ruta para servir index.html
+app.get('/api/kontakte', (req, res) => {
+    // Lógica para obtener datos de la base de datos y enviarlos como respuesta.
+    // Por ejemplo, podrías hacer una consulta SQL y devolver los resultados en formato JSON.
+    res.json({ mensaje: "Datos obtenidos con éxito" });
+  });
+
+// Setup app folders.
+app.use(express.static('app'));
+
+// Set up a route for index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 // Iniciar el servidor

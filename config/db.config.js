@@ -1,6 +1,6 @@
 module.exports = {
-    HOST: "99.000webhost.io",
-    USER: "id22012402_dbgermandev",
-    PASSWORD: "Pentagono&123",
-    DB: "id22012402_germandev"
+    HOST: "88.99.102.39",
+    USER: "root",
+    PASSWORD: "Argus&2024",
+    DB: "Argus_db"
   };
