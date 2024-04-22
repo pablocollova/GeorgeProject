@@ -7,13 +7,14 @@ const cardDiv = document.getElementById("card-div");
 const mailButton = document.getElementById("readMail");
 const profileButton = document.getElementById("seeProfile");
 const profileDiv = document.getElementById("profile-div");
+const kontaktemenu= document.getElementById("projektemenu");
 var usernamee = "";
 
 
 document.addEventListener('DOMContentLoaded', function() {
   // Eventos de inicio y cierre de sesión
-  document.getElementById('signIn').addEventListener('click', signIn);
-  document.getElementById('signOut').addEventListener('click', signOut);
+ // document.getElementById('signIn').addEventListener('click', signIn);
+ // document.getElementById('signOut').addEventListener('click', signOut);
 
   // Inicialización
   selectAccount();

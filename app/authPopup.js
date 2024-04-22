@@ -32,6 +32,7 @@ function handleResponse(response) {
 
     if (response !== null) {
         username = response.account.username;
+        window.location.href ="dashboard.html";
         showWelcomeMessage(username);
     } else {
         selectAccount();
