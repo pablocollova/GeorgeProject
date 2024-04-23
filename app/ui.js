@@ -1,15 +1,18 @@
-// ui.js
 
-// Select DOM elements to work with
-const welcomeDiv = document.getElementById("WelcomeMessage");
-const signInButton = document.getElementById("SignIn");
-const cardDiv = document.getElementById("card-div");
-const mailButton = document.getElementById("readMail");
-const profileButton = document.getElementById("seeProfile");
-const profileDiv = document.getElementById("profile-div");
-const kontaktemenu= document.getElementById("projektemenu");
+//const kontaktemenu= document.getElementById("projektemenu");
 var usernamee = "";
 
+// Seleccionar el botón que activará el menú desplegable
+var dropdownToggle = document.getElementById('menut');
+
+// Seleccionar el menú desplegable
+var dropdownMenu = document.getElementById('desp');
+
+// Agregar un evento clic al botón para alternar la visibilidad del menú desplegable
+dropdownToggle.addEventListener('click', function() {
+    // Alternar la clase 'show' en el menú desplegable para mostrarlo u ocultarlo
+    dropdownMenu.classList.toggle('show');
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   // Eventos de inicio y cierre de sesión
@@ -22,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showWelcomeMessage(username) {
   usernamee= username;
-  const welcomeMessageDiv = document.getElementById('welcomeMessage');
+  const welcomeMessageDiv = document.getElementById('userLabel');
   welcomeMessageDiv.textContent = `Bienvenido, ${username}`;
   welcomeMessageDiv.classList.remove('hide');
 }
@@ -49,7 +52,7 @@ function updateUI(data, endpoint) {
       profileDiv.appendChild(phone);
       profileDiv.appendChild(address);
 
-         // Actualiza el correo electrónico en el menú desplegable
+           // Actualiza el correo electrónico en el menú desplegable
          document.getElementById('userEmail').textContent ="usernamee";
 
 
@@ -98,3 +101,6 @@ function updateUserName(username) {
   signOutButton.classList.remove('hide');
   showWelcomeMessage(username);
 }
+
+
+

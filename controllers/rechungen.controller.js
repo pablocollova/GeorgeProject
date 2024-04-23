@@ -1,7 +1,8 @@
-// akquise.controller.js
-const AkquiseModel = require('../models/akquise.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
+// rechnungen .controller.js
+// rechnungen.controller.js
+const RechnungenModel = require('../models/rechnungen.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
 console.log("cotroller"  ) ;   
-// Crear y guardar un nuevo akquise
+// Crear y guardar un nuevo Rechnungen
 exports.create = (req, res) => {
   // Validar solicitud
   if (!req.body) {
@@ -11,18 +12,18 @@ exports.create = (req, res) => {
     return; // Asegúrate de retornar después de enviar la respuesta para no continuar con la ejecución.
   }
 
-  // Crear un Akquise
- const akquise = new AkquiseModel({
+  // Crear un Rechnungen
+ const rechnungen = new RechnungenModel({
     Abteilung: req.body.Abteilung,
     Adressblock: req.body.Adressblock,
     // ... otros campos
   });
 
-  // Guardar Kontakte en la base de datos
-  KontakteModel.create(kontakte, (err, data) => {
+  // Guardar Rechnungen en la base de datos
+  RechnungenModel.create(rechnungen, (err, data) => {
     if (err) {
       res.status(500).send({
-        message: err.message || "Ocurrió un error al crear el registro en Kontakte."
+        message: err.message || "Ocurrió un error al crear el registro en Rechnungen."
       });
     } else {
       res.send(data);
@@ -30,15 +31,15 @@ exports.create = (req, res) => {
   });
 };
 
-// Obtener todos los Kontakte
+// Obtener todos los Rechnungen
 exports.getAll = (req, res) => {
-  KontakteModel.getAll((error, kontakte) => {
+  RechnungenModel.getAll((error, rechnungen) => {
     if (error) {
       res.status(500).send({
-        message: 'Error al obtener los kontakte: ' + error.message
+        message: 'Error al obtener los rechnungen: ' + error.message
       });
     } else {
-      res.send(kontakte);
+      res.send(rechnungen);
     }
   });
 };

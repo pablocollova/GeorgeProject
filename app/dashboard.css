@@ -377,3 +377,31 @@ body {
 ::-webkit-scrollbar-thumb:hover {
 	background-color: rgba(0, 0, 0, 0.3);
 }
+
+/* Ocultar el menú desplegable por defecto */
+.sidebar-dropdown {
+    display: none;
+}
+
+/* Mostrar el menú desplegable cuando tiene la clase 'show' */
+.sidebar-dropdown.show {
+    display: block;
+}
+
+
+#tabla-container{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+
+table{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+body {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
