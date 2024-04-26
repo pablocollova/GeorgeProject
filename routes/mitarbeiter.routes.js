@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const projekteController = require('../controllers/kontakte.controller.js');
+const mitarbeiterController = require('../controllers/mitarbeiter.controller.js');
 console.log("routes "  ) ;   
 // Crear un nuevo registro en Kontakte
-router.post("/", projekteController.create);
+router.post("/", mitarbeiterController.create);
 
 // Obtener todos los registros de Kontakte
-router.get('/', projekteController.getAll);
+router.get('/', mitarbeiterController.getAll);
 
 // ... otras rutas CRUD
 
