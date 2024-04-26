@@ -60,7 +60,7 @@ const Projekte = function(projekte) {
 
 // Método para obtener todos los registros de Projekte
 Projekte.getAll = result => {
-  sql.query('SELECT * FROM Projekte', (err, res) => {
+  sql.query('SELECT * FROM Projekte;', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);

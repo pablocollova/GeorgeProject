@@ -68,7 +68,7 @@ const Mitarbeiter = function(mitarbeiter) {
 
 // Método para obtener todos los registros de Mitarbeiter
 Mitarbeiter.getAll = result => {
-  sql.query('SELECT * FROM Mitarbeiter', (err, res) => {
+  sql.query('SELECT * FROM Mitarbeiter;', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);

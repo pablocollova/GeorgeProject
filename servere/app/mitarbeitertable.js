@@ -1,11 +1,6 @@
 // mitarbeiter.js
 var db;
 
-
-
-
-
-
   function crearYMostrarTabla(datos) {
     db = datos;
     var tabla = document.createElement('table');
