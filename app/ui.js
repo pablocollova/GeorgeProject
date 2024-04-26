@@ -29,7 +29,10 @@ function showWelcomeMessage(username) {
   welcomeMessageDiv.textContent = `Bienvenido, ${username}`;
   welcomeMessageDiv.classList.remove('hide');
 }
+function projekteclick(){
+  console.log("click"); 
 
+}
 function updateUI(data, endpoint) {
   // Actualiza la interfaz de usuario con los datos del perfil o correo
   const profileContentDiv = document.getElementById('profileContent');
@@ -104,3 +107,33 @@ function updateUserName(username) {
 
 
 
+function loadKontakte() 
+   {
+
+    document.getElementById('tableName').innerText = 'Kontakte';
+    fetch('/api/kontakte')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+
+  function loadStuden() 
+   {
+
+    document.getElementById('tableName').innerText = 'Stundenerfassung';
+    fetch('/api/stundenerfassung')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };

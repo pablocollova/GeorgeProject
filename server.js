@@ -24,6 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 const kontakteRoutes = require('./routes/kontakte.routes');
 app.use('/api/kontakte', kontakteRoutes);
 
+const stundenerfassungRoutes = require('./routes/stundenerfassung.routes');
+app.use('/api/kontakte', kontakteRoutes);
+
+
 // Setup app folders.
 app.use(express.static('app'));
 
@@ -35,5 +39,5 @@ app.get('*', (req, res) => {
 // Iniciar el servidor
 const PORT = process.env.PORT || 5501;
 app.listen(PORT, () => {
-  console.log(`El servidor está escuchando en el puerto ${PORT}...`);
+  console.log(`El servidor está escuchando en el puerto ${PORT}...`);   
 });

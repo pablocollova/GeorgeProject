@@ -405,3 +405,19 @@ body {
 	width: 100%;
 	position: absolute;
 }
+.dropdown-menu-vertical {
+    position: static !important; /* Fuerza la posición estática */
+    float: none !important; /* Elimina la propiedad float */
+    display: none; /* Oculta el menú desplegable por defecto */
+    min-width: auto; /* Establece el ancho mínimo */
+    background-color: #343a40; /* Color de fondo */
+    border: none; /* Elimina el borde */
+    border-radius: 0; /* Elimina el radio de borde */
+    transition: none; /* Elimina la transición */
+	
+  }
+
+  .dropdown-menu-vertical.show {
+    display: block; /* Muestra el menú desplegable */
+    position: absolute; /* Cambia la posición a absoluta */
+  }

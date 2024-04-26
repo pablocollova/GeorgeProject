@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,17 +14,22 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="SHORTCUT ICON" href="https://c.s-microsoft.com/favicon.ico?v2" type="image/x-icon">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+
+ 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css'>
   <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
+
   <link rel="stylesheet" href="./dashboard.css">
-
-
 
 </head>
 
 <body>
+
+
   <aside class="sidebar position-fixed top-0 left-0 overflow-auto h-100 float-left" id="show-side-navigation1">
     <i class="uil-bars close-aside d-md-none d-lg-none" data-close="show-side-navigation1"></i>
     <div class="sidebar-header d-flex justify-content-center align-items-center px-3 py-4">
@@ -35,194 +41,198 @@
         <p id="userLabel" class="mt-1 mb-0">Usuario Administrador</p>
       </div>
     </div>
-
-    <div class="search position-relative text-center px-4 py-3 mt-2">
-      <input type="text" class="form-control w-100 border-0 bg-transparent" placeholder="Search here">
-      <i class="fa fa-search position-absolute d-block fs-6"></i>
-    </div>
-
    
-   
+            <li class="nav-item dropdown mt-1 mb-0 text-decoration-none" >
+              <a style="color:white" class="nav-link dropdown-toggle mt-1 mb-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                ARGUS CONCEPT<br> Firmendatenbank
+              </a>
 
-<ul class="categories list-unstyled">
-    <li class="has-dropdown">
-      <i class="uil-estate fa-fw"></i><a href="#"> ARGUS CONCEPT Firmendatenbank </a>
-      <ul class="sidebar-dropdown list-unstyled">
-        <li><a href="#">Einstellung</a></li>
-        <li><a href="#">Profil</a></li>
-        <li><a href="#">abmelden</a></li>
-      </ul>
-    </li>
-  <li class="">
-    <i class="uil-thumbs-up"></i><a href="#">Akquise</a>
-  </li>
-  <li class="has-dropdown">
-    <i class="uil-users-alt"></i><a href="#"> Kontakte</a>
-    <ul class="sidebar-dropdown list-unstyled">
-      <li><a href="#">Exportlisten</a></li>
-    </ul>
-  </li>
-  <li class="">
-    <i class="uil-bill"></i><a href="#"> Rechnungen</a>
-  </li>
-  <li class="">
-    <i class="uil-stopwatch"></i><a href="#"> Stundenerfassung</a>
-  </li>
-  <li class="">
-    <i class="uil-receipt-alt"></i><a href="#"> Angebote</a>
-  </li>
-  <li class="">
-    <i class="uil-science"></i><a href="#">Auswertung</a>
-  </li>
-  <li class="">
-    <i class="uil-suitcase-alt"></i><a href="#">Mitarbeiter</a>
-  </li>
-  <li class="has-dropdown"  id="menut">
-    <i class="uil-notebooks" ></i><a href="#">Projekte</a>
-    <ul class="sidebar-dropdown list-unstyled" id="desp">
-      <li><a href="#">Leistungsphasen</a></li>
-      <li><a href="#">Projektverwaltung</a></li>
-    </ul>
-  </li>
-  <li class="">
-    <i class="uil-file-check-alt"></i><a href="#">Aufgaben</a>
-  </li>
-    </ul>
+              <ul  class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                <li class="dropdown-item"><a href="#">Einstellung</a></li>
+                <li class="dropdown-item"><a href="#">Profil</a></li>
+                <li class="dropdown-item"><a href="#">abmelden</a></li>
+              </ul>
+            </li>
+
+           <li  class="nav-item dropdown">
+              <a  style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadKontakte()">
+                Kontakte
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                <li class="dropdown-item"><a href="#">Exportlisten</a></li>
+              </ul>
+            </li>
+
+            <li  class="nav-item dropdown">
+              <a style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Rechnungen
+              </a>
+            </li>
+
+            <li  class="nav-item dropdown">
+              <a style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Stundenerfassung
+              </a>
+            </li>
+
+            <li  class="nav-item dropdown">
+              <a  style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mitarbeiter
+              </a>
+            </li>
+
+            <li  class="nav-item dropdown">
+              <a style="color:white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="projekteclick()">
+                Projekte
+            </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                <li class="dropdown-item"><a href="#">Leistungsphasen</a></li>
+                <li class="dropdown-item"><a href="#">Projektverwaltung</a></li>
+              </ul>
+            </li>
+
+            <li  class="nav-item dropdown">
+              <a style="color:white" class="nav-link " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Aufgaben
+              </a>
+            </li>
+          
   </aside>
 
-</aside>
-
-<section id="wrapper">
-  <nav class="navbar navbar-expand-md">
+  <section id="wrapper">
+    <nav class="navbar navbar-expand-md">
       <div class="container-fluid mx-2">
-          <div class="navbar-header">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-navbar" aria-controls="toggle-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="uil-bars text-white"></i>
-              </button>
-        <a class="navbar-brand" href="#">Argus<span class="main-color">Concept</span></a>
-      </div>
-      <div class="collapse navbar-collapse" id="toggle-navbar">
-        <ul class="navbar-nav ms-auto">
-         
-          <li class="nav-item dropdown">
+        <div class="navbar-header">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-navbar" aria-controls="toggle-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="uil-bars text-white"></i>
+          </button>
+          <a class="navbar-brand" href="#">Argus<span class="main-color">Concept</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="toggle-navbar">
+          <ul class="navbar-nav ms-auto">
 
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Settings
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a class="dropdown-item" href="#">My account</a>
-              </li>
-              <li><a class="dropdown-item" href="#">My inbox</a>
-              </li>
-              <li><a class="dropdown-item" href="#">Help</a>
-              </li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Log out</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="uil-comments-alt"></i><span>0</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="uil-bell"></i><span>0</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i data-show="show-side-navigation1" class="uil-bars show-side-btn"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+            <li class="nav-item dropdown">
 
-  <div class="p-4">
-    <div class="welcome">
-      <div class="content rounded-3 p-3">
-        <h1 class="fs-3">Willkommen im Arbeitspanel</h1>
-        <p id="hello" class="mb-0">Hello Jone Doe, welcome to your awesome dashboard!</p>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Settings
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="#">My account</a>
+                </li>
+                <li><a class="dropdown-item" href="#">My inbox</a>
+                </li>
+                <li><a class="dropdown-item" href="#">Help</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Log out</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="uil-comments-alt"></i><span>0</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="uil-bell"></i><span>0</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i data-show="show-side-navigation1" class="uil-bars show-side-btn"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
 
-    <section class="statistics mt-4">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
-            <i class="uil-envelope-shield fs-2 text-center bg-primary rounded-circle"></i>
-            <div class="ms-3">
-              <div class="d-flex align-items-center">
-                <h3 class="mb-0">0</h3> <span class="d-block ms-2">Budgets</span>
+    <div class="p-4">
+      <div class="welcome">
+        <div class="content rounded-3 p-3">
+          <h1 class="fs-3">Willkommen im Arbeitspanel</h1>
+          <p id="hello" class="mb-0">Hello Jone Doe, welcome to your awesome dashboard!</p>
+        </div>
+      </div>
+
+      <section class="statistics mt-4">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
+              <i class="uil-envelope-shield fs-2 text-center bg-primary rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                  <h3 class="mb-0">0</h3> <span class="d-block ms-2">Budgets</span>
+                </div>
+                <p class="fs-normal mb-0">Ausstehend</p>
               </div>
-              <p class="fs-normal mb-0">Ausstehend</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
+              <i class="uil-file fs-2 text-center bg-danger rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                  <h3 class="mb-0">0</h3> <span class="d-block ms-2">Projektes</span>
+                </div>
+                <p class="fs-normal mb-0">Anstehende Projekte</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="box d-flex rounded-2 align-items-center p-3" >
+              <i class="uil-users-alt fs-2 text-center bg-success rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                  <h3 class="mb-0">0</h3> <spanclass="d-block ms-2">Kontakte</span>
+                </div>
+                <p class="fs-normal mb-0">Developers</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
-            <i class="uil-file fs-2 text-center bg-danger rounded-circle"></i>
-            <div class="ms-3">
-              <div class="d-flex align-items-center">
-                <h3 class="mb-0">0</h3> <span class="d-block ms-2">Projektes</span>
-              </div>
-              <p class="fs-normal mb-0">Anstehende Projekte</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="box d-flex rounded-2 align-items-center p-3">
-            <i class="uil-users-alt fs-2 text-center bg-success rounded-circle"></i>
-            <div class="ms-3">
-              <div class="d-flex align-items-center">
-                <h3 class="mb-0">0</h3> <span class="d-block ms-2">Kontaktes</span>
-              </div>
-              <p class="fs-normal mb-0">Developers</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>        
-   
-
-
-<section class="admins mt-4">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="box">
-      </div>
-  </div>
-  <div class="col-md-6">
-    <div class="box">
-  </div>
-</div>
-    <section class="charts mt-4">
-      <div class="chart-container p-3">
-        <h3 class="fs-6 mb-3">Kontakte</h3>
-        <div style="height: 300px">
-         
-          <div id="tabla-container"></div>
-    
-      </div>
-        </div>
-      
       </section>
-  </div>
-</section>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.jshttps://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>
 
 
 
-  <!-- importing app scripts (load order is important) -->
-  <script type="text/javascript" src="./authConfig.js"></script>
-  <script type="text/javascript" src="./graphConfig.js"></script>
-  <script type="text/javascript" src="./ui.js"></script>
+      <section class="admins mt-4">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="box">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="box">
+            </div>
+          </div>
+          <section class="charts mt-4">
+            <div class="chart-container p-3"style="height:700px;">
+              <h3 class="fs-6 mb-3"  id="tableName"></h3>
+              <div style="height: 700px">
 
-  <!-- <script type="text/javascript" src="./authRedirect.js"></script>   -->
-  <!-- uncomment the above line and comment the line below if you would like to use the redirect flow -->
-  <script type="text/javascript" src="./authPopup.js"></script>
-  <script type="text/javascript" src="./graph.js"></script>
-  <script type="text/javascript" src="./kontaktetable.js"></script>
+                <div id="tabla-container"style="height:700px;"></div>
+
+              </div>
+            </div>
+
+          </section>
+        </div>
+      </section>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js'></script>
+      <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.jshttps://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <!-- importing app scripts (load order is important) -->
+      <script type="text/javascript" src="./authConfig.js"></script>
+      <script type="text/javascript" src="./graphConfig.js"></script>
+      <script type="text/javascript" src="./ui.js"></script>
+
+      <!-- <script type="text/javascript" src="./authRedirect.js"></script>   -->
+      <!-- uncomment the above line and comment the line below if you would like to use the redirect flow -->
+      <script type="text/javascript" src="./authPopup.js"></script>
+      <script type="text/javascript" src="./graph.js"></script>
+      <script type="text/javascript" src="./kontaktetable.js"></script>
 
 </body>
 
