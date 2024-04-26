@@ -70,7 +70,7 @@ const Rechnungen = function(rechnungen) {
 
 // Método para obtener todos los registros de Rechnungen
 Rechnungen.getAll = result => {
-  sql.query('SELECT * FROM rechnungen', (err, res) => {
+  sql.query('SELECT * FROM Rechnungen', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);

@@ -22,7 +22,7 @@ exports.create = (req, res) => {
   MitarbeiterModel.create(mitarbeiter, (err, data) => {
     if (err) {
       res.status(500).send({
-        message: err.message || "Ocurrió un error al crear el registro en Kontakte."
+        message: err.message || "Ocurrió un error al crear el registro en mitarbeiter."
       });
     } else {
       res.send(data);

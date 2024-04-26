@@ -1,5 +1,5 @@
 // Projekte.controller.js
-const ProjekteModel = require('../models/kontakte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
+const ProjekteModel = require('../models/projekte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
 console.log("cotroller"  ) ;   
 // Crear y guardar un nuevo Projekte
 exports.create = (req, res) => {
@@ -32,13 +32,13 @@ exports.create = (req, res) => {
 
 // Obtener todos los Projekte
 exports.getAll = (req, res) => {
-  ProjekteModel.getAll((error, kontakte) => {
+  ProjekteModel.getAll((error, projekte) => {
     if (error) {
       res.status(500).send({
-        message: 'Error al obtener los kontakte: ' + error.message
+        message: 'Error al obtener los projekte: ' + error.message
       });
     } else {
-      res.send(kontakte);
+      res.send(projekte);
     }
   });
 };

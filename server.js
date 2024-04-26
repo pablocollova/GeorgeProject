@@ -24,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 const kontakteRoutes = require('./routes/kontakte.routes');
 app.use('/api/kontakte', kontakteRoutes);
 
-const kontakteRoutes = require('./routes/rechnungen.routes');
+
+const rechnungenRoutes = require('./routes/rechnungen.routes');
 app.use('/api/rechnungen', rechnungenRoutes);
 
 const stundenerfassungRoutes = require('./routes/stundenerfassung.routes');
@@ -37,7 +38,7 @@ const projekteRoutes = require('./routes/projekte.routes');
 app.use('/api/projekte', projekteRoutes);
 
 const aufgabenRoutes = require('./routes/aufgaben.routes');
-app.use('/api/stundenerfassung', aufgabenRoutes);
+app.use('/api/aufgaben', aufgabenRoutes);
 
 
 // Setup app folders.

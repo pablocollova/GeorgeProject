@@ -152,3 +152,45 @@ function loadKontakte()
       });
       
   };
+
+  function loadProjekte() {
+
+    document.getElementById('tableName').innerText = 'Projekte';
+    fetch('/api/projekte')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+  function loadAufgaben() {
+
+    document.getElementById('tableName').innerText = 'Aufgaben';
+    fetch('/api/aufgaben')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+  function loadMitarbeiter() {
+
+    document.getElementById('tableName').innerText = 'Mitarbeiter';
+    fetch('/api/mitarbeiter')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  }

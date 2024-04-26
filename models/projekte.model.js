@@ -86,4 +86,4 @@ Projekte.create = (newProjekte, result) => {
 
 // ... otros métodos CRUD
 
-module.exports = Proj
+module.exports = Projekte;
