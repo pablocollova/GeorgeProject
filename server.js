@@ -30,6 +30,15 @@ app.use('/api/rechnungen', rechnungenRoutes);
 const stundenerfassungRoutes = require('./routes/stundenerfassung.routes');
 app.use('/api/stundenerfassung', stundenerfassungRoutes);
 
+const mitarbeiterRoutes = require('./routes/mitarbeiter.routes');
+app.use('/api/mitarbeiter', mitarbeiterRoutes);
+
+const projekteRoutes = require('./routes/projekte.routes');
+app.use('/api/projekte', projekteRoutes);
+
+const aufgabenRoutes = require('./routes/aufgaben.routes');
+app.use('/api/stundenerfassung', aufgabenRoutes);
+
 
 // Setup app folders.
 app.use(express.static('app'));
@@ -40,7 +49,7 @@ app.get('*', (req, res) => {
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 5501;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`El servidor está escuchando en el puerto ${PORT}...`);   
 });

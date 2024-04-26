@@ -244,6 +244,11 @@ INSERT INTO `Rechnungen` (`Erstellt_von`, `Geändert_am`, `HiliteSortiertNach`, 
 
 ('Usuario50', '2023-04-15', 'Nombre', 50, '2023-04-15', '2023-04-15', 'PROJ50', 'Sí', 'P12394', 'K172', 'RCH50', 'Rechnung 50', '10050', '2023-04-15', 'Proyecto 50', '2023-04-15', 'Cerrado', 'KTXT50', 5000.00, 19.00, 'POS50', 2500.00, 50, 'Público', 4250.00, 50, '2023-06-15', 5, '2023-05-20', 1000.00);
 
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `Projekte` (
   `Erstellt_von` TEXT,
   `Erstellt_am` DATE,
@@ -267,10 +272,50 @@ CREATE TABLE IF NOT EXISTS `Projekte` (
   `Netto_Stundenkontigent` TEXT,
   `Summe_Stunden` TEXT,
   `Abschlag_Prozent` FLOAT,
-  `Abschlag_Euro` FLOAT, 
-  `Stundenvorgaben_Netto` FLOAT, 
+  `Abschlag_Euro` FLOAT,
+  `Stundenvorgaben_Netto` FLOAT,
   `Projektwert_vor_Jan07` FLOAT,
   `Projektwert` FLOAT,
-  `Netto_Projektwert` FLOAT, 
-  -- ... (continuar con el resto de los campos)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Netto_Projektwert` FLOAT,
+  `Aufgaben_variale` TEXT,
+  `Pstatus` TEXT,
+  `Kurznameaktuell` TEXT,
+  `KurznameErsteller` TEXT,
+  `MaterialDatum` DATE,
+  `MaterialLeistungsphase` TEXT,
+  `MaterialBeschreibung` TEXT,
+  `MaterialAngelegt_von` TEXT,
+  `Status_inbearbeitung` TEXT,
+  `MaterialD` TEXT,
+  `DateienID` TEXT,
+  `Angebotsstatus` TEXT,
+  `Laufende_Numer_Importiert` INT,
+  `Übrige_Stunden_ist` FLOAT,
+  `Wert_Planung` FLOAT,
+  `Wert_Verfahren` FLOAT,
+  `vProjektID` TEXT,
+  `vKontaktID` TEXT,
+  `Projektwert_Summe` FLOAT,
+  `Netto_Projektwert_Summe` FLOAT, 
+  `Summe_Fremdleistungen` FLOAT,
+  `Stundenvorgaben_Summe` FLOAT,
+  `Übrige_Stunden_Summe` FLOAT,
+  `RestProjektwert_Netto_über_Stunden` FLOAT,
+  `ProjektwertDetails` TEXT,
+  `Ampelwert` FLOAT );
+
+
+
+INSERT INTO `Projekte` (`Erstellt_von`, `Erstellt_am`, `Geändert_am`, `Beschreibung`, `Variable_Projektnr`, `HiliteSortiertNach`, `Projektname`, `ProjektID`, `Status`, `Typ`, `Beginn`, `Fälligkeit`, `lfdNr`, `Projektkürzel`, `Verantwortlicher`, `KontaktID`, `Fremdleistungen`, `Netto_Stundenkontigent`, `Summe_Stunden`, `Abschlag_Prozent`, `Projektwert_vor_Jan07`, `Projektwert`) VALUES
+
+('Usuario1', '2023-04-15', '2023-04-15', 'Descripción del proyecto 1', 'VARPRJ1', 'Sort1', 'Proyecto 1', 'P001', 'Activo', 'Tipo 1', '2023-04-15', '2023-12-15', '1', 'PRJK1', 'Responsable 1', 'K001', 10000, '100 horas', '50 horas', 10, 20000, 25000),
+('Usuario2', '2023-04-15', '2023-04-15', 'Descripción del proyecto 2', 'VARPRJ2', 'Sort2', 'Proyecto 2', 'P002', 'Activo', 'Tipo 2', '2023-04-15', '2023-12-15', '2', 'PRJK2', 'Responsable 2', 'K002', 20000, '200 horas', '100 horas', 20, 40000, 50000),
+('Usuario3', '2023-04-15', '2023-04-15', 'Descripción del proyecto 3', 'VARPRJ3', 'Sort3', 'Proyecto 3', 'P003', 'Activo', 'Tipo 3', '2023-04-15', '2023-12-15', '3', 'PRJK3', 'Responsable 3', 'K003', 30000, '300 horas', '150 horas', 30, 60000, 75000),
+('Usuario4', '2023-04-15', '2023-04-15', 'Descripción del proyecto 4', 'VARPRJ4', 'Sort4', 'Proyecto 4', 'P004', 'Activo', 'Tipo 4', '2023-04-15', '2023-12-15', '4', 'PRJK4', 'Responsable 4', 'K004', 40000, '400 horas', '200 horas', 40, 80000, 100000),
+('Usuario5', '2023-04-15', '2023-04-15', 'Descripción del proyecto 5', 'VARPRJ5', 'Sort5', 'Proyecto 5', 'P005', 'Activo', 'Tipo 5', '2023-04-15', '2023-12-15', '5', 'PRJK5', 'Responsable 5', 'K005', 50000, '500 horas', '250 horas', 50, 100000, 125000),
+('Usuario6', '2023-04-15', '2023-04-15', 'Descripción del proyecto 6', 'VARPRJ6', 'Sort6', 'Proyecto 6', 'P006', 'Activo', 'Tipo 6', '2023-04-15', '2023-12-15', '6', 'PRJK6', 'Responsable 6', 'K006', 60000, '600 horas', '300 horas', 60, 120000, 150000),
+('Usuario7', '2023-04-15', '2023-04-15', 'Descripción del proyecto 7', 'VARPRJ7', 'Sort7', 'Proyecto 7', 'P007', 'Activo', 'Tipo 7', '2023-04-15', '2023-12-15', '7', 'PRJK7', 'Responsable 7', 'K007', 70000, '700 horas', '350 horas', 70, 140000, 175000),
+('Usuario8', '2023-04-15', '2023-04-15', 'Descripción del proyecto 8', 'VARPRJ8', 'Sort8', 'Proyecto 8', 'P008', 'Activo', 'Tipo 8', '2023-04-15', '2023-12-15', '8', 'PRJK8', 'Responsable 8', 'K008', 80000, '800 horas', '400 horas', 80, 160000, 200000),
+('Usuario9', '2023-04-15', '2023-04-15', 'Descripción del proyecto 9', 'VARPRJ9', 'Sort9', 'Proyecto 9', 'P009', 'Activo', 'Tipo 9', '2023-04-15', '2023-12-15', '9', 'PRJK9', 'Responsable 9', 'K009', 90000, '900 horas', '450 horas', 90, 180000, 225000),
+('Usuario10', '2023-04-15', '2023-04-15', 'Descripción del proyecto 10', 'VARPRJ10', 'Sort10', 'Proyecto 10', 'P010', 'Activo', 'Tipo 10', '2023-04-15', '2023-12-15', '10', 'PRJK10', 'Responsable 10', 'K010', 100000, '1000 horas', '500 horas', 100, 200000, 250000),
+('Usuario50', '2023-04-15', '2023-04-15', 'Descripción del proyecto 50', 'VARPRJ50', 'Sort50', 'Proyecto 50', 'P050', 'Inactivo', 'Tipo 50', '2023-04-15', '2023-12-15', '50', 'PRJK50', 'Responsable 50', 'K050', 5000, '200 horas', '150 horas', 5, 10000, 15000);
