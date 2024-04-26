@@ -1,16 +1,5 @@
 // kontaktetable.js
 var db;
-/*document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/kontakte')
-      .then(response => response.json())
-      .then(datos => {
-        crearYMostrarTabla(datos);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-      
-  });*/
 
 
 

@@ -1,5 +1,5 @@
 // mitarbeiter.controller.js
-const Mitarbeiter = require('../models/mitarbeiter.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
+const MitarbeiterModel = require('../models/mitarbeiter.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
 console.log("cotroller"  ) ;   
 // Crear y guardar un nuevo mitarbeiter
 exports.create = (req, res) => {
@@ -11,7 +11,7 @@ exports.create = (req, res) => {
     return; // Asegúrate de retornar después de enviar la respuesta para no continuar con la ejecución.
   }
 
-  // Crear un Kontakte
+  // Crear un Mitarbeiter
  const mitarbeiter = new MitarbeiterModel({
     Abteilung: req.body.Abteilung,
     Adressblock: req.body.Adressblock,
