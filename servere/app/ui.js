@@ -8,11 +8,6 @@ var dropdownToggle = document.getElementById('menut');
 // Seleccionar el menú desplegable
 var dropdownMenu = document.getElementById('desp');
 
-// Agregar un evento clic al botón para alternar la visibilidad del menú desplegable
-dropdownToggle.addEventListener('click', function() {
-    // Alternar la clase 'show' en el menú desplegable para mostrarlo u ocultarlo
-    dropdownMenu.classList.toggle('show');
-});
 
 document.addEventListener('DOMContentLoaded', function() {
   // Aquí va el código que se ejecutará cuando se cargue el index.htm
@@ -138,3 +133,59 @@ function loadKontakte()
       });
       
   };
+
+  function loadRechnungen() {
+
+    document.getElementById('tableName').innerText = 'Rechnungen';
+    fetch('/api/rechnungen')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+  function loadProjekte() {
+
+    document.getElementById('tableName').innerText = 'Projekte';
+    fetch('/api/projekte')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+  function loadAufgaben() {
+
+    document.getElementById('tableName').innerText = 'Aufgaben';
+    fetch('/api/aufgaben')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  };
+
+  function loadMitarbeiter() {
+
+    document.getElementById('tableName').innerText = 'Mitarbeiter';
+    fetch('/api/mitarbeiter')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTabla(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+      
+  }

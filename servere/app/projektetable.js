@@ -1,7 +1,7 @@
-// Rechnungen.js
+// projektetable.js
 var db;
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/rechnungen')
+/*document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/projekte')
       .then(response => response.json())
       .then(datos => {
         crearYMostrarTabla(datos);
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error al obtener los datos:', error);
       });
       
-  });
+  });*/
 
 
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function crearYMostrarTabla(datos) {
     db = datos;
     var tabla = document.createElement('table');
-    tabla.className = 'table table-striped table-hover table-light';
+    tabla.className = 'table table-striped table-hover table-dark';
     var thead = document.createElement('thead');
     tabla.appendChild(thead);
     var columnas = Object.keys(datos[0]);
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.innerHTML = '';
         contenedor.style.overflowY = 'scroll';
         contenedor.style.position = 'relative'; // Establece el ancho de la tabla
-        contenedor.style.maxHeight = '300px'; // Ajusta la altura según sea necesario
+        contenedor.style.maxHeight = '600px'; // Ajusta la altura según sea necesario
         contenedor.style.width = '100%'; // Establece el ancho de la tabla
         contenedor.appendChild(tabla);
     } else {
@@ -162,5 +162,3 @@ function cancelarNuevoRegistro(btn) {
     var tr = btn.parentNode.parentNode;
     tr.parentNode.removeChild(tr);
 }
-
-  

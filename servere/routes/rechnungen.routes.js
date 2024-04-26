@@ -2,13 +2,13 @@
 
 const express = require('express');
 const router = express.Router();
-const kontakteController = require('../controllers/rechnungen.controller.js');
-console.log("routes "  ) ;   
+const rechnungenController = require('../controllers/rechnungen.controller.js');
+console.log("routes"  ) ;   
 // Crear un nuevo registro en Rechnungen
-router.post("/", kontakteController.create);
+router.post("/", rechnungenController.create);
 
 // Obtener todos los registros de Rechnungen
-router.get('/', kontakteController.getAll);
+router.get('/', rechnungenController.getAll);
 
 // ... otras rutas CRUD
 
