@@ -138,17 +138,3 @@ function loadKontakte()
       });
       
   };
-
-  function loadRechnungen() {
-
-    document.getElementById('tableName').innerText = 'Rechnungen';
-    fetch('/api/rechnungen')
-      .then(response => response.json())
-      .then(datos => {
-        crearYMostrarTabla(datos);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-      
-  };

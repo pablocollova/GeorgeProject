@@ -1,7 +1,7 @@
-// Rechnungen.js
+// kontaktetable.js
 var db;
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/rechnungen')
+    fetch('/api/kontakte')
       .then(response => response.json())
       .then(datos => {
         crearYMostrarTabla(datos);
