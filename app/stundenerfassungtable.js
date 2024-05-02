@@ -2,7 +2,7 @@
 var db;
 
 
-  function crearYMostrarTablaStundenerfassung(datos) {
+  function crearYMostrarTablaStunden(datos) {
     db = datos;
     var tabla = document.createElement('table');
     var containerTopVar=document.getElementById('conteiner-topvar'); 

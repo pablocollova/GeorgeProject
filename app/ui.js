@@ -134,11 +134,11 @@ function loadKontakte()
   function loadStuden() 
    {
 
-    document.getElementById('tableName').innerText = 'Stundenerfassung';
+   
     fetch('/api/stundenerfassung')
       .then(response => response.json())
       .then(datos => {
-        crearYMostrarTabla(datos);
+        crearYMostrarTablaStunden(datos);
       })
       .catch(error => {
         console.error('Error al obtener los datos:', error);

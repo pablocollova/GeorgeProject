@@ -35,7 +35,7 @@ var db;
     col2.className = 'col-sm-6';
    
     var a1 = document.createElement('a');
-    a1.href = '#addEmployeeModal';
+    a1.href = '#addProjekteModal';
     a1.className = 'btn btn-success';
     a1.setAttribute('data-toggle', 'modal');
 
