@@ -103,6 +103,30 @@ Projekte.getAll = result => {
 };
 
 
+// Controlador para manejar las solicitudes de búsqueda
+Projekte.getSearch = (searchText, callback) => { 
+  
+  // Lista de campos en los que deseas buscar
+ const campos = ['projektname', 'projektkürzel', 'beschreibung', 'verantwortlicher', 'beginn', 'status', 'erstellt_am', 'erstellt_von' ]; // Agrega aquí los nombres de los campos relevantes
+ // Construir la parte de la consulta SQL para buscar en todos los campos
+ const whereClause = campos.map(campo => `${campo} LIKE ?`).join(' OR ');
+ // Consulta SQL para buscar registros que contengan el texto de búsqueda en cualquiera de los campos relevantes
+ const query = `SELECT projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von FROM Projekte WHERE ${whereClause}`;
+   // Array de valores para reemplazar en la consulta SQL
+ const values = campos.map(() => `%${searchText}%`);
+   // Ejecutar la consulta SQL
+ sql.query(query, values, (error, resultados) => {
+     if (error) {
+         console.error('Error al buscar:', error);
+         callback(error, null);
+     } else {
+         // Envía los resultados de la búsqueda como respuesta al cliente
+         callback(null, resultados);
+     }
+ });
+};
+
+
 
 Projekte.getTeammitglieder = result => {
   sql.query('SELECT DISTINCT Teammitglieder FROM Projekte;', (err, res) => {

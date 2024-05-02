@@ -1,16 +1,5 @@
 // projektetable.js
 var db;
-/*document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/projekte')
-      .then(response => response.json())
-      .then(datos => {
-        crearYMostrarTabla(datos);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-      
-  });*/
 
 
 
@@ -21,7 +10,7 @@ var db;
     //creo tabla
     var tabla = document.createElement('table');
     var containerTopVar=document.getElementById('conteiner-topvar'); 
-    // containerTopVar.innerHTML='';
+     containerTopVar.innerHTML='';
 
     //barra de titulo
     var table_title = document.createElement('div');
@@ -75,6 +64,12 @@ var db;
 
     a1.appendChild(i1);
     a1.appendChild(span1);
+    var span2 = document.createElement('span');
+   
+    span2.setAttribute('class','material-icons');
+
+    span2.className="material-symbols-outlined";
+span2.appendChild(searchInput);
 
 /*
     var a2 = document.createElement('a');
@@ -86,13 +81,12 @@ var db;
     i2.className = 'material-icons';
     i2.textContent = '&#xE15C;';
 
-    var span2 = document.createElement('span');
     span2.textContent = 'Delete';
 
     a2.appendChild(i2);
     a2.appendChild(span2);
 */
-    col2.appendChild(searchInput);
+    col2.appendChild(span2);
     col2.appendChild(a1);
     //col2.appendChild(a2);
 ////////////////col2/////////////////////
@@ -279,20 +273,14 @@ function loadCheckBox(teamLeaders){
 }
 
 
-function searchOnServer(searchText) {
-    // Realiza una solicitud al servidor, por ejemplo, utilizando AJAX
-    // Aquí hay un ejemplo utilizando fetch
-    fetch(`/api/all?texto=${searchText}`)
-        .then(response => response.json())
-        .then(data => {
-            // Maneja la respuesta del servidor y actualiza la interfaz de usuario
-            // con los resultados de la búsqueda
-            displaySearchResults(data);
-        })
-        .catch(error => console.error('Error al buscar:', error));
-}
-
-function displaySearchResults(results) {
-    // Lógica para mostrar los resultados de la búsqueda en la interfaz de usuario
-    // Por ejemplo, actualiza la tabla con los resultados de la búsqueda
-}
+function searchOnServer(searchText){
+    fetch('/api/projekte/search?texto='`${searchText}`)
+    .then(response => response.json())
+    .then(datos => {console.log('datos', datos);
+        crearYMostrarTabla(datos);
+      crearYMostrarTabla(datos);
+    })
+    .catch(error => {
+      console.error('Error al obtener los datos:', error);
+    });
+  }

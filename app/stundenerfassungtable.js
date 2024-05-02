@@ -2,9 +2,97 @@
 var db;
 
 
-  function crearYMostrarTabla(datos) {
+  function crearYMostrarTablaStundenerfassung(datos) {
     db = datos;
     var tabla = document.createElement('table');
+    var containerTopVar=document.getElementById('conteiner-topvar'); 
+     containerTopVar.innerHTML='';
+
+    //barra de titulo
+    var table_title = document.createElement('div');
+    table_title.className = 'table-title';
+
+    //fila
+    var row = document.createElement('div');
+    row.className = 'row';
+
+    ////////COLUMNA 1///////////////
+    var col1 = document.createElement('div');
+    col1.className = 'col-sm-6';
+
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Stundenerfassung';
+
+    col1.appendChild(h2);
+/////////////////////////////////////////
+
+//////////COLUMNA 2///////////////
+    col2 = document.createElement('div');
+    col2.className = 'col-sm-6';
+   
+    var a1 = document.createElement('a');
+    a1.href = '#addStundenerfassungModal';
+    a1.className = 'btn btn-success';
+    a1.setAttribute('data-toggle', 'modal');
+
+
+    var searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.id = 'searchInput';
+    searchInput.placeholder = 'search...';
+    searchInput.addEventListener('input', function() {
+        // Lógica para buscar coincidencias mientras se escribe
+        const searchText = searchInput.value;
+        // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
+        searchOnServer(searchText);
+    });
+
+
+
+
+    var i1 = document.createElement('i');
+    i1.setAttribute('class','material-icons');
+    i1.innerHTML = '&#xE147;';       
+    
+
+    var span1 = document.createElement('span'); 
+    span1.textContent = 'Neues Stundenerfassung hinzufügen';
+
+    a1.appendChild(i1);
+    a1.appendChild(span1);
+    var span2 = document.createElement('span');
+   
+    span2.setAttribute('class','material-icons');
+
+    span2.className="material-symbols-outlined";
+span2.appendChild(searchInput);
+
+/*
+    var a2 = document.createElement('a');
+    a2.href = '#deleteEmployeeModal';
+    a2.className = 'btn btn-danger';
+    a2.setAttribute('data-toggle', 'modal');
+
+    var i2 = document.createElement('i');
+    i2.className = 'material-icons';
+    i2.textContent = '&#xE15C;';
+
+    span2.textContent = 'Delete';
+
+    a2.appendChild(i2);
+    a2.appendChild(span2);
+*/
+    col2.appendChild(span2);
+    col2.appendChild(a1);
+    //col2.appendChild(a2);
+////////////////col2/////////////////////
+
+    row.appendChild(col1);
+    row.appendChild(col2);
+   
+    table_title.appendChild(row);
+    
+    containerTopVar.appendChild(table_title);
     tabla.className = 'table table-striped table-hover table-dark';
     var thead = document.createElement('thead');
     tabla.appendChild(thead);

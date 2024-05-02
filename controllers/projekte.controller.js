@@ -56,4 +56,18 @@ exports.getTeammitglieder = (req, res) => {
     }
   });
 };
-// ... otros controladores CRUD
+
+//Obtener search
+exports.getSearch = (req, res) => {
+  const searchText = req.query.texto; // Obtén el texto de búsqueda de la consulta
+ ProjekteModel.getSearch(searchText,(error, result) => {
+   if (error) {
+            console.error('Error al buscar:', error);
+            res.status(500).json({ error: 'Error al buscar en la base de datos' });
+        } else {
+            // Envía los resultados de la búsqueda como respuesta al cliente
+            res.send(result);
+        }
+    });
+};
+ 
