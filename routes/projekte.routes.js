@@ -6,7 +6,10 @@ console.log("routes "  ) ;
 router.post("/", projekteController.create);
 
 // Obtener todos los registros de Kontakte
-router.get('/', projekteController.getAll);
+router.get('/all', projekteController.getAll);
+
+//Obtener los teamlider
+router.get('/teammitglieder', projekteController.getTeammitglieder);
 
 // ... otras rutas CRUD
 

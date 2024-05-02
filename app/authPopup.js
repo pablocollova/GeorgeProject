@@ -21,7 +21,8 @@ function selectAccount() {
         console.warn("Multiple accounts detected.");
     } else if (currentAccounts.length === 1) {
         username = currentAccounts[0].username;
-        showWelcomeMessage(username);
+        showWelcomeMessage(username,  currentAccounts[0].name);
+        console.log(currentAccounts);
     }
 }
 

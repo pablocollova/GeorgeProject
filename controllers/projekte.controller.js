@@ -12,14 +12,14 @@ exports.create = (req, res) => {
   }
 
   // Crear un Projekte
- const kontakte = new ProjekteModel({
+ const projekte = new ProjekteModel({
     Abteilung: req.body.Abteilung,
     Adressblock: req.body.Adressblock,
     // ... otros campos
   });
 
   // Guardar Projekte en la base de datos
-  ProjekteModel.create(kontakte, (err, data) => {
+  ProjekteModel.create(projekte, (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message || "Ocurrió un error al crear el registro en Projekte."
@@ -43,4 +43,17 @@ exports.getAll = (req, res) => {
   });
 };
 
+
+//Obtener los teamlider
+exports.getTeammitglieder = (req, res) => {
+  ProjekteModel.getTeammitglieder((error, teamlider) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Error al obtener los projekte: ' + error.message
+      });
+    } else {console.log("controller getTeamlider://", teamlider);
+      res.send(teamlider);
+    }
+  });
+};
 // ... otros controladores CRUD

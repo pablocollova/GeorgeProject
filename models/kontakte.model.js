@@ -59,7 +59,7 @@ const Kontakte = function(kontakte) {
 console.log(sql ) ;
 // Método para obtener todos los registros de Kontakte
 Kontakte.getAll = function(callback) {
-  sql.query('SELECT * FROM Kontakte;', function(error, results, fields) {
+  sql.query('SELECT firma, anrede, vorname, telefon_1, mobil_1, email_1, webadresse, abteilung, typ, kunde, Verantwortlicher, privat_telefon, privat_mobil, email_2 FROM Kontakte;', function(error, results, fields) {
     console.log("rrrrr"+results);
     if (error) {
       callback(error, null);

@@ -8,27 +8,35 @@ var dropdownToggle = document.getElementById('menut');
 // Seleccionar el menú desplegable
 var dropdownMenu = document.getElementById('desp');
 
+
+/*
 // Agregar un evento clic al botón para alternar la visibilidad del menú desplegable
 dropdownToggle.addEventListener('click', function() {
     // Alternar la clase 'show' en el menú desplegable para mostrarlo u ocultarlo
     dropdownMenu.classList.toggle('show');
 });
 
+*/
+/*
 document.addEventListener('DOMContentLoaded', function() {
   // Aquí va el código que se ejecutará cuando se cargue el index.htm
   AuthPopup.signIn();
   // Inicialización
   selectAccount();
 });
- 
+ */
 
 
 
-function showWelcomeMessage(username) {
-  usernamee= username;
+function showWelcomeMessage(username, name) {
+  
   const welcomeMessageDiv = document.getElementById('userLabel');
-  welcomeMessageDiv.textContent = `Bienvenido, ${username}`;
+  welcomeMessageDiv.textContent = `  Willkommen, ${username}`;
   welcomeMessageDiv.classList.remove('hide');
+  welcomeMessageDiv.style.fontSize = '15px';
+
+  const hello=document.getElementById('hello');
+  hello.textContent = `Hallo, ${name}`;
 }
 function projekteclick(){
   console.log("click"); 
@@ -110,8 +118,7 @@ function updateUserName(username) {
 
 function loadKontakte() 
    {
-
-    document.getElementById('tableName').innerText = 'Kontakte';
+   
     fetch('/api/kontakte')
       .then(response => response.json())
       .then(datos => {
@@ -154,12 +161,12 @@ function loadKontakte()
   };
 
   function loadProjekte() {
-
-    document.getElementById('tableName').innerText = 'Projekte';
-    fetch('/api/projekte')
+    
+  
+    fetch('/api/projekte/all')
       .then(response => response.json())
       .then(datos => {
-        crearYMostrarTabla(datos);
+        crearYMostrarTablaProjekte(datos);console.log("loadProjekte");
       })
       .catch(error => {
         console.error('Error al obtener los datos:', error);
@@ -193,4 +200,16 @@ function loadKontakte()
         console.error('Error al obtener los datos:', error);
       });
       
+  }
+
+  function loadChecks(){
+    console.log("loadChecks");
+    fetch('/api/projekte/teammitglieder')
+      .then(response => response.json())
+      .then(datos => {
+        loadCheckBox(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
   }

@@ -54,23 +54,67 @@ const Projekte = function(projekte) {
   this.Stundenvorgaben_Summe = projekte.Stundenvorgaben_Summe; // Este campo es resumen, se necesita una fórmula
   this.Übrige_Stunden_Summe = projekte.Übrige_Stunden_Summe; // Este campo es resumen, se necesita una fórmula
   this.RestProjektwert_Netto_über_Stunden = projekte.RestProjektwert_Netto_über_Stunden; // Este campo es calculado, se necesita una fórmula
+  // Nuevos campos agregados
+  this.vProjektkürzel = projekte.vProjektkürzel;
+  this.Angebot_Erstellt_am = projekte.Angebot_Erstellt_am;
+  this.Angebot_Erstellt_von = projekte.Angebot_Erstellt_von;
+  this.Angebot_Beauftragungsdatum = projekte.Angebot_Beauftragungsdatum;
+  this.Projektfarbe = projekte.Projektfarbe;
+  this.Wert_Grün = projekte.Wert_Grün;
+  this.Wert_Verfahren_Sonstiges = projekte.Wert_Verfahren_Sonstiges;
+  this.Projekt_Restwert = projekte.Projekt_Restwert; // Este campo es calculado, se necesita una fórmula
+  this.Teammitglieder = projekte.Teammitglieder;
+  this.Leistungsstand_Projekt = projekte.Leistungsstand_Projekt; // Este campo es calculado, se necesita una fórmula
+  this.Team = projekte.Team;
+  this.vMitarbeiterteam = projekte.vMitarbeiterteam;
+  this.vAktiv = projekte.vAktiv; // Este campo es calculado, se necesita una fórmula
+  this.Angebotssumme = projekte.Angebotssumme;
+  this.Fremdleistungen_Details = projekte.Fremdleistungen_Details;
   this.ProjektwertDetails = projekte.ProjektwertDetails;
+  this.Übrige_Stunden_soll = projekte.Übrige_Stunden_soll; // Este campo es calculado, se necesita una fórmula
+  this.Leistungsstand_Restwert_Projekt = projekte.Leistungsstand_Restwert_Projekt; // Este campo es calculado, se necesita una fórmula
+  this.vRechnungsnummer = projekte.vRechnungsnummer;
+  this.Reststunden_netto = projekte.Reststunden_netto; // Este campo es calculado, se necesita una fórmula
+  this.Monat = projekte.Monat;
+  this.Stundendatum = projekte.Stundendatum;
+  this.Reststunden_Prozent = projekte.Reststunden_Prozent; // Este campo es calculado, se necesita una fórmula
+  this.ProjektFarbeID = projekte.ProjektFarbeID; // Este campo es calculado, se necesita una fórmula
+  this.Summe_Projektrestwert = projekte.Summe_Projektrestwert; // Este campo es resumen, se necesita una fórmula
+  this.Summe_Übrige_Stunden_Soll = projekte.Summe_Übrige_Stunden_Soll; // Este campo es resumen, se necesita una fórmula
+  this.Summe_Übrige_Stunden_ist = projekte.Summe_Übrige_Stunden_ist; // Este campo es resumen, se necesita una fórmula
+  this.Reststunden = projekte.Reststunden; // Este campo es calculado, se necesita una fórmula
+  this.leerfeld = projekte.leerfeld;
+  this.Reststunden_Kopie = projekte.Reststunden_Kopie; // Este campo es calculado, se necesita una fórmula
   this.Ampelwert = projekte.Ampelwert; // Este campo es calculado, se necesita una fórmula
+  this.Leistungsstand_Projekt_ist = projekte.Leistungsstand_Projekt_ist; // Este campo es calculado, se necesita una fórmula
 };
 
 // Método para obtener todos los registros de Projekte
 Projekte.getAll = result => {
-  sql.query('SELECT * FROM Projekte', (err, res) => {
+  sql.query('SELECT projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von  FROM Projekte;', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);
       return;
     }
-    console.log("Projekte: ", res);
+    console.log("Projekte: kk", res);
     result(null, res);
   });
 };
 
+
+
+Projekte.getTeammitglieder = result => {
+  sql.query('SELECT DISTINCT Teammitglieder FROM Projekte;', (err, res) => {
+    if (err) {
+      console.error("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("Projekte: uu", res);
+    result(null, res);
+  });
+};
 // Método para crear un nuevo registro en la tabla Projekte
 Projekte.create = (newProjekte, result) => {
   sql.query("INSERT INTO Projekte SET ?", newProjekte, (err, res) => {

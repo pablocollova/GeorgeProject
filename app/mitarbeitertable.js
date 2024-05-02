@@ -7,7 +7,7 @@ var db;
 
 
   function crearYMostrarTabla(datos) {
-    db = datos;console.log(datos);
+    var db = datos;
     var tabla = document.createElement('table');
     tabla.className = 'table table-striped table-hover table-dark';
     var thead = document.createElement('thead');

@@ -16,18 +16,105 @@ var db;
 
 
 
+  function crearYMostrarTablaProjekte(datos) {
 
-  function crearYMostrarTabla(datos) {
-    db = datos;
+    //creo tabla
     var tabla = document.createElement('table');
+    var containerTopVar=document.getElementById('conteiner-topvar'); 
+    // containerTopVar.innerHTML='';
+
+    //barra de titulo
+    var table_title = document.createElement('div');
+    table_title.className = 'table-title';
+
+    //fila
+    var row = document.createElement('div');
+    row.className = 'row';
+
+    ////////COLUMNA 1///////////////
+    var col1 = document.createElement('div');
+    col1.className = 'col-sm-6';
+
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Projekte';
+
+    col1.appendChild(h2);
+/////////////////////////////////////////
+
+//////////COLUMNA 2///////////////
+    col2 = document.createElement('div');
+    col2.className = 'col-sm-6';
+   
+    var a1 = document.createElement('a');
+    a1.href = '#addEmployeeModal';
+    a1.className = 'btn btn-success';
+    a1.setAttribute('data-toggle', 'modal');
+
+
+    var searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.id = 'searchInput';
+    searchInput.placeholder = 'search...';
+    searchInput.addEventListener('input', function() {
+        // Lógica para buscar coincidencias mientras se escribe
+        const searchText = searchInput.value;
+        // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
+        searchOnServer(searchText);
+    });
+
+
+
+
+    var i1 = document.createElement('i');
+    i1.setAttribute('class','material-icons');
+    i1.innerHTML = '&#xE147;';       
+    
+
+    var span1 = document.createElement('span'); 
+    span1.textContent = 'Neues Projekt hinzufügen';
+
+    a1.appendChild(i1);
+    a1.appendChild(span1);
+
+/*
+    var a2 = document.createElement('a');
+    a2.href = '#deleteEmployeeModal';
+    a2.className = 'btn btn-danger';
+    a2.setAttribute('data-toggle', 'modal');
+
+    var i2 = document.createElement('i');
+    i2.className = 'material-icons';
+    i2.textContent = '&#xE15C;';
+
+    var span2 = document.createElement('span');
+    span2.textContent = 'Delete';
+
+    a2.appendChild(i2);
+    a2.appendChild(span2);
+*/
+    col2.appendChild(searchInput);
+    col2.appendChild(a1);
+    //col2.appendChild(a2);
+////////////////col2/////////////////////
+
+    row.appendChild(col1);
+    row.appendChild(col2);
+   
+    table_title.appendChild(row);
+    
+    containerTopVar.appendChild(table_title);
+   
     tabla.className = 'table table-striped table-hover table-dark';
+   
+    var contenedor = document.getElementById('tabla-container');
+contenedor.innerHTML='';
+  
     var thead = document.createElement('thead');
     tabla.appendChild(thead);
     var columnas = Object.keys(datos[0]);
     
     // Creamos una columna para los botones
     columnas.unshift('Acciones');
-    
     var tr = document.createElement('tr');
     columnas.forEach(function(columna) {
         var th = document.createElement('th');
@@ -56,7 +143,7 @@ var db;
         tbody.appendChild(tr);
     });
 
-    var contenedor = document.getElementById('tabla-container');
+   
     if (contenedor) {
         contenedor.innerHTML = '';
         contenedor.style.overflowY = 'scroll';
@@ -161,4 +248,51 @@ function guardarNuevoRegistro(btn) {
 function cancelarNuevoRegistro(btn) {
     var tr = btn.parentNode.parentNode;
     tr.parentNode.removeChild(tr);
+}
+
+
+
+function loadCheckBox(teamLeaders){
+
+    console.log('teamLeaders', teamLeaders);
+    const tabsContainer = document.getElementById('tabsConteiner');
+    tabsContainer.innerHTML = '';
+    const checkBoxList = document.createElement('ul');
+
+    teamLeaders.forEach(name => {
+        const listItem = document.createElement('li');
+        const checkBox = document.createElement('input');
+        checkBox.type = 'checkbox';
+        checkBox.value = name.Teammitglieder;
+        checkBox.innerHTML = name.Teammitglieder.innerHTML;
+        console.log(name.Teammitglieder.innerText);
+        listItem.innerText = name.Teammitglieder;
+        const label = document.createElement('label');
+        label.textContent = name;
+        
+        listItem.appendChild(checkBox);
+        listItem.appendChild(label);
+        checkBoxList.appendChild(listItem);
+    });
+
+    tabsContainer.appendChild(checkBoxList);
+}
+
+
+function searchOnServer(searchText) {
+    // Realiza una solicitud al servidor, por ejemplo, utilizando AJAX
+    // Aquí hay un ejemplo utilizando fetch
+    fetch(`/api/all?texto=${searchText}`)
+        .then(response => response.json())
+        .then(data => {
+            // Maneja la respuesta del servidor y actualiza la interfaz de usuario
+            // con los resultados de la búsqueda
+            displaySearchResults(data);
+        })
+        .catch(error => console.error('Error al buscar:', error));
+}
+
+function displaySearchResults(results) {
+    // Lógica para mostrar los resultados de la búsqueda en la interfaz de usuario
+    // Por ejemplo, actualiza la tabla con los resultados de la búsqueda
 }
