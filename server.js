@@ -23,6 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Configurar tus rutas y middleware
 const kontakteRoutes = require('./routes/kontakte.routes');
 app.use('/api/kontakte', kontakteRoutes);
+app.use('/api/kontakete/search',kontakteRoutes);
+app.use('/api/kontakte/update',kontakteRoutes);
+app.use('/api/kontakte/add', kontakteRoutes);
 
 
 const rechnungenRoutes = require('./routes/rechnungen.routes');

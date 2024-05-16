@@ -29,7 +29,8 @@ function crearYMostrarTablaProjekte(datos) {
   //////////COLUMNA 2///////////////
   col2 = document.createElement("div");
   col2.className = "col-sm-6";
-
+////////////////////////////////
+   ///////////SEARCH///////////////
   var searchInput = document.createElement("input");
   searchInput.type = "text";
   searchInput.id = "searchInput";
@@ -41,7 +42,8 @@ function crearYMostrarTablaProjekte(datos) {
     // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
     searchOnServer(searchText);
   });
-
+//////////////////////////////////////////////////
+/////////////////ADD BUTTON///////////////////////
   var a1 = document.createElement("a");
   a1.href = "#editProjekteModal";
   a1.className = "btn btn-success";
@@ -59,9 +61,10 @@ function crearYMostrarTablaProjekte(datos) {
 
   a1.appendChild(i1);
   a1.appendChild(span1);
-
+////////////////////////////////////////////////
+////////////////DELETE BUTTON/////////////////////
   var a2 = document.createElement("a");
-  a2.href = "#deleteEmployeeModal";
+  a2.href = "#deleteprojekteModal";
   a2.className = "btn btn-danger";
   a2.setAttribute("data-toggle", "modal");
 
@@ -74,7 +77,8 @@ function crearYMostrarTablaProjekte(datos) {
 
   a2.appendChild(i2);
   a2.appendChild(span2);
-
+////////////////////////////////////////////////
+////////////////EDIT BUTTON/////////////////////
   var a3 = document.createElement("a");
   a3.href = "#editProjekteModal";
   a3.className = "btn btn-edit";
@@ -98,24 +102,22 @@ function crearYMostrarTablaProjekte(datos) {
 
   a3.appendChild(i3);
   a3.appendChild(span3);
-
-  col2.appendChild(a1);
-  col2.appendChild(a2);
-  col2.appendChild(a3);
-  ////////////////col2/////////////////////
-
+/////////////////////////////////////////////////
+////////////COL 2///////////////////////////////////
+col2.appendChild(a1);
+col2.appendChild(a2);
+col2.appendChild(a3);
+///////////////////////////////////
   row.appendChild(col1);
   row.appendChild(col2);
 
   table_title.appendChild(row);
 
   containerTopVar.appendChild(table_title);
-
   tabla.className = "table table-striped table-hover table-dark";
 
   var contenedor = document.getElementById("tabla-container");
   contenedor.innerHTML = "";
-
   var thead = document.createElement("thead");
   tabla.appendChild(thead);
   var columnas = Object.keys(datos[0]);
@@ -155,6 +157,7 @@ function crearYMostrarTablaProjekte(datos) {
 
     tbody.appendChild(tr);
   });
+  
   if (contenedor) {
     contenedor.innerHTML = "";
     contenedor.style.overflowY = "scroll";

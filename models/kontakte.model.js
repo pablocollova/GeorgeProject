@@ -55,10 +55,10 @@ const Kontakte = function(kontakte) {
   this.Vorschau = kontakte.Vorschau;
   this.Webadresse = kontakte.Webadresse;
 };
-console.log(sql ) ;
+console.log(sql) ;
 // Método para obtener todos los registros de Kontakte
 Kontakte.getAll = function(callback) {
-  sql.query('SELECT KontaktID, anrede, vorname, telefon_1, mobil_1, email_1, webadresse, abteilung, typ, kunde, Verantwortlicher, privat_telefon, privat_mobil, email_2 FROM Kontakte;', function(error, results, fields) {
+  sql.query('SELECT KontaktID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Abteilung, Typ, Kunde, Verantwortlicher, Privat_telefon, Privat_mobil, Email_2 FROM Kontakte;', function(error, results, fields) {
 
     if (error) {
       callback(error, null);
@@ -66,6 +66,28 @@ Kontakte.getAll = function(callback) {
       callback(null, results);
     }
   });
+};
+
+Kontakte.getSearch = (searchText, callback) => { 
+  
+  // Lista de campos en los que deseas buscar
+ const campos = ['KontakteID', 'Anrede', 'Vorname', 'Telefon_1', 'Mobil_1', 'Email_1', 'Webadresse', 'Erstellt_von' ]; // Agrega aquí los nombres de los campos relevantes
+ // Construir la parte de la consulta SQL para buscar en todos los campos
+ const whereClause = campos.map(campo => `${campo} LIKE ?`).join(' OR ');
+ // Consulta SQL para buscar registros que contengan el texto de búsqueda en cualquiera de los campos relevantes
+ const query = `SELECT KontakteID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Erstellt_von FROM Projekte WHERE ${whereClause}`;
+   // Array de valores para reemplazar en la consulta SQL
+ const values = campos.map(() => `%${searchText}%`);
+   // Ejecutar la consulta SQL
+ sql.query(query, values, (error, resultados) => {
+     if (error) {
+         console.error('Error al buscar:', error);
+         callback(error, null);
+     } else {
+         // Envía los resultados de la búsqueda como respuesta al cliente
+         callback(null, resultados);
+     }
+ });
 };
 
 // Método para crear un nuevo registro en la tabla Kontakte
@@ -79,6 +101,55 @@ Kontakte.create = (newKontakte, result) => {
       result(null, { id: res.insertId, ...newKontakte });
     }
   });
+};
+
+Kontakte.add = (dato, result) => {
+  const query = `
+    INSERT INTO Projekte (
+      Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Abteilung, Typ
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+  `;/*, Kunde, Verantwortlicher, Privat_telefon, Privat_mobil, Email_2*/
+  const values = [
+    dato.anrede,
+    dato.vorname,
+    dato.telefono_1,
+    dato.mobil_1,
+    dato.email_1,
+    dato.webadresse,
+    dato.abteilung,
+    dato.typ   
+  ];
+  
+  sql.query(query, values, (err, res) => {
+    if (err) {
+      console.error("error: ", err);
+      result(err, null);
+      return;
+    }
+    console.log("Registro creado: ", { id: res.insertId, ...dato });
+    result(null, { id: res.insertId, ...dato });
+  });
+};
+
+
+Kontakte.updateById = (id, kontakte, result) => {
+  sql.query("UPDATE Kontakte SET Anrede = ?, Vorname = ?, Telefon_1 = ?, Email_1 = ?, Webadresse = ?, Abteilung = ?, Typ = ?, WHERE ProjektID = ?",
+    [kontakte.anrede, kontakte.vorname, kontakte.vorname, kontakte.telefon_1, kontakte.email_1, kontakte_webadresse, kontakte.abteilung, kontakte.typ, id],
+    (err, res) => {
+      if (err) {
+        console.error("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // No se encontró el registro con el id especificado
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log("Registro actualizado: ", { id: id, ...kontakte });
+      result(null, { id: id, ...kontakte });
+    }
+  );
 };
 
 // ... otros métodos CRUD

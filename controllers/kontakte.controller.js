@@ -2,7 +2,7 @@
 const KontakteModel = require('../models/kontakte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
 console.log("cotroller"  ) ;   
 // Crear y guardar un nuevo Kontakte
-exports.create = (req, res) => {
+exports.add = (req, res) => {
   // Validar solicitud
   if (!req.body) {
     res.status(400).send({
@@ -13,13 +13,19 @@ exports.create = (req, res) => {
 
   // Crear un Kontakte
  const kontakte = new KontakteModel({
-    Abteilung: req.body.Abteilung,
-    Adressblock: req.body.Adressblock,
-    // ... otros campos
+  Anrede: req.body.anrede,
+  Vorname : req.body.vorname,
+  Nachname : req.body.nachname,
+  Telefon:req.body.telefon,
+  Mobil_1 :req.body.mobil,
+  Email:req.body.email,
+  Webadresse:req.body.webadress,
+  Abteilung:req.body.abteilung,
+  Typ:req.body.typ,
   });
 
   // Guardar Kontakte en la base de datos
-  KontakteModel.create(kontakte, (err, data) => {
+  KontakteModel.add(kontakte, (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message || "Ocurrió un error al crear el registro en Kontakte."
@@ -42,5 +48,33 @@ exports.getAll = (req, res) => {
     }
   });
 };
+  //Obtener search
+  exports.getSearch = (req, res) => {
+    const searchText = req.query.texto; // Obtén el texto de búsqueda de la consulta
+  KontakteModel.getSearch(searchText,(error, result) => {
+    if (error) {
+              console.error('Error al buscar:', error);
+              res.status(500).json({ error: 'Error al buscar en la base de datos' });
+          } else {
+              // Envía los resultados de la búsqueda como respuesta al cliente
+              res.send(result);
+          }
+      });
+  };
+
+  //update
+  exports.updateById = function(req, res) {
+    // Obtener el ID del proyecto de los parámetros de la ruta
+    const kontaktetId = req.params.id;
+    KontakteModel.updateById(kontakteId, req.body, function(err, result) {
+      if (err) {
+        res.status(500).send({
+          message: 'Error al actualizar el proyecto'
+        });
+      } else {
+        res.send(result);
+      }
+    });
+  }
 
 // ... otros controladores CRUD
