@@ -20,7 +20,6 @@ const Kontakte = function(kontakte) {
   this.EmailAdresse_mit_Name = kontakte.EmailAdresse_mit_Name;
   this.Erstellt_von = kontakte.Erstellt_von;
   this.Fax = kontakte.Fax;
-  this.Firma = kontakte.Firma;
   this.Hinweise = kontakte.Hinweise;
   this.Kontaktblock_Firma_Name_Vorname = kontakte.Kontaktblock_Firma_Name_Vorname;
   this.Kontaktblock_klein = kontakte.Kontaktblock_klein;
@@ -59,8 +58,8 @@ const Kontakte = function(kontakte) {
 console.log(sql ) ;
 // Método para obtener todos los registros de Kontakte
 Kontakte.getAll = function(callback) {
-  sql.query('SELECT firma, anrede, vorname, telefon_1, mobil_1, email_1, webadresse, abteilung, typ, kunde, Verantwortlicher, privat_telefon, privat_mobil, email_2 FROM Kontakte;', function(error, results, fields) {
-    console.log("rrrrr"+results);
+  sql.query('SELECT KontaktID, anrede, vorname, telefon_1, mobil_1, email_1, webadresse, abteilung, typ, kunde, Verantwortlicher, privat_telefon, privat_mobil, email_2 FROM Kontakte;', function(error, results, fields) {
+
     if (error) {
       callback(error, null);
     } else {

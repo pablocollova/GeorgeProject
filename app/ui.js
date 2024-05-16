@@ -163,10 +163,10 @@ function loadKontakte()
   function loadProjekte() {
     
   
-    fetch('/api/projekte/all')
+    fetch('/api/projekte')
       .then(response => response.json())
       .then(datos => {
-        crearYMostrarTablaProjekte(datos);console.log("loadProjekte");
+        crearYMostrarTablaProjekte(datos);
       })
       .catch(error => {
         console.error('Error al obtener los datos:', error);

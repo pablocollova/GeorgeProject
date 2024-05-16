@@ -43,6 +43,7 @@ var db;
     searchInput.addEventListener('input', function() {
         // Lógica para buscar coincidencias mientras se escribe
         const searchText = searchInput.value;
+        console.log(searchText);
         // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
         searchOnServer(searchText);
     });

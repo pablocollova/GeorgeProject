@@ -91,7 +91,7 @@ const Projekte = function(projekte) {
 
 // Método para obtener todos los registros de Projekte
 Projekte.getAll = result => {
-  sql.query('SELECT projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von  FROM Projekte;', (err, res) => {
+  sql.query('SELECT ProjektID, projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von  FROM Projekte;', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);
@@ -101,8 +101,6 @@ Projekte.getAll = result => {
     result(null, res);
   });
 };
-
-
 // Controlador para manejar las solicitudes de búsqueda
 Projekte.getSearch = (searchText, callback) => { 
   
@@ -125,9 +123,6 @@ Projekte.getSearch = (searchText, callback) => {
      }
  });
 };
-
-
-
 Projekte.getTeammitglieder = result => {
   sql.query('SELECT DISTINCT Teammitglieder FROM Projekte;', (err, res) => {
     if (err) {
@@ -141,17 +136,315 @@ Projekte.getTeammitglieder = result => {
 };
 // Método para crear un nuevo registro en la tabla Projekte
 Projekte.create = (newProjekte, result) => {
-  sql.query("INSERT INTO Projekte SET ?", newProjekte, (err, res) => {
-    if (err) {
-      console.error("error: ", err);
-      result(err, null);
-      return;
+
+  
+  db.query(sql, values, (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
     }
-    console.log("Projekte creado: ", { id: res.insertId, ...newProjekte });
-    result(null, { id: res.insertId, ...newProjekte });
   });
 };
 
-// ... otros métodos CRUD
+
+
+Projekte.updateById = (id, projekte, result) => {
+  sql.query(
+    "UPDATE Projekte SET projektname = ?, projektkürzel = ?, beschreibung = ?, verantwortlicher = ?, beginn = ?, status = ?, Erstellt_am = ?, Erstellt_von = ? WHERE ProjektID = ?",
+    [projekte.projektname, projekte.projektkürzel, projekte.beschreibung, projekte.verantwortlicher, projekte.beginn, projekte.status, projekte.erstelt_am, projekte.erstellt_von, id],
+    (err, res) => {
+      if (err) {
+        console.error("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // No se encontró el registro con el id especificado
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log("Registro actualizado: ", { id: id, ...projekte });
+      result(null, { id: id, ...projekte });
+    }
+  );
+};
 
 module.exports = Projekte;
+
+
+
+  const createProjekt = (projektData, callback) => {
+    const {
+      Erstellt_von,
+      Erstellt_am,
+      Geändert_am,
+      Beschreibung,
+      Variable_Projektnr,
+      HiliteSortiertNach,
+      Projektname,
+      Eins,
+      ProjektID,
+      Status,
+      Typ,
+      Beginn,
+      Fälligkeit,
+      lfdNr,
+      Projektkürzel,
+      Projektsumme_1,
+      Verantwortlicher,
+      KontaktID,
+      Fremdleistungen,
+      Netto_Stundenkontigent,
+      Summe_Stunden,
+      Abschlag_percent,
+      Abschlag_euro,
+      Stundenvorgaben_Netto,
+      Projektwert_vor_Jan07,
+      Projektwert,
+      Netto_Projektwert,
+      Aufgaben_variale,
+      Pstatus,
+      Kurznameaktuell,
+      KurznameErsteller,
+      MaterialDatum,
+      MaterialLeistungsphase,
+      MaterialBeschreibung,
+      MaterialAngelegt_von,
+      Status_inbearbeitung,
+      MaterialD,
+      DateienID,
+      Angebotsstatus,
+      Laufende_Numer_Importiert,
+      Übrige_Stunden_ist,
+      Wert_Planung,
+      Wert_Verfahren,
+      vProjektID,
+      vKontaktID,
+      Projektwert_Summe,
+      Netto_Projektwert_Summe,
+      Summe_Fremdleistungen,
+      Stundenvorgaben_Summe,
+      Übrige_Stunden_Summe,
+      RestProjektwert_Netto_über_Stunden,
+      vProjektkürzel,
+      Angebot_Erstellt_am,
+      Angebot_Erstellt_von,
+      Angebot_Beauftragungsdatum,
+      Projektfarbe,
+      Wert_Grün,
+      Wert_Verfahren_Sonstiges,
+      Projekt_Restwert,
+      Teammitglieder,
+      Leistungsstand_Projekt,
+      Team,
+      vMitarbeiterteam,
+      vAktiv,
+      Angebotssumme,
+      Fremdleistungen_Details,
+      ProjektwertDetails,
+      Übrige_Stunden_soll,
+      Leistungsstand_Restwert_Projekt,
+      vRechnungsnummer,
+      Reststunden_netto,
+      Monat,
+      Stundendatum,
+      Reststunden_Prozent,
+      ProjektFarbeID,
+      Summe_Projektrestwert,
+      Summe_Übrige_Stunden_Soll,
+      Summe_Übrige_Stunden_ist,
+      Reststunden,
+      leerfeld,
+      Reststunden_Kopie,
+      Ampelwert,
+      Leistungsstand_Projekt_ist
+    } = projektData;
+  
+     sql.query (`INSERT INTO Projekte (
+      Erstellt_von,
+      Erstellt_am,
+      Geändert_am,
+      Beschreibung,
+      Variable_Projektnr,
+      HiliteSortiertNach,
+      Projektname,
+      Eins,
+      ProjektID,
+      Status,
+      Typ,
+      Beginn,
+      Fälligkeit,
+      lfdNr,
+      Projektkürzel,
+      Projektsumme_1,
+      Verantwortlicher,
+      KontaktID,
+      Fremdleistungen,
+      Netto_Stundenkontigent,
+      Summe_Stunden,
+      Abschlag_percent,
+      Abschlag_euro,
+      Stundenvorgaben_Netto,
+      Projektwert_vor_Jan07,
+      Projektwert,
+      Netto_Projektwert,
+      Aufgaben_variale,
+      Pstatus,
+      Kurznameaktuell,
+      KurznameErsteller,
+      MaterialDatum,
+      MaterialLeistungsphase,
+      MaterialBeschreibung,
+      MaterialAngelegt_von,
+      Status_inbearbeitung,
+      MaterialD,
+      DateienID,
+      Angebotsstatus,
+      Laufende_Numer_Importiert,
+      Übrige_Stunden_ist,
+      Wert_Planung,
+      Wert_Verfahren,
+      vProjektID,
+      vKontaktID,
+      Projektwert_Summe,
+      Netto_Projektwert_Summe,
+      Summe_Fremdleistungen,
+      Stundenvorgaben_Summe,
+      Übrige_Stunden_Summe,
+      RestProjektwert_Netto_über_Stunden,
+      vProjektkürzel,
+      Angebot_Erstellt_am,
+      Angebot_Erstellt_von,
+      Angebot_Beauftragungsdatum,
+      Projektfarbe,
+      Wert_Grün,
+      Wert_Verfahren_Sonstiges,
+      Projekt_Restwert,
+      Teammitglieder,
+      Leistungsstand_Projekt,
+      Team,
+      vMitarbeiterteam,
+      vAktiv,
+      Angebotssumme,
+      Fremdleistungen_Details,
+      ProjektwertDetails,
+      Übrige_Stunden_soll,
+      Leistungsstand_Restwert_Projekt,
+      vRechnungsnummer,
+      Reststunden_netto,
+      Monat,
+      Stundendatum,
+      Reststunden_Prozent,
+      ProjektFarbeID,
+      Summe_Projektrestwert,
+      Summe_Übrige_Stunden_Soll,
+      Summe_Übrige_Stunden_ist,
+      Reststunden,
+      leerfeld,
+      Reststunden_Kopie,
+      Ampelwert,
+      Leistungsstand_Projekt_ist
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  
+    const values = [
+      Erstellt_von || '',
+      Erstellt_am || null,
+      Geändert_am || null,
+      Beschreibung || '',
+      Variable_Projektnr || '',
+      HiliteSortiertNach || '',
+      Projektname || '',
+      Eins || 0.0,
+      ProjektID || '',
+      Status || '',
+      Typ || '',
+      Beginn || null,
+      Fälligkeit || null,
+      lfdNr || '',
+      Projektkürzel || '',
+      Projektsumme_1 || 0.0,
+      Verantwortlicher || '',
+      KontaktID || '',
+      Fremdleistungen || 0,
+      Netto_Stundenkontigent || '',
+      Summe_Stunden || '',
+      Abschlag_percent || 0,
+      Abschlag_euro || 0.0,
+      Stundenvorgaben_Netto || 0.0,
+      Projektwert_vor_Jan07 || 0,
+      Projektwert || 0,
+      Netto_Projektwert || 0.0,
+      Aufgaben_variale || '',
+      Pstatus || '',
+      Kurznameaktuell || '',
+      KurznameErsteller || '',
+      MaterialDatum || null,
+      MaterialLeistungsphase || '',
+      MaterialBeschreibung || '',
+      MaterialAngelegt_von || '',
+      Status_inbearbeitung || '',
+      MaterialD || '',
+      DateienID || '',
+      Angebotsstatus || '',
+      Laufende_Numer_Importiert || 0,
+      Übrige_Stunden_ist || 0.0,
+      Wert_Planung || 0,
+      Wert_Verfahren || 0,
+      vProjektID || '',
+      vKontaktID || '',
+      Projektwert_Summe || 0.0,
+      Netto_Projektwert_Summe || 0.0,
+      Summe_Fremdleistungen || 0.0,
+      Stundenvorgaben_Summe || 0.0,
+      Übrige_Stunden_Summe || 0.0,
+      RestProjektwert_Netto_über_Stunden || 0.0,
+      vProjektkürzel || '',
+      Angebot_Erstellt_am || null,
+      Angebot_Erstellt_von || '',
+      Angebot_Beauftragungsdatum || null,
+      Projektfarbe || null,
+      Wert_Grün || 0,
+      Wert_Verfahren_Sonstiges || 0,
+      Projekt_Restwert || 0.0,
+      Teammitglieder || '',
+      Leistungsstand_Projekt || 0.0,
+      Team || '',
+      vMitarbeiterteam || '',
+      vAktiv || '',
+      Angebotssumme || 0.0,
+      Fremdleistungen_Details || '',
+      ProjektwertDetails || '',
+      Übrige_Stunden_soll || 0.0,
+      Leistungsstand_Restwert_Projekt || 0.0,
+      vRechnungsnummer || '',
+      Reststunden_netto || 0.0,
+      Monat || '',
+      Stundendatum || null,
+      Reststunden_Prozent || 0.0,
+      ProjektFarbeID || 0.0,
+      Summe_Projektrestwert || 0.0,
+      Summe_Übrige_Stunden_Soll || 0.0,
+      Summe_Übrige_Stunden_ist || 0.0,
+      Reststunden || 0.0,
+      leerfeld || '',
+      Reststunden_Kopie || 0.0,
+      Ampelwert || 0.0,
+      Leistungsstand_Projekt_ist || 0.0
+    ];
+    module.exports = {
+      createProjekt
+    };
+    
+      sql.query("INSERT INTO Projekte SET ?", newProjekte, (err, res) => {
+        if (err) {
+          console.error("error: ", err);
+          result(err, null);
+          return;
+        }
+        console.log("Projekte creado: ", { id: res.insertId, ...newProjekte });
+        result(null, { id: res.insertId, ...newProjekte });
+      });
+    };
+    
+    

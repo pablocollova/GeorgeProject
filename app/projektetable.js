@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 // projektetable.js
 var db;
 
@@ -6,7 +8,7 @@ var db;
 
 
   function crearYMostrarTablaProjekte(datos) {
-
+   
     //creo tabla
     var tabla = document.createElement('table');
     var containerTopVar=document.getElementById('conteiner-topvar'); 
@@ -34,12 +36,6 @@ var db;
     col2 = document.createElement('div');
     col2.className = 'col-sm-6';
    
-    var a1 = document.createElement('a');
-    a1.href = '#addProjekteModal';
-    a1.className = 'btn btn-success';
-    a1.setAttribute('data-toggle', 'modal');
-
-
     var searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.id = 'searchInput';
@@ -47,48 +43,76 @@ var db;
     searchInput.addEventListener('input', function() {
         // Lógica para buscar coincidencias mientras se escribe
         const searchText = searchInput.value;
+        console.log(searchText);
         // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
         searchOnServer(searchText);
     });
 
 
-
+    var a1 = document.createElement('a');
+    a1.href = '#editProjekteModal';
+    a1.className = 'btn btn-success';
+    a1.setAttribute('data-toggle', 'modal');
+    a1.onclick= function() {
+       
+          addModalFields(); // Mostrar el modal con los datos del registro seleccionado
+      };
 
     var i1 = document.createElement('i');
     i1.setAttribute('class','material-icons');
     i1.innerHTML = '&#xE147;';       
     
-
     var span1 = document.createElement('span'); 
     span1.textContent = 'Neues Projekt hinzufügen';
 
+
+
     a1.appendChild(i1);
     a1.appendChild(span1);
-    var span2 = document.createElement('span');
-   
-    span2.setAttribute('class','material-icons');
 
-    span2.className="material-symbols-outlined";
-span2.appendChild(searchInput);
 
-/*
     var a2 = document.createElement('a');
     a2.href = '#deleteEmployeeModal';
     a2.className = 'btn btn-danger';
     a2.setAttribute('data-toggle', 'modal');
 
     var i2 = document.createElement('i');
-    i2.className = 'material-icons';
-    i2.textContent = '&#xE15C;';
+    i2.setAttribute('class','material-icons');
+    i2.innerHTML = '&#xE15C;';
 
+    var span2 = document.createElement('span');
     span2.textContent = 'Delete';
 
     a2.appendChild(i2);
     a2.appendChild(span2);
-*/
-    col2.appendChild(span2);
+
+    var a3 = document.createElement('a');
+    a3.href = '#editProjekteModal';
+    a3.className = 'btn btn-edit';
+    a3.setAttribute('data-toggle', 'modal');
+    a3.onclick= function() {
+        var selectedItems = document.querySelectorAll('.selectItem:checked');
+        if (selectedItems.length === 1) {
+          var index = selectedItems[0].closest('tr').dataset.index;
+          console.log('datos[index]', datos[index] );
+          updateModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
+        }
+      };
+
+    var i3 = document.createElement('i');
+    i3.setAttribute('class','material-icons');
+
+    i3.innerHTML = '&#xf044;';
+
+    var span3= document.createElement('span');
+    span3.textContent = 'Edit';
+
+    a3.appendChild(i3);
+    a3.appendChild(span3);
+
     col2.appendChild(a1);
-    //col2.appendChild(a2);
+    col2.appendChild(a2);
+    col2.appendChild(a3);
 ////////////////col2/////////////////////
 
     row.appendChild(col1);
@@ -102,42 +126,45 @@ span2.appendChild(searchInput);
    
     var contenedor = document.getElementById('tabla-container');
 contenedor.innerHTML='';
-  
+
     var thead = document.createElement('thead');
     tabla.appendChild(thead);
     var columnas = Object.keys(datos[0]);
-    
-    // Creamos una columna para los botones
-    columnas.unshift('Acciones');
+
+    // Añadimos una columna para las casillas de verificación
+    columnas.unshift('Seleccionar');
     var tr = document.createElement('tr');
     columnas.forEach(function(columna) {
         var th = document.createElement('th');
-        th.textContent = columna;
+        if (columna === 'Seleccionar') {
+            th.innerHTML = '<input type="checkbox" id="selectAll">'; // Checkbox para seleccionar todos
+        } else {
+            th.textContent = columna;
+        }
         tr.appendChild(th);
     });
     thead.appendChild(tr);
+
     var tbody = document.createElement('tbody');
     tabla.appendChild(tbody);
-    datos.forEach(function(objeto) {
+    datos.forEach(function(objeto, index) {
         var tr = document.createElement('tr');
-        // Creamos la celda para los botones
-        var accionesTd = document.createElement('td');
-        accionesTd.innerHTML = '<button class="edit-btn btn btn-outline-primary btn-sm" onclick="editarRegistro(this)"><i class="fas fa-edit"></i></button>' +
-            '<button class="delete-btn btn btn-outline-danger btn-sm" onclick="eliminarRegistro(this)"><i class="fas fa-trash-alt"></i></button>' +
-            '<button class="save-btn btn btn-outline-success btn-sm" onclick="guardarRegistro(this)"><i class="fas fa-save"></i></button>' +
-            '<button class="cancel-btn btn btn-outline-secondary btn-sm" onclick="cancelarEdicion(this)"><i class="fas fa-times"></i></button>';
-        tr.appendChild(accionesTd);
-        columnas.forEach(function(columna) {
-            if (columna !== 'Acciones') {
-                var td = document.createElement('td');
-                td.textContent = objeto[columna];
-                tr.appendChild(td);
-            }
+        tr.dataset.index = index; // Guardamos el índice del objeto en el dataset para su posterior uso
+
+        // Celda para la casilla de verificación individual
+        var checkboxTd = document.createElement('td');
+        checkboxTd.innerHTML = '<input type="checkbox" class="selectItem">';
+        tr.appendChild(checkboxTd);
+
+        // Resto de las celdas...
+        columnas.slice(1).forEach(function(columna) { // Usamos slice para omitir la columna 'Seleccionar'
+            var td = document.createElement('td');
+            td.textContent = objeto[columna];
+            tr.appendChild(td);
         });
+
         tbody.appendChild(tr);
     });
-
-   
     if (contenedor) {
         contenedor.innerHTML = '';
         contenedor.style.overflowY = 'scroll';
@@ -148,81 +175,102 @@ contenedor.innerHTML='';
     } else {
         console.error('No se encontró el elemento contenedor para la tabla.');
     }
-    var addButton = document.createElement('button');
-    addButton.textContent = 'Agregar Registro';
-    addButton.className = 'add-btn btn btn-outline-primary'; // Agrega la clase 'btn' para dar estilo de botón
-    addButton.onclick = agregarRegistro;
-    contenedor.appendChild(addButton);
-}
 
-function editarRegistro(btn) {
-    var tr = btn.parentNode.parentNode;
-    var celdas = tr.getElementsByTagName('td');
-    for (var i = 0; i < celdas.length - 1; i++) {
-        var valorActual = celdas[i].innerText;
-        celdas[i].innerHTML = '<input type="text" value="' + valorActual + '">';
-    }
-    btn.style.display = 'none';
-    tr.querySelector('.delete-btn').style.display = 'none';
-    tr.querySelector('.save-btn').style.display = 'inline';
-    tr.querySelector('.cancel-btn').style.display = 'inline';
-}
 
-function eliminarRegistro(btn) {
-    var tr = btn.parentNode.parentNode;
-    var index = tr.getAttribute('data-index');
-    // Aquí deberías agregar el código para eliminar el registro
-    // Por ejemplo, puedes hacer una solicitud DELETE a tu API
-    // Por ahora, simplemente eliminaremos la fila de la tabla
-    tr.parentNode.removeChild(tr);
-}
+  
+   
+    // Evento para mostrar/ocultar el botón de editar
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('selectItem')) {
+            var selectedItems = document.querySelectorAll('.selectItem:checked');
+            a3.disabled = selectedItems.length !== 1;
+        }
+    });
 
-function guardarRegistro(btn) {
-    var tr = btn.parentNode.parentNode;
-    var celdas = tr.getElementsByTagName('td');
-    var datosActualizados = {};
-    for (var i = 0; i < celdas.length - 1; i++) {
-        var input = celdas[i].getElementsByTagName('input')[0];
-        datosActualizados[columnas[i]] = input.value;
-        celdas[i].innerText = input.value;
-    }
-    // Aquí deberías agregar el código para guardar los datos actualizados
-    // Por ejemplo, puedes hacer una solicitud PUT a tu API
-    // Por ahora, simplemente actualizaremos la interfaz de usuario
-    btn.style.display = 'none';
-    tr.querySelector('.cancel-btn').style.display = 'none';
-    tr.querySelector('.edit-btn').style.display = 'inline';
-    tr.querySelector('.delete-btn').style.display = 'inline';
-}
 
-function cancelarEdicion(btn) {
-    var tr = btn.parentNode.parentNode;
-    var celdas = tr.getElementsByTagName('td');
-    for (var i = 0; i < celdas.length - 1; i++) {
-        var valorOriginal = datos[tr.getAttribute('data-index')][columnas[i]];
-        celdas[i].innerText = valorOriginal;
-    }
-    btn.style.display = 'none';
-    tr.querySelector('.save-btn').style.display = 'none';
-    tr.querySelector('.edit-btn').style.display = 'inline';
-}
+    // Botón para seleccionar todos los checkboxes
+    document.getElementById('selectAll').addEventListener('change', function(e) {
+        document.querySelectorAll('.selectItem').forEach(function(checkbox) {
+            checkbox.checked = e.target.checked;
+        });
+    });
+  }
+    
+  function updateModalFields(data) {
+
+    
+ document.getElementById('dialogTitle').textContent = "Edit Projekte";
+        // Asegúrate de que 'data' es un objeto con las propiedades correctas
+        document.getElementById('projekteId').textContent = data.ProjektID || '';
+        document.getElementById('projekteditname').value = data.projektname || '';
+        document.getElementById('projekteditkürzel').value = data.projektkürzel || '';
+        document.getElementById('projekteditbeschreibung').value = data.beschreibung || '';
+        document.getElementById('projekteditverant').value = data.verantwortlicher || '';
+        // Para las fechas, necesitas convertir la fecha ISO a un formato que el input de tipo 'date' pueda entender
+        var beginnDate = new Date(data.beginn);
+        var beginnFormatted = beginnDate.toISOString().split('T')[0];
+        document.getElementById('projekteditbeginn').value = beginnFormatted;
+        
+        document.getElementById('projekteditstatus').value = data.status || '';
+               
+        // Asumiendo que 'erstelt_am' es una fecha y quieres mostrarla en un formato legible
+        var ersteltAm = new Date(data.erstellt_am);
+        var erstelAmFormatted = ersteltAm.toISOString().split('T')[0];
+        document.getElementById('projektediterstelt').value = erstelAmFormatted || '';
+     
+       var erstelVon=new Date(data.erstellt_von);
+        var erstelVonFormatted = ersteltVon.toISOString().split('T')[0];
+        document.getElementById('projektediterstellt').value = erstelVonFormatted || '';
+
+        document.getElementById('editButton').onclick = updateProjekte();
+        document.getElementById('editButton').value='Edit';
+      }
+
+
 
 function agregarRegistro() {
-    var tabla = document.querySelector('#tabla-container table');
-    var columnas = Object.keys(datos[0]);
-    var tr = document.createElement('tr');
-    for (var i = 0; i < columnas.length; i++) {
-        var td = document.createElement('td');
-        if (i < columnas.length - 1) {
-            td.innerHTML = '<input type="text">';
-        } else {
-            td.innerHTML = '<button class="save-btn btn btn-outline-primary" onclick="guardarNuevoRegistro(this)">Guardar</button>' +
-                '<button class="cancel-btn btn btn-outline-secondary" onclick="cancelarNuevoRegistro(this)">Cancelar</button>';
-        }
-        tr.appendChild(td);
-    }
-    document.querySelector('#tabla-container table tbody').appendChild(tr);
+    var datosNuevos = {
+        projektname: document.getElementById('projekteditname').value,
+        projektkuerzel: document.getElementById('projekteditkürzel').value,
+        beschreibung: document.getElementById('projekteditbeschreibung').value,
+        verantwortlicher: document.getElementById('projekteditverant').value,
+        beginn: document.getElementById('projekteditbeginn').value,
+        status: document.getElementById('projekteditstatus').value,
+        erstelt_am: document.getElementById('projektediterstelt').value,
+        erstellt_von: document.getElementById('projektediterstellt').value,
+        projekteId: document.getElementById('projekteId').textContent
+      };
+    
+     
+      fetch(`/api/projekte/add/${datosNuevos}`, {
+        method: 'PUT', // o 'PUT' si estás actualizando
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosActualizados),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Datos actualizados con éxito:', data);
+        // Aquí puedes cerrar el modal o mostrar un mensaje de éxito
+        $('#editProjekteModal').modal('hide');
+      })
+      .catch((error) => {
+        console.log(response);
+        console.error('Error al actualizar los datos:', error);
+    
+      });
 }
+
+
+function addModalFields() {
+    // Asegúrate de que 'data' es un objeto con las propiedades correctas
+ document.getElementById('dialogTitle').textContent = "Add Projekte";
+
+    document.getElementById('editButton').onclick = addProjekte();
+    document.getElementById('editButton').value='Hinzufügen';
+    
+  }
 
 function guardarNuevoRegistro(btn) {
     var tr = btn.parentNode.parentNode;
@@ -243,8 +291,6 @@ function cancelarNuevoRegistro(btn) {
     var tr = btn.parentNode.parentNode;
     tr.parentNode.removeChild(tr);
 }
-
-
 
 function loadCheckBox(teamLeaders){
 
@@ -274,13 +320,70 @@ function loadCheckBox(teamLeaders){
 
 
 function searchOnServer(searchText){
-    fetch('/api/projekte/search?texto='`${searchText}`)
-    .then(response => response.json())
-    .then(datos => {console.log('datos', datos);
-        crearYMostrarTabla(datos);
-      crearYMostrarTabla(datos);
-    })
-    .catch(error => {
-      console.error('Error al obtener los datos:', error);
-    });
-  }
+    if (!searchText) {
+        fetch('/api/projekte')
+      .then(response => response.json())
+      .then(datos => {
+        crearYMostrarTablaProjekte(datos);
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+    }else{
+        // Asegúrate de que 'searchText' es una cadena de texto válida
+        const url = `/api/projekte/search?texto=${encodeURIComponent(searchText)}`;
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(datos => {console.log('datos', datos);
+            crearYMostrarTablaProjekte(datos);
+            })
+            .catch(error => {
+                console.error('Error al realizar la búsqueda:', error);
+            });
+    }
+}
+
+
+function updateProjekte(){
+ // Capturar los valores del formulario
+ var datosActualizados = {
+    projektname: document.getElementById('projekteditname').value,
+    projektkuerzel: document.getElementById('projekteditkürzel').value,
+    beschreibung: document.getElementById('projekteditbeschreibung').value,
+    verantwortlicher: document.getElementById('projekteditverant').value,
+    beginn: document.getElementById('projekteditbeginn').value,
+    status: document.getElementById('projekteditstatus').value,
+    erstelt_am: document.getElementById('projektediterstelt').value,
+    erstellt_von: document.getElementById('projektediterstellt').value,
+    projekteId: document.getElementById('projekteId').textContent
+  };
+
+  // Aquí deberías agregar el código para enviar estos datos al servidor
+  // Esto podría ser una solicitud AJAX, fetch o el método que prefieras
+  // Por ejemplo, usando fetch:
+  fetch(`/api/projekte/update/${datosActualizados.projekteId}`, {
+    method: 'PUT', // o 'PUT' si estás actualizando
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(datosActualizados),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Datos actualizados con éxito:', data);
+    // Aquí puedes cerrar el modal o mostrar un mensaje de éxito
+    $('#editProjekteModal').modal('hide');
+  })
+  .catch((error) => {
+    console.log(response);
+    console.error('Error al actualizar los datos:', error);
+
+  });
+}
+
+// Añadir un evento 'submit' al formulario para llamar a esta función
+document.querySelector('#editProjekteModal form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+  //actualizarDatosEnServidor();
+});

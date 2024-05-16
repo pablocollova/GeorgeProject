@@ -2,6 +2,8 @@
 const ProjekteModel = require('../models/projekte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
 console.log("cotroller"  ) ;   
 // Crear y guardar un nuevo Projekte
+
+
 exports.create = (req, res) => {
   // Validar solicitud
   if (!req.body) {
@@ -69,5 +71,26 @@ exports.getSearch = (req, res) => {
             res.send(result);
         }
     });
+};
+
+
+
+//update
+exports.updateById = function(req, res) {
+  // Obtener el ID del proyecto de los parámetros de la ruta
+  const projectId = req.params.id;
+  ProjekteModel.updateById(projectId, req.body, function(err, result) {
+    if (err) {
+      res.status(500).send({
+        message: 'Error al actualizar el proyecto'
+      });
+    } else {
+      res.send(result);
+    }
+  });
+
+  // Luego puedes usar este ID para buscar y actualizar el proyecto en la base de datos
+  // ... lógica para actualizar el proyecto ...
+
 };
  
