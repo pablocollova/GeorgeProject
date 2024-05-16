@@ -135,18 +135,52 @@ Projekte.getTeammitglieder = result => {
   });
 };
 // Método para crear un nuevo registro en la tabla Projekte
-Projekte.create = (newProjekte, result) => {
-
+// Método para crear un nuevo registro en la tabla Projekte
+Projekte.add = (dato, result) => {
+  console.log("cdsfdssfsdfsdfds");
+  const query = `
+    INSERT INTO Projekte (
+      Projektname, Projektkürzel, Beschreibung, Verantwortlicher, Beginn, Status, Erstellt_am, Erstellt_von
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+  `;
+  /*,
+      Geändert_am, Variable_Projektnr, HiliteSortiertNach, Eins, Typ, Fälligkeit, lfdNr, 
+      Projektsumme_1, KontaktID, Fremdleistungen, Netto_Stundenkontigent, Summe_Stunden, Abschlag_percent, 
+      Abschlag_Euro, Stundenvorgaben_Netto, Projektwert_vor_Jan07, Projektwert, Netto_Projektwert, 
+      Aufgaben_variale, Pstatus, Kurznameaktuell, KurznameErsteller, MaterialDatum, MaterialLeistungsphase, 
+      MaterialBeschreibung, MaterialAngelegt_von, Status_inbearbeitung, MaterialD, DateienID, Angebotsstatus, 
+      Laufende_Numer_Importiert, Übrige_Stunden_ist, Wert_Planung, Wert_Verfahren, vProjektID, vKontaktID, 
+      Projektwert_Summe, Netto_Projektwert_Summe, Summe_Fremdleistungen, Stundenvorgaben_Summe, Übrige_Stunden_Summe, 
+      RestProjektwert_Netto_über_Stunden, vProjektkürzel, Angebot_Erstellt_am, Angebot_Erstellt_von, Angebot_Beauftragungsdatum, 
+      Projektfarbe, Wert_Grün, Wert_Verfahren_Sonstiges, Projekt_Restwert, Teammitglieder, Leistungsstand_Projekt, Team, 
+      vMitarbeiterteam, vAktiv, Angebotssumme, Fremdleistungen_Details, ProjektwertDetails, Übrige_Stunden_soll, 
+      Leistungsstand_Restwert_Projekt, vRechnungsnummer, Reststunden_netto, Monat, Stundendatum, Reststunden_Prozent, 
+      ProjektFarbeID, Summe_Projektrestwert, Summe_Übrige_Stunden_Soll, Summe_Übrige_Stunden_ist, Reststunden, 
+      leerfeld, Reststunden_Kopie, Ampelwert, Leistungsstand_Projekt_ist*/
+ 
+      /*, '1/1/1','','',0, '', '', 0, '','1/1/1' , NULL, '', 0, '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', '', '', NULL, '', '', '', '', '', '', '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, '', NULL, '', NULL, NULL, 0, 0, 0, 0, '', 0, '', '', '', '', '', 0, 0, 0, 0, 0, 0, '', 0, 0, 0, '', 0, 0, 0*/
+      console.log("newdato", dato);
+      const values = [
+    dato.Projektname,
+    dato.Projektkürzel,
+    dato.Beschreibung,
+    dato.Verantwortlicher,
+    dato.Beginn,
+    dato.Status,
+    dato.Erstellt_am,
+    dato.Erstellt_von   
+  ];
   
-  db.query(sql, values, (error, results) => {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results);
+  sql.query(query, values, (err, res) => {
+    if (err) {
+      console.error("error: ", err);
+      result(err, null);
+      return;
     }
+    console.log("Registro creado: ", { id: res.insertId, ...dato });
+    result(null, { id: res.insertId, ...dato });
   });
 };
-
 
 
 Projekte.updateById = (id, projekte, result) => {
@@ -172,7 +206,7 @@ Projekte.updateById = (id, projekte, result) => {
 
 module.exports = Projekte;
 
-
+/*
 
   const createProjekt = (projektData, callback) => {
     const {
@@ -447,4 +481,4 @@ module.exports = Projekte;
       });
     };
     
-    
+    */

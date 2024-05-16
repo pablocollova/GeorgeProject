@@ -3,7 +3,7 @@ const router = express.Router();
 const projekteController = require('../controllers/projekte.controller.js');
 console.log("routes"  ) ;   
 // Crear un nuevo registro en projekte
-router.post("/", projekteController.create);
+//router.post("/", projekteController.create);
 
 // Obtener todos los registros de Kontakte
 router.get('/', projekteController.getAll);
@@ -12,6 +12,7 @@ router.get('/', projekteController.getAll);
 router.get('/teammitglieder', projekteController.getTeammitglieder);
 router.get('/search', projekteController.getSearch);
 router.put('/update/:id', projekteController.updateById);
+router.post('/add', projekteController.add);
 
 // ... otras rutas CRUD
 
