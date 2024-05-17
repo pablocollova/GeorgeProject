@@ -58,7 +58,7 @@ const Kontakte = function(kontakte) {
 console.log(sql) ;
 // Método para obtener todos los registros de Kontakte
 Kontakte.getAll = function(callback) {
-  sql.query('SELECT KontaktID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Abteilung, Typ, Kunde, Verantwortlicher, Privat_telefon, Privat_mobil, Email_2 FROM Kontakte;', function(error, results, fields) {
+  sql.query('SELECT KontaktID, Anrede,Nachname, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Abteilung, Typ, Kunde, Verantwortlicher, Privat_telefon, Privat_mobil, Email_2 FROM Kontakte;', function(error, results, fields) {
 
     if (error) {
       callback(error, null);
@@ -75,7 +75,7 @@ Kontakte.getSearch = (searchText, callback) => {
  // Construir la parte de la consulta SQL para buscar en todos los campos
  const whereClause = campos.map(campo => `${campo} LIKE ?`).join(' OR ');
  // Consulta SQL para buscar registros que contengan el texto de búsqueda en cualquiera de los campos relevantes
- const query = `SELECT KontakteID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Erstellt_von FROM Projekte WHERE ${whereClause}`;
+ const query = `SELECT KontakteID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Erstellt_von FROM Kontakte WHERE ${whereClause}`;
    // Array de valores para reemplazar en la consulta SQL
  const values = campos.map(() => `%${searchText}%`);
    // Ejecutar la consulta SQL
@@ -105,7 +105,7 @@ Kontakte.create = (newKontakte, result) => {
 
 Kontakte.add = (dato, result) => {
   const query = `
-    INSERT INTO Projekte (
+    INSERT INTO Kontakte (
       Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Abteilung, Typ
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
   `;/*, Kunde, Verantwortlicher, Privat_telefon, Privat_mobil, Email_2*/
@@ -132,9 +132,9 @@ Kontakte.add = (dato, result) => {
 };
 
 
-Kontakte.updateById = (id, kontakte, result) => {
-  sql.query("UPDATE Kontakte SET Anrede = ?, Vorname = ?, Telefon_1 = ?, Email_1 = ?, Webadresse = ?, Abteilung = ?, Typ = ?, WHERE ProjektID = ?",
-    [kontakte.anrede, kontakte.vorname, kontakte.vorname, kontakte.telefon_1, kontakte.email_1, kontakte_webadresse, kontakte.abteilung, kontakte.typ, id],
+Kontakte.updateById = (id, kontakte, result) => {console.log(id, kontakte );
+  sql.query("UPDATE Kontakte SET Anrede = ?,Nachname=?, Vorname = ?, Telefon_1 = ?, Email_1 = ?, Webadresse = ?, Abteilung = ?, Typ = ? WHERE KontaktID = ?",
+    [kontakte.anrede, kontakte.nachname,  kontakte.vorname, kontakte.telefon, kontakte.email, kontakte.webadress, kontakte.abteilung, kontakte.typ,id],
     (err, res) => {
       if (err) {
         console.error("error: ", err);
@@ -156,6 +156,3 @@ Kontakte.updateById = (id, kontakte, result) => {
 
 module.exports = Kontakte;
 
-// Aquí puedes añadir los métodos para operaciones CRUD, como getAll y create, que ya hemos discutido.
-
-module.exports = Kontakte;

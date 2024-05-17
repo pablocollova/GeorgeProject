@@ -64,8 +64,9 @@ exports.getAll = (req, res) => {
 
   //update
   exports.updateById = function(req, res) {
+    console.log("req",req.body);
     // Obtener el ID del proyecto de los parámetros de la ruta
-    const kontaktetId = req.params.id;
+    const kontakteId = req.body.kontakteId;
     KontakteModel.updateById(kontakteId, req.body, function(err, result) {
       if (err) {
         res.status(500).send({

@@ -358,7 +358,7 @@ body {
 	.navbar .navbar-toggle{
 		border:none !important;
 		color: #EEE !important;
-		font-size: 20px !important;
+		font-size: 10px !important;
 	}
 	.navbar .navbar-toggle:focus, .navbar .navbar-toggle:hover {background-color: transparent !important}
 }
@@ -840,7 +840,8 @@ h3{
 }
 
 a.nav-link{
-	font-size: 20px;
+	font-size: 15px;
+	padding: 10px;
 	align-self: flex-end;
 }
 

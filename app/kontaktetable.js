@@ -88,7 +88,7 @@ var a3 = document.createElement("a");
     if (selectedItems.length === 1) {
       var index = selectedItems[0].closest("tr").dataset.index;
       console.log("datos[index]", datos[index]);
-      updateModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
+      updateKontakteModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
     }
   };
 
@@ -185,37 +185,44 @@ document.getElementById("selectAll").addEventListener("change", function (e) {
   });
 }
 
-function updateModalFields(data) {
+function updateKontakteModalFields(data) {
+    console.log("updateKontakteModalFields", data);
     document.getElementById("dialogKontakteTitle").textContent = "Edit Kontakte";
     // Asegúrate de que 'data' es un objeto con las propiedades correctas
-    document.getElementById("kontakteId").textContent = data.KontakteID || "";
-    document.getElementById("kontakteFirma").value = data.firma || "";
-    document.getElementById("kontakteAnrede").value = data.anrede || "";
-    document.getElementById("kontakteVorname").value = data.vorname || "";
-    document.getElementById("kontakteNachname").value =data.nachname || "";
-    document.getElementById("kontakteTelefon" ).value =data.telefon || "";
-    document.getElementById("kontakteMobil").value =data.nachname || "";
-    document.getElementById("kontakteEmail").value =data.nachname || "";
-    document.getElementById("kontakteWebadress").value =data.nachname || "";
-    document.getElementById("kontakteAbteilung").value =data.abteilung || "";
-    document.getElementById("kontakteTyp").value =data.nachname || "";
+    document.getElementById("kontakteId").textContent = data.KontaktID || "";
+   // document.getElementById("kontakteFirma").value = data.firma || "";
+    document.getElementById("kontakteAnrede").value = data.Anrede || "";
+    document.getElementById("kontakteVorname").value = data.Vorname || "";
+    document.getElementById("kontakteNachname").value =data.Nachname || "";
+    document.getElementById("kontakteTelefon" ).value =data.Telefon_1|| "";
+    document.getElementById("kontakteMobil").value =data.Mobil_1 || "";
+    document.getElementById("kontakteEmail").value =data.Email_1|| "";
+    document.getElementById("kontakteWebadress").value =data.Webadresse || "";
+    document.getElementById("kontakteAbteilung").value =data.Abteilung || "";
+    document.getElementById("kontakteTyp").value =data.Typ || "";
+    //document.getElementById("kontakteKunde").value = data.Kunde || "";
    
   
     document.getElementById("editKontakteButton").onclick = updateKontakte();
-    document.getElementById("editKontakteButton").value = "Edit";
+    document.getElementById("submitModalKontakte").value = "Edit";
   }
   
   function addKontakte() {
     var datosNuevos = {
-      projektname: document.getElementById("projektname").value,
-      projektkuerzel: document.getElementById("projektkürzel").value,
-      beschreibung: document.getElementById("projekteditbeschreibung").value,
-      verantwortlicher: document.getElementById("projekteditverant").value,
-      beginn: document.getElementById("projekteditbeginn").value,
-      status: document.getElementById("projekteditstatus").value,
-      erstelt_am: document.getElementById("projektediterstelt").value,
-      erstellt_von: document.getElementById("projektediterstellt").value
-    };
+      vorname: document.getElementById("vorname").value,
+      abteilung: document.getElementById("abteilung").value,
+      email_1: document.getElementById("email_1").value,
+      email_2: document.getElementById("email_2").value,
+      kunde: document.getElementById("kunde").value,
+      mobil_1: document.getElementById("mobil_1").value,
+      privat_mobil: document.getElementById("privat_mobil").value,
+      privat_telefon: document.getElementById("privat_telefon").value,
+      telefon_1: document.getElementById("telefon_1").value,
+        typ: document.getElementById("typ").value,
+        webadresse: document.getElementById("webadresse").value,
+        verantwortlicher: document.getElementById("verantworlicher").value,
+    };/* Telefon_1 Typ Verantwortlicher Vorname Webadresse */
+    
     console.log("datosNuevos", datosNuevos);
     const url = `/api/kontakte/add?`+ new URLSearchParams(datosNuevos);
     fetch(url, {
@@ -258,13 +265,13 @@ function updateModalFields(data) {
         });
     } else {
       // Asegúrate de que 'searchText' es una cadena de texto válida
-      const url = `/api/projekte/search?texto=${encodeURIComponent(searchText)}`;
+      const url = `/api/kontakte/search?texto=${encodeURIComponent(searchText)}`;
   
       fetch(url)
         .then((response) => response.json())
         .then((datos) => {
           console.log("datos", datos);
-          crearYMostrarTablaProjekte(datos);
+          crearYMostrarTablaKontakte(datos);
         })
         .catch((error) => {
           console.error("Error al realizar la búsqueda:", error);
@@ -274,6 +281,7 @@ function updateModalFields(data) {
   
   function updateKontakte() {
     // Capturar los valores del formulario
+    console.log("updateKontakte");
     var datosActualizados = {
       kontakteId: document.getElementById("kontakteId").textContent,
       firma: document.getElementById("kontakteFirma").value,
@@ -281,7 +289,7 @@ function updateModalFields(data) {
       vorname: document.getElementById("kontakteVorname").value,
       nachname: document.getElementById("kontakteNachname").value,
       telefon: document.getElementById("kontakteTelefon").value,
-      movil: document.getElementById("kontakteMovil").value,
+      mobil: document.getElementById("kontakteMobil").value,
       email: document.getElementById("kontakteEmail").value,
       webadress: document.getElementById("kontakteWebadress").value,
       abteilung: document.getElementById("kontakteAbteilung").value,
@@ -291,6 +299,7 @@ function updateModalFields(data) {
     // Aquí deberías agregar el código para enviar estos datos al servidor
     // Esto podría ser una solicitud AJAX, fetch o el método que prefieras
     // Por ejemplo, usando fetch:
+    console.log(datosActualizados);
     fetch(`/api/kontakte/update/${datosActualizados.kontakteId}`, {
       method: "PUT", // o 'PUT' si estás actualizando
       headers: {
