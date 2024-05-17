@@ -212,8 +212,8 @@ function updateModalFields(data) {
   document.getElementById("projektediterstellt").value =
     erstelVonFormatted || "";
 
-  document.getElementById("editButton").onclick = updateProjekte();
-  document.getElementById("editButton").value = "Edit";
+  document.getElementById("submitProjekteButton").onclick = updateProjekte();
+  document.getElementById("submitProjekteButton").value = "Edit";
 }
 
 function addProjekte() {
