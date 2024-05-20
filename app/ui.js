@@ -116,20 +116,6 @@ function updateUserName(username) {
 
 
 
-function loadKontakte() 
-   {
-   
-    fetch('/api/kontakte')
-      .then(response => response.json())
-      .then(datos => {
-        crearYMostrarTablaKontakte(datos);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-      
-  };
-
 
   function loadStuden() 
    {
@@ -160,19 +146,7 @@ function loadKontakte()
       
   };
 
-  function loadProjekte() {
-    
-  
-    fetch('/api/projekte')
-      .then(response => response.json())
-      .then(datos => {
-        crearYMostrarTablaProjekte(datos);
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
-      
-  };
+
 
   function loadAufgaben() {
 

@@ -86,9 +86,10 @@ VALUES
 
 
 CREATE TABLE Firma (
-    firmaId INT PRIMARY KEY,
+    firmaId int NOT NULL AUTO_INCREMENT,
     firma VARCHAR(100),
-    detailbeschreibung VARCHAR(255)
+    detailbeschreibung VARCHAR(255),
+    PRIMARY KEY (firmaId)
 );
 
 CREATE TABLE kontakteFirma (

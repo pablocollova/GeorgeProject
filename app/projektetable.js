@@ -1,121 +1,10 @@
-
 // projektetable.js
 var db;
-
-function crearYMostrarTablaProjekte(datos) {
-  //creo tabla
+$(document).ready(function() {
+});
+function cargarTablaProjekte(datos) {
   var tabla = document.createElement("table");
-  var containerTopVar = document.getElementById("conteiner-topvar");
-  containerTopVar.innerHTML = "";
-
-  //barra de titulo
-  var table_title = document.createElement("div");
-  table_title.className = "table-title";
-
-  //fila
-  var row = document.createElement("div");
-  row.className = "row";
-
-  ////////COLUMNA 1///////////////
-  var col1 = document.createElement("div");
-  col1.className = "col-sm-6";
-
-  var h2 = document.createElement("h2");
-  h2.textContent = "Projekte";
-
-  col1.appendChild(h2);
-  /////////////////////////////////////////
-
-  //////////COLUMNA 2///////////////
-  col2 = document.createElement("div");
-  col2.className = "col-sm-6";
-////////////////////////////////
-   ///////////SEARCH///////////////
-  var searchInput = document.createElement("input");
-  searchInput.type = "text";
-  searchInput.id = "searchInput";
-  searchInput.placeholder = "search...";
-  searchInput.addEventListener("input", function () {
-    // Lógica para buscar coincidencias mientras se escribe
-    const searchText = searchInput.value;
-    console.log(searchText);
-    // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
-    searchOnServer(searchText);
-  });
-//////////////////////////////////////////////////
-/////////////////ADD BUTTON///////////////////////
-  var a1 = document.createElement("a");
-  a1.href = "#editProjekteModal";
-  a1.className = "btn btn-success";
-  a1.setAttribute("data-toggle", "modal");
-  a1.onclick = function () {
-    addModalFields(); // Mostrar el modal con los datos del registro seleccionado
-  };
-
-  var i1 = document.createElement("i");
-  i1.setAttribute("class", "material-icons");
-  i1.innerHTML = "&#xE147;";
-
-  var span1 = document.createElement("span");
-  span1.textContent = "Neues Projekt hinzufügen";
-
-  a1.appendChild(i1);
-  a1.appendChild(span1);
-////////////////////////////////////////////////
-////////////////DELETE BUTTON/////////////////////
-  var a2 = document.createElement("a");
-  a2.href = "#deleteprojekteModal";
-  a2.className = "btn btn-danger";
-  a2.setAttribute("data-toggle", "modal");
-
-  var i2 = document.createElement("i");
-  i2.setAttribute("class", "material-icons");
-  i2.innerHTML = "&#xE15C;";
-
-  var span2 = document.createElement("span");
-  span2.textContent = "Delete";
-
-  a2.appendChild(i2);
-  a2.appendChild(span2);
-////////////////////////////////////////////////
-////////////////EDIT BUTTON/////////////////////
-  var a3 = document.createElement("a");
-  a3.href = "#editProjekteModal";
-  a3.className = "btn btn-edit";
-  a3.setAttribute("data-toggle", "modal");
-  a3.onclick = function () {
-    var selectedItems = document.querySelectorAll(".selectItem:checked");
-    if (selectedItems.length === 1) {
-      var index = selectedItems[0].closest("tr").dataset.index;
-      console.log("datos[index]", datos[index]);
-      updateModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
-    }
-  };
-
-  var i3 = document.createElement("i");
-  i3.setAttribute("class", "material-icons");
-
-  i3.innerHTML = "&#xf044;";
-
-  var span3 = document.createElement("span");
-  span3.textContent = "Edit";
-
-  a3.appendChild(i3);
-  a3.appendChild(span3);
-/////////////////////////////////////////////////
-////////////COL 2///////////////////////////////////
-col2.appendChild(a1);
-col2.appendChild(a2);
-col2.appendChild(a3);
-///////////////////////////////////
-  row.appendChild(col1);
-  row.appendChild(col2);
-
-  table_title.appendChild(row);
-
-  containerTopVar.appendChild(table_title);
   tabla.className = "table table-striped table-hover table-dark";
-
   var contenedor = document.getElementById("tabla-container");
   contenedor.innerHTML = "";
   var thead = document.createElement("thead");
@@ -168,7 +57,7 @@ col2.appendChild(a3);
   } else {
     console.error("No se encontró el elemento contenedor para la tabla.");
   }
-
+  a3=document.getElementById("editProjekteButton");
   // Evento para mostrar/ocultar el botón de editar
   document.addEventListener("change", function (e) {
     if (e.target.classList.contains("selectItem")) {
@@ -183,10 +72,131 @@ col2.appendChild(a3);
       checkbox.checked = e.target.checked;
     });
   });
+
+}
+
+function title_tableProjekte(datos) {
+//barra de titulo
+var table_title = document.createElement("div");
+table_title.className = "table-title";
+
+//fila
+var row = document.createElement("div");
+row.className = "row";
+
+////////COLUMNA 1///////////////
+var col1 = document.createElement("div");
+col1.className = "col-sm-6";
+
+var h2 = document.createElement("h2");
+h2.textContent = "Projekte";
+
+col1.appendChild(h2);
+/////////////////////////////////////////
+
+//////////COLUMNA 2///////////////
+col2 = document.createElement("div");
+col2.className = "col-sm-6";
+////////////////////////////////
+ ///////////SEARCH///////////////
+var searchInput = document.createElement("input");
+searchInput.style.color = "black";
+searchInput.type = "text";
+searchInput.id = "searcProjektehInput";
+searchInput.placeholder = "search...";
+searchInput.addEventListener("input", function () {
+  // Lógica para buscar coincidencias mientras se escribe
+  const searchText = searchInput.value;
+  console.log(searchText);
+  // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
+  searchOnServer(searchText);
+});
+//////////////////////////////////////////////////
+/////////////////ADD BUTTON///////////////////////
+var a1 = document.createElement("a");
+a1.href = "#editProjekteModal";
+a1.className = "btn btn-success";
+a1.setAttribute("data-toggle", "modal");
+a1.onclick = function () {
+  addModalFields(); // Mostrar el modal con los datos del registro seleccionado
+};
+
+var i1 = document.createElement("i");
+i1.setAttribute("class", "material-icons");
+i1.innerHTML = "&#xE147;";
+
+var span1 = document.createElement("span");
+span1.textContent = "Neues Projekt hinzufügen";
+
+a1.appendChild(i1);
+a1.appendChild(span1);
+////////////////////////////////////////////////
+////////////////DELETE BUTTON/////////////////////
+var a2 = document.createElement("a");
+a2.href = "#deleteprojekteModal";
+a2.className = "btn btn-danger";
+a2.setAttribute("data-toggle", "modal");
+
+var i2 = document.createElement("i");
+i2.setAttribute("class", "material-icons");
+i2.innerHTML = "&#xE15C;";
+
+var span2 = document.createElement("span");
+span2.textContent = "Delete";
+
+a2.appendChild(i2);
+a2.appendChild(span2);
+////////////////////////////////////////////////
+////////////////EDIT BUTTON/////////////////////
+var a3 = document.createElement("a");
+a3.href = "#editProjekteModal";
+a3.className = "btn btn-edit";
+a3.setAttribute("data-toggle", "modal");
+a3.disabled =true;
+a3.onclick = function () {
+  var selectedItems = document.querySelectorAll(".selectItem:checked");
+  if (selectedItems.length === 1) {
+    var index = selectedItems[0].closest("tr").dataset.index;
+    console.log("datos[index]", datos[index]);
+    updateModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
+  }
+};
+a3.setAttribute("id", "editProjekteButton");  // Añadir un id para poder deshabilitar el botón
+var i3 = document.createElement("i");
+i3.setAttribute("class", "material-icons");
+
+i3.innerHTML = "&#xf044;";
+
+var span3 = document.createElement("span");
+span3.textContent = "Edit";
+
+a3.appendChild(i3);
+a3.appendChild(span3);
+/////////////////////////////////////////////////
+////////////COL 2///////////////////////////////////
+col2.appendChild(a1);
+col2.appendChild(a2);
+col2.appendChild(a3);
+col2.appendChild(searchInput);
+///////////////////////////////////
+row.appendChild(col1);
+row.appendChild(col2);
+
+table_title.appendChild(row);
+return table_title;
+}
+
+function crearYMostrarTablaProjekte(datos) {
+  var containerTopVar = document.getElementById("conteiner-topvar");
+  containerTopVar.innerHTML = "";  
+  var table_title = title_tableProjekte(datos);
+  containerTopVar.appendChild(table_title);
+
+  cargarTablaProjekte(datos);  
 }
 
 function updateModalFields(data) {
-  document.getElementById("dialogTitle").textContent = "Edit Projekte";
+  document.getElementById("dialogProjekteTitle").textContent = "Edit Projekte";
   // Asegúrate de que 'data' es un objeto con las propiedades correctas
   document.getElementById("projekteId").textContent = data.ProjektID || "";
   document.getElementById("projektname").value = data.projektname || "";
@@ -207,15 +217,52 @@ function updateModalFields(data) {
   var erstelAmFormatted = ersteltAm.toISOString().split("T")[0];
   document.getElementById("projektediterstelt").value = erstelAmFormatted || "";
 
-  var erstelVon = new Date(data.erstellt_von);
-  var erstelVonFormatted = ersteltVon.toISOString().split("T")[0];
-  document.getElementById("projektediterstellt").value =
-    erstelVonFormatted || "";
+ 
+  document.getElementById("projektediterstellt").value =data.erstellt_von || "";
 
-  document.getElementById("submitProjekteButton").onclick = updateProjekte();
+  document.getElementById("submitProjekteButton").onclick = updateProjekte;
   document.getElementById("submitProjekteButton").value = "Edit";
 }
 
+function updateProjekte() {
+  // Capturar los valores del formulario
+  var datosActualizados = {
+    projektname: document.getElementById("projektname").value,
+    projektkuerzel: document.getElementById("projektkürzel").value,
+    beschreibung: document.getElementById("projekteditbeschreibung").value,
+    verantwortlicher: document.getElementById("projekteditverant").value,
+    beginn: document.getElementById("projekteditbeginn").value,
+    status: document.getElementById("projekteditstatus").value,
+    erstelt_am: document.getElementById("projektediterstelt").value,
+    erstellt_von: document.getElementById("projektediterstellt").value,
+    projekteId: document.getElementById("projekteId").textContent,
+  };
+
+  // Aquí deberías agregar el código para enviar estos datos al servidor
+  // Esto podría ser una solicitud AJAX, fetch o el método que prefieras
+  // Por ejemplo, usando fetch:
+  fetch(`/api/projekte/update/${datosActualizados.projekteId}`, {
+    method: "PUT", // o 'PUT' si estás actualizando
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(datosActualizados),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Datos actualizados con éxito:", data);
+      // Aquí puedes cerrar el modal o mostrar un mensaje de éxito
+      loadProjekte();
+      $("#editProjekteModal").modal("hide");
+      
+
+
+    })
+    .catch((error) => {
+      console.log(response);
+      console.error("Error al actualizar los datos:", error);
+    });
+}
 function addProjekte() {
   var datosNuevos = {
     projektname: document.getElementById("projektname").value,
@@ -227,6 +274,11 @@ function addProjekte() {
     erstelt_am: document.getElementById("projektediterstelt").value,
     erstellt_von: document.getElementById("projektediterstellt").value
   };
+
+
+
+
+
   console.log("datosNuevos", datosNuevos);
   const url = `/api/projekte/add?`+ new URLSearchParams(datosNuevos);
   fetch(url, {
@@ -250,13 +302,57 @@ function addProjekte() {
 }
 
 function addModalFields() {
-  // Asegúrate de que 'data' es un objeto con las propiedades correctas
-  document.getElementById("dialogTitle").textContent = 'Add Projekte';
+  document.getElementById("dialogProjekteTitle").textContent = 'Add Projekte';
+  document.getElementById("projektname").value = "";
+  document.getElementById("projektkürzel").value =  "";
+  document.getElementById("projekteditbeschreibung").value = "";
+  document.getElementById("projekteditverant").value ="";
+  document.getElementById("projekteditbeginn").value = "";
+  document.getElementById("projekteditstatus").value =  "";
+  document.getElementById("projektediterstelt").value =  "";
+  document.getElementById("projektediterstellt").value = "";
+  document.getElementById("submitProjekteButton").onclick = addProjekte;
+  document.getElementById("submitProjekteButton").value = "Hinzufügen";
 
-  document.getElementById("submitButton").onclick = addProjekte;
-  document.getElementById("submitButton").value = "Hinzufügen";
+
 }
 
+function searchOnServer(searchText) {
+  if (!searchText) {
+    fetch("/api/projekte")
+      .then((response) => response.json())
+      .then((datos) => {
+        cargarTabla(datos);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los datos:", error);
+      });
+  } else {
+    // Asegúrate de que 'searchText' es una cadena de texto válida
+    const url = `/api/projekte/search?texto=${encodeURIComponent(searchText)}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((datos) => {
+        console.log("datos", datos);
+        cargarTabla(datos);
+      })
+      .catch((error) => {
+        console.error("Error al realizar la búsqueda:", error);
+      });
+  }
+}
+function loadProjekte(){
+
+  fetch('/api/projekte')
+  .then(response => response.json())
+  .then(datos => {
+    crearYMostrarTablaProjekte(datos);
+  })
+  .catch(error => {
+    console.error('Error al obtener los datos:', error);
+  });
+}
 function guardarNuevoRegistro(btn) {
   var tr = btn.parentNode.parentNode;
   var celdas = tr.getElementsByTagName("td");
@@ -302,72 +398,21 @@ function loadCheckBox(teamLeaders) {
   tabsContainer.appendChild(checkBoxList);
 }
 
-function searchOnServer(searchText) {
-  if (!searchText) {
-    fetch("/api/projekte")
-      .then((response) => response.json())
-      .then((datos) => {
-        crearYMostrarTablaProjekte(datos);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los datos:", error);
-      });
-  } else {
-    // Asegúrate de que 'searchText' es una cadena de texto válida
-    const url = `/api/projekte/search?texto=${encodeURIComponent(searchText)}`;
 
-    fetch(url)
-      .then((response) => response.json())
-      .then((datos) => {
-        console.log("datos", datos);
-        crearYMostrarTablaProjekte(datos);
-      })
-      .catch((error) => {
-        console.error("Error al realizar la búsqueda:", error);
-      });
-  }
-}
 
-function updateProjekte() {
-  // Capturar los valores del formulario
-  var datosActualizados = {
-    projektname: document.getElementById("projektname").value,
-    projektkuerzel: document.getElementById("projektkürzel").value,
-    beschreibung: document.getElementById("projekteditbeschreibung").value,
-    verantwortlicher: document.getElementById("projekteditverant").value,
-    beginn: document.getElementById("projekteditbeginn").value,
-    status: document.getElementById("projekteditstatus").value,
-    erstelt_am: document.getElementById("projektediterstelt").value,
-    erstellt_von: document.getElementById("projektediterstellt").value,
-    projekteId: document.getElementById("projekteId").textContent,
-  };
 
-  // Aquí deberías agregar el código para enviar estos datos al servidor
-  // Esto podría ser una solicitud AJAX, fetch o el método que prefieras
-  // Por ejemplo, usando fetch:
-  fetch(`/api/projekte/update/${datosActualizados.projekteId}`, {
-    method: "PUT", // o 'PUT' si estás actualizando
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(datosActualizados),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Datos actualizados con éxito:", data);
-      // Aquí puedes cerrar el modal o mostrar un mensaje de éxito
-      $("#editProjekteModal").modal("hide");
-    })
-    .catch((error) => {
-      console.log(response);
-      console.error("Error al actualizar los datos:", error);
-    });
-}
 
-// Añadir un evento 'submit' al formulario para llamar a esta función
-document
-  .querySelector("#editProjekteModal form")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-    //actualizarDatosEnServidor();
-  });
+
+
+
+
+$("#editProjekteModal").on("hidden.bs.modal", function() {
+console.log("se cerro el modal");
+ loadProjekte();
+});
+
+$("#editProjekteModal").on("hide.bs.modal", function() {
+  console.log("se cerro hide el modal");
+  loadProjekte();
+});
+

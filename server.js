@@ -40,14 +40,15 @@ app.use('/api/mitarbeiter', mitarbeiterRoutes);
 const projekteRoutes = require('./routes/projekte.routes');
 app.use('/api/projekte', projekteRoutes);
 app.use('/api/teammitglieder', projekteRoutes);
-app.use('/api/search', projekteRoutes);
+app.use('/api/projekte/search', projekteRoutes);
 app.use('/api/projekte/update', projekteRoutes);
 app.use('/api/projekte/add', projekteRoutes);
 
 const aufgabenRoutes = require('./routes/aufgaben.routes');
 app.use('/api/aufgaben', aufgabenRoutes);
 
-
+const firmaRoutes = require('./routes/firma.routes');
+app.use('/api/firma', firmaRoutes);
 // Setup app folders.
 app.use(express.static('app'));
 
