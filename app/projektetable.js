@@ -3,6 +3,7 @@ var db;
 $(document).ready(function() {
 });
 function cargarTablaProjekte(datos) {
+
   var tabla = document.createElement("table");
   tabla.className = "table table-striped table-hover table-dark";
   var contenedor = document.getElementById("tabla-container");

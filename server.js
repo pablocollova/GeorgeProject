@@ -49,6 +49,7 @@ app.use('/api/aufgaben', aufgabenRoutes);
 
 const firmaRoutes = require('./routes/firma.routes');
 app.use('/api/firma', firmaRoutes);
+app.use('/api/firma/searchFbyK', firmaRoutes);
 // Setup app folders.
 app.use(express.static('app'));
 

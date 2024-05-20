@@ -10,7 +10,7 @@ const Firma = function(firma) {
 };
 
 // Método para obtener todos los registros de Mitarbeiter
-firma.getAll = result => {
+Firma.getAll = result => {
   sql.query('SELECT * FROM Firma;', (err, res) => {
     if (err) {
       console.error("error: ", err);
@@ -21,6 +21,44 @@ firma.getAll = result => {
     result(null, res);
   });
 };
+
+
+
+Firma.searchFbyK = async (searchText, result) => {
+    try {
+        // Ejecuta una consulta para obtener los IDs de las empresas asociadas al contacto
+        const [firmIdsResult] = await sql.query(`
+            SELECT firmenID 
+            FROM kontakteFirma
+            WHERE kontakteID = ?
+        `, [searchText]);
+
+        const firmIds = firmIdsResult.map(row => row.firmenID);
+
+        if (firmIds.length === 0) {
+            result(null, []);
+            return;
+        }
+
+        // Obtiene los nombres de las empresas usando los IDs obtenidos
+        const [firmsResult] = await sql.query(`
+            SELECT firma 
+            FROM Firma 
+            WHERE firmaID IN (?)
+        `, [firmIds]);
+
+        const firmNames = firmsResult.map(row => row.firma);
+
+        console.log("Firma: ", firmNames);
+        result(null, firmNames);
+    } catch (error) {
+        console.error("Error fetching firms: ", error);
+        result(error, null);
+    }
+};
+
+
+   
 
 // Método para crear un nuevo registro en la tabla Firma
 Firma.create = (newFirma, result) => {

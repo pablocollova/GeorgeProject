@@ -1,5 +1,5 @@
 //firma.controller.js
-const KontakteModel = require('../models/firma.model.js');
+const FirmaModel = require('../models/firma.model.js');
 exports.add = (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -8,7 +8,7 @@ exports.add = (req, res) => {
     return; 
 }
 
-  // Crear un Kontakte
+  // Crear un Firma
  const firma = new FirmaModel({
   id: req.body.firmaId,
   Vorname : req.body.firma,
@@ -16,7 +16,7 @@ exports.add = (req, res) => {
   
   });
 
-  // Guardar Kontakte en la base de datos
+  // Guardar Firma en la base de datos
   firmaModel.add(firma, (err, data) => {
     if (err) {
       res.status(500).send({
@@ -30,7 +30,7 @@ exports.add = (req, res) => {
 
 // Obtener todos los Kontakte
 exports.getAll = (req, res) => {
-  firmaModel.getAll((error, firma) => {
+  FirmaModel.getAll((error, firma) => {
     if (error) {
       res.status(500).send({
         message: 'Error al obtener los kontakte: ' + error.message
@@ -43,7 +43,7 @@ exports.getAll = (req, res) => {
   //Obtener search
   exports.getSearch = (req, res) => {
     const searchText = req.query.texto; // Obtén el texto de búsqueda de la consulta
-  firmaModel.getSearch(searchText,(error, result) => {
+  FirmaModel.getSearchFbyK(searchText,(error, result) => {
     if (error) {
               console.error('Error al buscar:', error);
               res.status(500).json({ error: 'Error al buscar en la base de datos' });

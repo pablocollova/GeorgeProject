@@ -2,7 +2,8 @@
 var db;
 $(document).ready(function() {
 });
-function cargarTablaKontakte() {
+ async function cargarTablaKontakte(datos) {
+    var firmas=loadFirma();
     var tabla = document.createElement('table');
     tabla.className = 'table table-striped table-hover table-dark';
 
@@ -12,8 +13,9 @@ function cargarTablaKontakte() {
     tabla.appendChild(thead);
     var columnas = Object.keys(datos[0]);
     
-    // Creamos una columna para los botones
-    columnas.unshift('Seleccionar');    
+    columnas.unshift('Firma');
+    columnas.unshift('Seleccionar');   
+  
     var tr = document.createElement('tr');
     columnas.forEach(function(columna) {
         var th = document.createElement('th');
@@ -28,7 +30,7 @@ function cargarTablaKontakte() {
 
     var tbody = document.createElement('tbody');
     tabla.appendChild(tbody);
-    datos.forEach(function(objeto, index) {
+    datos.forEach(async function(objeto, index) {
         var tr = document.createElement('tr');
         tr.dataset.index = index; // Guardamos el índice del objeto en el dataset para su posterior uso
 
@@ -36,9 +38,13 @@ function cargarTablaKontakte() {
         var checkboxTd = document.createElement("td");
         checkboxTd.innerHTML = '<input type="checkbox" class="selectItem">';
         tr.appendChild(checkboxTd);
-    
+    // Celda para la lista de firmas
+    var firmaTd = document.createElement("td");
+    const firmNames = await loadKontakteFirma(objeto.KontakteID);
+    firmaTd.textContent = firmNames.join(', ');
+    tr.appendChild(firmaTd);
         // Resto de las celdas...
-        columnas.slice(1).forEach(function (columna) {
+        columnas.slice(2).forEach(function (columna) {
           // Usamos slice para omitir la columna 'Seleccionar'
           var td = document.createElement("td");
           td.textContent = objeto[columna];
@@ -353,3 +359,38 @@ function updateKontakteModalFields(data) {
        console.error('Error al obtener los datos:', error);
      });
     }
+
+    function loadFirma(){
+        var firma;
+        fetch('/api/firma')
+        .then(response => response.json())
+        .then(datos => {
+          firma=datos;
+          console.log(firma);
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos:', error);
+        });
+    return firma;
+    }
+
+ 
+     
+
+
+            async function loadKontakteFirma(kontakteID) {
+                try {
+                    const response = await fetch(`/api/firma/searchFbyK/${kontakteID}`);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const firmNames = await response.json();
+                    console.log("Firmas encontradas: ", firmNames);
+                    return firmNames;
+                } catch (error) {
+                    console.error('Error fetching firms:', error);
+                    return [];
+                }
+            }
+        
+   
