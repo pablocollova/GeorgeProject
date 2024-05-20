@@ -113,6 +113,10 @@ var a3 = document.createElement("a");
    
     table_title.appendChild(row);
     
+function crearYMostrarTablaKontakte(datos) {
+    var containerTopVar=document.getElementById('conteiner-topvar'); 
+     containerTopVar.innerHTML='';   
+     var table_title = title_tableKontakte(datos);
     containerTopVar.appendChild(table_title);
     tabla.className = 'table table-striped table-hover table-dark';
 
@@ -186,7 +190,6 @@ document.getElementById("selectAll").addEventListener("change", function (e) {
 }
 
 function updateKontakteModalFields(data) {
-    console.log("updateKontakteModalFields", data);
     document.getElementById("dialogKontakteTitle").textContent = "Edit Kontakte";
     // Asegúrate de que 'data' es un objeto con las propiedades correctas
     document.getElementById("kontakteId").textContent = data.KontaktID || "";
