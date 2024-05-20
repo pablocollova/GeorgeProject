@@ -110,7 +110,7 @@ searchInput.addEventListener("input", function () {
   const searchText = searchInput.value;
   console.log(searchText);
   // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
-  searchOnServer(searchText);
+  searchOnProjekte(searchText);
 });
 //////////////////////////////////////////////////
 /////////////////ADD BUTTON///////////////////////
@@ -318,12 +318,12 @@ function addModalFields() {
 
 }
 
-function searchOnServer(searchText) {
+function searchOnProjekte(searchText) {
   if (!searchText) {
     fetch("/api/projekte")
       .then((response) => response.json())
       .then((datos) => {
-        cargarTabla(datos);
+        cargarTablaProjekte(datos);
       })
       .catch((error) => {
         console.error("Error al obtener los datos:", error);
@@ -336,7 +336,7 @@ function searchOnServer(searchText) {
       .then((response) => response.json())
       .then((datos) => {
         console.log("datos", datos);
-        cargarTabla(datos);
+        cargarTablaProjekte(datos);
       })
       .catch((error) => {
         console.error("Error al realizar la búsqueda:", error);
