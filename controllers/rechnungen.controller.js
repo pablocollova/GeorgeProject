@@ -1,7 +1,7 @@
 // rechnungen .controller.js
 // rechnungen.controller.js
 const RechnungenModel = require('../models/rechnungen.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo Rechnungen
 exports.create = (req, res) => {
   // Validar solicitud

@@ -40,7 +40,7 @@ $(document).ready(function() {
         tr.appendChild(checkboxTd);
     // Celda para la lista de firmas
     var firmaTd = document.createElement("td");
-    const firmNames = await loadKontakteFirma(objeto.KontakteID);
+    const firmNames = await loadKontakteFirma(objeto.KontaktID);
     firmaTd.textContent = firmNames.join(', ');
     tr.appendChild(firmaTd);
         // Resto de las celdas...
@@ -113,7 +113,6 @@ function title_tableKontakte(){
     searchInput.addEventListener('input', function() {
         // Lógica para buscar coincidencias mientras se escribe
         const searchText = searchInput.value;
-        console.log(searchText);
         // Llama a una función para enviar una solicitud al servidor con el texto de búsqueda
         searchOnKontakte(searchText);
     });
@@ -163,7 +162,7 @@ var a3 = document.createElement("a");
     var selectedItems = document.querySelectorAll(".selectItem:checked");
     if (selectedItems.length === 1) {
       var index = selectedItems[0].closest("tr").dataset.index;
-      console.log("datos[index]", datos[index]);
+
       updateKontakteModalFields(datos[index]); // Mostrar el modal con los datos del registro seleccionado
     }
   };
@@ -379,7 +378,7 @@ function updateKontakteModalFields(data) {
 
 
             async function loadKontakteFirma(kontakteID) {
-                try {
+                try {console.log("firmNames", kontakteID);
                     const response = await fetch(`/api/firma/searchFbyK/${kontakteID}`);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -392,5 +391,5 @@ function updateKontakteModalFields(data) {
                     return [];
                 }
             }
-        
-   
+      
+            

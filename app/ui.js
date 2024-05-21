@@ -177,7 +177,7 @@ function updateUserName(username) {
   }
 
   function loadChecks(){
-    console.log("loadChecks");
+    
     fetch('/api/projekte/teammitglieder')
       .then(response => response.json())
       .then(datos => {

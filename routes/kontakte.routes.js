@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const kontakteController = require('../controllers/kontakte.controller.js');
-console.log("routes "  ) ;   
+
 
 // Obtener todos los registros de Kontakte
 router.get('/', kontakteController.getAll);

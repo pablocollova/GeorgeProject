@@ -69,13 +69,13 @@ Kontakte.getAll = function(callback) {
 };
 
 Kontakte.getSearch = (searchText, callback) => { 
-  
+  console.log("model getSearch: ",searchText);
   // Lista de campos en los que deseas buscar
- const campos = ['KontakteID', 'Anrede', 'Vorname', 'Telefon_1', 'Mobil_1', 'Email_1', 'Webadresse', 'Erstellt_von' ]; // Agrega aquí los nombres de los campos relevantes
+ const campos = ['KontaktID', 'Anrede', 'Vorname', 'Telefon_1', 'Mobil_1', 'Email_1', 'Webadresse', 'Erstellt_von' ]; // Agrega aquí los nombres de los campos relevantes
  // Construir la parte de la consulta SQL para buscar en todos los campos
  const whereClause = campos.map(campo => `${campo} LIKE ?`).join(' OR ');
  // Consulta SQL para buscar registros que contengan el texto de búsqueda en cualquiera de los campos relevantes
- const query = `SELECT KontakteID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Erstellt_von FROM Kontakte WHERE ${whereClause}`;
+ const query = `SELECT KontaktID, Anrede, Vorname, Telefon_1, Mobil_1, Email_1, Webadresse, Erstellt_von FROM Kontakte WHERE ${whereClause}`;
    // Array de valores para reemplazar en la consulta SQL
  const values = campos.map(() => `%${searchText}%`);
    // Ejecutar la consulta SQL

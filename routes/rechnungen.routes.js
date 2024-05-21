@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const rechnungenController = require('../controllers/rechnungen.controller.js');
-console.log("routes "  ) ;   
+
 // Crear un nuevo registro en Rechnungen
 router.post("/", rechnungenController.create);
 

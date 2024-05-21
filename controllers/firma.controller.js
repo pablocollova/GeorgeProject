@@ -41,9 +41,10 @@ exports.getAll = (req, res) => {
   });
 };
   //Obtener search
-  exports.getSearch = (req, res) => {
-    const searchText = req.query.texto; // Obtén el texto de búsqueda de la consulta
-  FirmaModel.getSearchFbyK(searchText,(error, result) => {
+  exports.getSearchFbyK = (req, res) => {
+    const searchText = req.params.kontaktID; // Obtén el texto de búsqueda de la consulta
+  console.log("searchText...: ",req.params.kontaktID);
+    FirmaModel.getSearchFbyK(searchText,(error, result) => {
     if (error) {
               console.error('Error al buscar:', error);
               res.status(500).json({ error: 'Error al buscar en la base de datos' });
@@ -56,7 +57,7 @@ exports.getAll = (req, res) => {
 
   //update
   exports.updateById = function(req, res) {
-    console.log("req",req.body);
+
     // Obtener el ID del proyecto de los parámetros de la ruta
     const firmaId = req.body.firmaId;
     firmaModel.updateById(firmaId, req.body, function(err, result) {

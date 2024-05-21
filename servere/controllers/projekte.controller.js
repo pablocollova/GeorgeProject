@@ -1,6 +1,6 @@
 // Projekte.controller.js
 const ProjekteModel = require('../models/projekte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo Projekte
 exports.create = (req, res) => {
   // Validar solicitud

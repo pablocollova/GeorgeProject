@@ -1,6 +1,6 @@
 // kontakte.controller.js
 const KontakteModel = require('../models/kontakte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo Kontakte
 exports.add = (req, res) => {
   // Validar solicitud
@@ -64,7 +64,7 @@ exports.getAll = (req, res) => {
 
   //update
   exports.updateById = function(req, res) {
-    console.log("req",req.body);
+    
     // Obtener el ID del proyecto de los parámetros de la ruta
     const kontakteId = req.body.kontakteId;
     KontakteModel.updateById(kontakteId, req.body, function(err, result) {

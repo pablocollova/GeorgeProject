@@ -1,6 +1,6 @@
 // akquise.controller.js
 const AkquiseModel = require('../models/akquise.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo akquise
 exports.create = (req, res) => {
   // Validar solicitud

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const firmaController = require('../controllers/firma.controller.js');
-console.log("routes"  ) ;   
+
 // Obtener todos los registros de Kontakte
 router.get('/', firmaController.getAll);
-router.get('/searchFbyK', firmaController.getSearch);
+router.get('/searchFbyK/:kontaktID', firmaController.getSearchFbyK);
 router.put('/update/:id', firmaController.updateById);
 router.post('/add', firmaController.add);
 

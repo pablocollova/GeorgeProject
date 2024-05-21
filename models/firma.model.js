@@ -24,17 +24,17 @@ Firma.getAll = result => {
 
 
 
-Firma.searchFbyK = async (searchText, result) => {
-    try {
+Firma.getSearchFbyK = async (searchText, result) => {
+    try {console.log("searchText: ", searchText);
         // Ejecuta una consulta para obtener los IDs de las empresas asociadas al contacto
-        const [firmIdsResult] = await sql.query(`
-            SELECT firmenID 
+        const firmIdsResult = await sql.query(`
+            SELECT firmaId 
             FROM kontakteFirma
-            WHERE kontakteID = ?
-        `, [searchText]);
-
-        const firmIds = firmIdsResult.map(row => row.firmenID);
-
+            WHERE KontaktID = ?
+        `, searchText);
+console.log("firmIdsResult: ", firmIdsResult);
+        const firmIds = firmIdsResult.map(row => row.firmaID);
+console.log("firmIds: ", firmIds);
         if (firmIds.length === 0) {
             result(null, []);
             return;

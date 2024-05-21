@@ -5,7 +5,7 @@ const path = require('path');
 const mysql = require('mysql');
 const dbConfig = require('./config/db.config');
 
-console.log('server');
+
 // Inicializar express
 const app = express();
 

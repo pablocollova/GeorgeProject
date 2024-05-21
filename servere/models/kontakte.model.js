@@ -1,6 +1,6 @@
 // kontakte.model.js
 const sql = require('../config/db.js');
-console.log("model"  ) ;   
+
 // Constructor del objeto Kontakte
 const Kontakte = function(kontakte) {
   this.Abteilung = kontakte.Abteilung;
@@ -56,11 +56,11 @@ const Kontakte = function(kontakte) {
   this.Vorschau = kontakte.Vorschau;
   this.Webadresse = kontakte.Webadresse;
 };
-console.log(sql ) ;
+
 // Método para obtener todos los registros de Kontakte
 Kontakte.getAll = function(callback) {
   sql.query('SELECT * FROM Kontakte;', function(error, results, fields) {
-    console.log("rrrrr"+results);
+    
     if (error) {
       callback(error, null);
     } else {

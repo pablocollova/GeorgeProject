@@ -1,6 +1,6 @@
 // kontakte.controller.js
 const KontakteModel = require('../models/kontakte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo Kontakte
 exports.create = (req, res) => {
   // Validar solicitud

@@ -1,6 +1,6 @@
 // mitarbeiter.controller.js
 const MitarbeiterModel = require('../models/mitarbeiter.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo mitarbeiter
 exports.create = (req, res) => {
   // Validar solicitud

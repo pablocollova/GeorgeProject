@@ -1,7 +1,7 @@
 
 // stundenerfassung.controller.js
 const StundenerfassungModel = require('../models/stundenerfassung.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-console.log("cotroller"  ) ;   
+
 // Crear y guardar un nuevo Stundenerfassung
 exports.create = (req, res) => {
   // Validar solicitud

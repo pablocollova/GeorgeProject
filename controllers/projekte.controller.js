@@ -1,6 +1,6 @@
   // Projekte.controller.js
   const ProjekteModel = require('../models/projekte.model.js'); // Asegúrate de que el nombre del archivo sea correcto.
-  console.log("cotroller"  ) ;   
+ 
   // Crear y guardar un nuevo Projekte
   exports.add = (req, res) => {
     // Validar solicitud
@@ -57,7 +57,7 @@
         res.status(500).send({
           message: 'Error al obtener los projekte: ' + error.message
         });
-      } else {console.log("controller getTeamlider://", teamlider);
+      } else {
         res.send(teamlider);
       }
     });
