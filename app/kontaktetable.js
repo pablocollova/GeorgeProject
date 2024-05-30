@@ -66,6 +66,7 @@ $(document).ready(function() {
         console.error('No se encontró el elemento contenedor para la tabla.');
     }
   // Evento para mostrar/ocultar el botón de editar
+  a3=document.getElementById("editKontakteButton");
   document.addEventListener("change", function (e) {
     if (e.target.classList.contains("selectItem")) {
       var selectedItems = document.querySelectorAll(".selectItem:checked");

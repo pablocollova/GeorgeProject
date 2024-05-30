@@ -1,6 +1,4 @@
-
-    // firma.model.js
-const sql = require('../config/db.js');
+const pool = require('../config/db2.js');
 
 // Constructor del objeto Firma
 const Firma = function(firma) {
@@ -10,45 +8,47 @@ const Firma = function(firma) {
 };
 
 // Método para obtener todos los registros de Mitarbeiter
-Firma.getAll = result => {
-  sql.query('SELECT * FROM Firma;', (err, res) => {
-    if (err) {
-      console.error("error: ", err);
-      result(null, err);
-      return;
+Firma.getAll = async (result) => {
+    try {
+        const [res] = await pool.query('SELECT * FROM Firma;');
+        console.log("Firma: ", res);
+        result(null, res);
+    } catch (err) {
+        console.error("error: ", err);
+        result(err, null);
     }
-    console.log("Firma: ", res);
-    result(null, res);
-  });
 };
 
-
-
 Firma.getSearchFbyK = async (searchText, result) => {
-    try {console.log("searchText: ", searchText);
-        // Ejecuta una consulta para obtener los IDs de las empresas asociadas al contacto
-        const firmIdsResult = await sql.query(`
+    try {
+        console.log("firmamodel", searchText);
+        const [firmIdsResult] = await pool.query(`
             SELECT firmaId 
             FROM kontakteFirma
             WHERE KontaktID = ?
-        `, searchText);
-console.log("firmIdsResult: ", firmIdsResult);
-        const firmIds = firmIdsResult.map(row => row.firmaID);
-console.log("firmIds: ", firmIds);
+        `, [searchText]);
+
+        console.log("firmIdsResult: ", firmIdsResult);
+        if (!firmIdsResult.length) {
+            result(null, []);
+            return;
+        }
+
+        const firmIds = firmIdsResult.map(row => row.firmaId);
+        console.log("firmIds: ", firmIds);
+
         if (firmIds.length === 0) {
             result(null, []);
             return;
         }
 
-        // Obtiene los nombres de las empresas usando los IDs obtenidos
-        const [firmsResult] = await sql.query(`
+        const [firmsResult] = await pool.query(`
             SELECT firma 
             FROM Firma 
-            WHERE firmaID IN (?)
+            WHERE firmaId IN (?)
         `, [firmIds]);
 
         const firmNames = firmsResult.map(row => row.firma);
-
         console.log("Firma: ", firmNames);
         result(null, firmNames);
     } catch (error) {
@@ -57,22 +57,16 @@ console.log("firmIds: ", firmIds);
     }
 };
 
-
-   
-
 // Método para crear un nuevo registro en la tabla Firma
-Firma.create = (newFirma, result) => {
-  sql.query("INSERT INTO Firma SET ?", newFirma, (err, res) => {
-    if (err) {
-      console.error("error: ", err);
-      result(err, null);
-      return;
+Firma.create = async (newFirma, result) => {
+    try {
+        const [res] = await pool.query("INSERT INTO Firma SET ?", newFirma);
+        console.log("Firma creado: ", { id: res.insertId, ...newFirma });
+        result(null, { id: res.insertId, ...newFirma });
+    } catch (err) {
+        console.error("error: ", err);
+        result(err, null);
     }
-    console.log("Firma creado: ", { id: res.insertId, ...newFirma });
-    result(null, { id: res.insertId, ...newFirma });
-  });
 };
-
-// ... otros métodos CRUD
 
 module.exports = Firma;

@@ -528,48 +528,57 @@ table.table .avatar {
 
 .modal {
 	z-index: 1050; /* Bootstrap generalmente usa valores alrededor de 1000-1050 para modales */
+	display: none; /* Asegúrate de que el modal esté oculto por defecto */
   }
-/* Modal styles */
-.modal .modal-dialog {
+  
+  .modal .modal-dialog {
 	width: 1300px;
-}
-
-#modal-tabs {
+  }
+  
+  #modal-tabs {
 	position: relative;
 	display: flex;
 	align-content: center;
-	width:800px;
-	height:800px;
-}
-.modal .modal-header, .modal .modal-body, .modal .modal-footer {
+	width: 800px;
+	height: 800px;
+  }
+  
+  .modal .modal-header, .modal .modal-body, .modal .modal-footer {
 	padding: 20px 30px;
-}
-.modal .modal-content {
-
+  }
+  
+  .modal .modal-content {
 	border-radius: 3px;
-}
-.modal .modal-footer {
+  }
+  
+  .modal .modal-footer {
 	background: #ecf0f1;
 	border-radius: 0 0 3px 3px;
-}
-.modal .modal-title {
+  }
+  
+  .modal .modal-title {
 	display: inline-block;
-}
-.modal .form-control {
+  }
+  
+  .modal .form-control {
 	border-radius: 2px;
 	box-shadow: none;
 	border-color: #dddddd;
-}
-.modal textarea.form-control {
+  }
+  
+  .modal textarea.form-control {
 	resize: vertical;
-}
-.modal .btn {
+  }
+  
+  .modal .btn {
 	border-radius: 2px;
 	min-width: 100px;
-}	
-.modal form label {
+  }
+  
+  .modal form label {
 	font-weight: normal;
-}
+  }
+  
 
 li {
 	list-style-type: none;

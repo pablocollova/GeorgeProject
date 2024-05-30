@@ -43,7 +43,7 @@ exports.getAll = (req, res) => {
   //Obtener search
   exports.getSearchFbyK = (req, res) => {
     const searchText = req.params.kontaktID; // Obtén el texto de búsqueda de la consulta
-  console.log("searchText...: ",req.params.kontaktID);
+  console.log("firmacontrollergetSKF: ",req.params.kontaktID);
     FirmaModel.getSearchFbyK(searchText,(error, result) => {
     if (error) {
               console.error('Error al buscar:', error);

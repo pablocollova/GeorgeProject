@@ -45,8 +45,12 @@ function cargarTablaProjekte(datos) {
       tr.appendChild(td);
     });
 
-    tbody.appendChild(tr);
+    tr.addEventListener('dblclick', function () {
+      projekteTabs(datos[this.dataset.index]);
   });
+
+  tbody.appendChild(tr);
+});
   
   if (contenedor) {
     contenedor.innerHTML = "";
@@ -114,7 +118,7 @@ searchInput.addEventListener("input", function () {
 //////////////////////////////////////////////////
 /////////////////ADD BUTTON///////////////////////
 var a1 = document.createElement("a");
-a1.href = "#editProjekteModal";
+a1.href = "#tabsProjekte";//"#editProjekteModal";
 a1.className = "btn btn-success";
 a1.setAttribute("data-toggle", "modal");
 a1.onclick = function () {
@@ -415,3 +419,9 @@ $("#editProjekteModal").on("hide.bs.modal", function() {
   loadProjekte();
 });
 
+function projekteTabs(datos){
+  console.log("datos", datos);
+  //document.getElementById('modalContent').textContent = JSON.stringify(datosObjeto, null, 2);
+    // Abrimos el modal (esto depende de cómo estés manejando el modal en tu proyecto, aquí un ejemplo usando Bootstrap)
+    $("#tabsProjekte").modal('show');
+}

@@ -28,13 +28,15 @@
   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">-->
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+  <!-- CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- FIN CRUD -->
-
+  <link rel="stylesheet" href="./tabs.css">
   <link rel="stylesheet" href="./dashboard.css">
+
 
 
 </head>
@@ -582,67 +584,70 @@
 
       //////////////////////////////////////////////////////////////////////////////
 
-<div id="tabsProjekte"  class="modal fade">
-  <div class="modal-dialog modal-lg"  id="modal-tabs" >
-    <div class="modal-content"> 
-      <div class="modal-header">
-      
-      <nav class="main-menu">       
-        <ul>   
-          <li class="darkerli">
-            <a onclick="loadChecks()">
-              <i class="fa fa-users fa-lg" onclick="loadChecks()"></i>
-              <span class="nav-text">Teams</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-line-chart fa-lg"></i>
-              <span class="nav-text">Leistungsphasen</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-clock-o"></i>
-              <span class="nav-text">Stunden</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-file-o fa-lg"></i>
-              <span class="nav-text">Dokumente</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-calculator fa-lg"></i>
-              <span class="nav-text">Budget</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-truck fa-lg"></i>
-              <span class="nav-text">Material</span>
-            </a>
-          </li>
-          <li class="darkerli">
-            <a href="http://startific.com">
-              <i class="fa fa-align-left fa-lg"></i>
-              <span class="nav-text">Rechnungen</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div id="tabsConteiner">
-
+      <div id="tabsProjekte" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" id="modal-tabs">
+          <div class="modal-content">
+            <div class="modal-header">
+              <nav class="main-menu">
+                <ul>
+                  <li class="darkerli">
+                    <a >
+                      <i class="fa fa-users fa-lg"></i>
+                      <span class="nav-text">Teams</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-line-chart fa-lg"></i>
+                      <span class="nav-text">Leistungsphasen</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-clock-o"></i>
+                      <span class="nav-text">Stunden</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-file-o fa-lg"></i>
+                      <span class="nav-text">Dokumente</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-calculator fa-lg"></i>
+                      <span class="nav-text">Budget</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-truck fa-lg"></i>
+                      <span class="nav-text">Material</span>
+                    </a>
+                  </li>
+                  <li class="darkerli">
+                    <a href="http://startific.com">
+                      <i class="fa fa-align-left fa-lg"></i>
+                      <span class="nav-text">Rechnungen</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+              <div id="tabsConteiner">
+                <!-- Contenido dinámico aquí -->
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
       
       
 
-
+<!-- jQuery y JS de Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
       <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js'></script>
