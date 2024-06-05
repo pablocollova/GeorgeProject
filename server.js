@@ -36,6 +36,11 @@ app.use('/api/stundenerfassung', stundenerfassungRoutes);
 
 const mitarbeiterRoutes = require('./routes/mitarbeiter.routes');
 app.use('/api/mitarbeiter', mitarbeiterRoutes);
+app.use('/api/mitarbeiter/search', mitarbeiterRoutes); 
+app.use('/api/mitarbeiter/update', mitarbeiterRoutes);
+app.use('/api/mitarbeiter/add', mitarbeiterRoutes);
+app.use('/api/mitarbeiter/delete', mitarbeiterRoutes);
+app.use('/api/mitarbeiter/searchMbyP', mitarbeiterRoutes);
 
 const projekteRoutes = require('./routes/projekte.routes');
 app.use('/api/projekte', projekteRoutes);

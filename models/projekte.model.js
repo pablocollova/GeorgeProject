@@ -91,7 +91,7 @@ const Projekte = function(projekte) {
 
 // Método para obtener todos los registros de Projekte
 Projekte.getAll = result => {
-  sql.query('SELECT ProjektID, projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von  FROM Projekte;', (err, res) => {
+  sql.query('SELECT ProjektID, Projektname, Projektkurzel, Beschreibung, Verantwortlicher, Beginn,Status, Erstellt_von, Erstellt_am  FROM Projekte;', (err, res) => {
     if (err) {
       console.error("error: ", err);
       result(null, err);
@@ -105,11 +105,11 @@ Projekte.getAll = result => {
 Projekte.getSearch = (searchText, callback) => { 
   
   // Lista de campos en los que deseas buscar
- const campos = ['projektname', 'projektkürzel', 'beschreibung', 'verantwortlicher', 'beginn', 'status', 'erstellt_am', 'erstellt_von' ]; // Agrega aquí los nombres de los campos relevantes
+ const campos = [ 'ProjektID', 'Projektname', 'Projektkurzel', 'Beschreibung', 'Verantwortlicher', 'Beginn,Status', 'Erstellt_von', 'Erstellt_am' ]; // Agrega aquí los nombres de los campos relevantes
  // Construir la parte de la consulta SQL para buscar en todos los campos
  const whereClause = campos.map(campo => `${campo} LIKE ?`).join(' OR ');
  // Consulta SQL para buscar registros que contengan el texto de búsqueda en cualquiera de los campos relevantes
- const query = `SELECT projektname, projektkürzel, beschreibung, verantwortlicher, beginn, status, erstellt_am, erstellt_von FROM Projekte WHERE ${whereClause}`;
+ const query = `SELECT  ProjektID, Projektname, Projektkurzel, Beschreibung, Verantwortlicher, Beginn,Status, Erstellt_von, Erstellt_am FROM Projekte WHERE ${whereClause}`;
    // Array de valores para reemplazar en la consulta SQL
  const values = campos.map(() => `%${searchText}%`);
    // Ejecutar la consulta SQL
@@ -140,7 +140,7 @@ Projekte.add = (dato, result) => {
   console.log("cdsfdssfsdfsdfds");
   const query = `
     INSERT INTO Projekte (
-      Projektname, Projektkürzel, Beschreibung, Verantwortlicher, Beginn, Status, Erstellt_am, Erstellt_von
+      ProjektID, Projektname, Projektkurzel, Beschreibung, Verantwortlicher, Beginn,Status, Erstellt_am, Erstellt_von
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
   `;
   /*,
@@ -185,7 +185,7 @@ Projekte.add = (dato, result) => {
 
 Projekte.updateById = (id, projekte, result) => {
   sql.query(
-    "UPDATE Projekte SET projektname = ?, projektkürzel = ?, beschreibung = ?, verantwortlicher = ?, beginn = ?, status = ?, Erstellt_am = ?, Erstellt_von = ? WHERE ProjektID = ?",
+    "UPDATE Projekte SET Projektname = ?, Projektkurzel = ?, beschreibung = ?, verantwortlicher = ?, beginn = ?, Status = ?, Erstellt_am = ?, Erstellt_von = ? WHERE ProjekteID = ?",
     [projekte.projektname, projekte.projektkürzel, projekte.beschreibung, projekte.verantwortlicher, projekte.beginn, projekte.status, projekte.erstelt_am, projekte.erstellt_von, id],
     (err, res) => {
       if (err) {

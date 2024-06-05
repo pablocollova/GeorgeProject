@@ -42,5 +42,16 @@ exports.getAll = (req, res) => {
     }
   });
 };
-
+exports.getSearchMbyP = (req, res) => {
+  const projektID = req.query.ProjektID;
+  MitarbeiterModel.searchMbyP(projektID, (error, mitarbeiter) => {
+    if (error) {
+      res.status(500).send({
+        message: 'Error al obtener los mitarbeiter: ' + error.message
+      });
+    } else {
+      res.send(mitarbeiter);
+    }
+  });
+};
 // ... otros controladores CRUD

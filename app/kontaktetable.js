@@ -82,7 +82,7 @@ document.getElementById("selectAll").addEventListener("change", function (e) {
   });
 }
 
-function title_tableKontakte(){
+function title_tableKontakte(datos){
     //barra de titulo
     var table_title = document.createElement('div');
     table_title.className = 'table-title';

@@ -67,15 +67,14 @@ const Mitarbeiter = function(mitarbeiter) {
 };
 
 // Método para obtener todos los registros de Mitarbeiter
-Mitarbeiter.getAll = result => {
-  sql.query('SELECT * FROM Mitarbeiter;', (err, res) => {
-    if (err) {
-      console.error("error: ", err);
-      result(null, err);
-      return;
+Mitarbeiter.getAll = function(callback) {
+  sql.query('SELECT* FROM Mitarbeiter;', function(error, results, fields) {
+
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
     }
-    console.log("Mitarbeiter: ", res);
-    result(null, res);
   });
 };
 
@@ -92,6 +91,20 @@ Mitarbeiter.create = (newMitarbeiter, result) => {
   });
 };
 
-// ... otros métodos CRUD
+Mitarbeiter.searchMbyP = (projektID, callback) => {
+  sql.query(`SELECT m.* FROM Mitarbeiter m
+            JOIN mitarbeiterProjekte mp ON m.MitarbeiterID = mp.MitarbeeiterID
+            JOIN Projekte p ON mp.MitarbeiterID = p.ProjekteID
+            WHERE p.ProjekteID = ${projektID};`, (error, results) => {
+    if (error) {
+      console.error('Error al buscar:', error);
+      callback(error, null);
+    } else {
+      // Envía los resultados de la búsqueda como respuesta al cliente
+      callback(null, results);
+    }
+  });
+}
+
 
 module.exports = Mitarbeiter;

@@ -32,6 +32,8 @@ Firma.getSearchFbyK = async (searchText, result) => {
         if (!firmIdsResult.length) {
             result(null, []);
             return;
+
+
         }
 
         const firmIds = firmIdsResult.map(row => row.firmaId);

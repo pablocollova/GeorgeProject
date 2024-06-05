@@ -199,11 +199,12 @@ function crearYMostrarTablaProjekte(datos) {
 }
 
 function updateModalFields(data) {
+  console.log("data", data);
   document.getElementById("dialogProjekteTitle").textContent = "Edit Projekte";
   // Asegúrate de que 'data' es un objeto con las propiedades correctas
   document.getElementById("projekteId").textContent = data.ProjektID || "";
-  document.getElementById("projektname").value = data.projektname || "";
-  document.getElementById("projektkürzel").value = data.projektkürzel || "";
+  document.getElementById("projektname").value = data.Projektname || "";
+  document.getElementById("projektkürzel").value = data.Projektkurzel || "";
   document.getElementById("projekteditbeschreibung").value =
     data.beschreibung || "";
   document.getElementById("projekteditverant").value =
@@ -213,15 +214,15 @@ function updateModalFields(data) {
   var beginnFormatted = beginnDate.toISOString().split("T")[0];
   document.getElementById("projekteditbeginn").value = beginnFormatted;
 
-  document.getElementById("projekteditstatus").value = data.status || "";
+  document.getElementById("projekteditstatus").value = data.Status || "";
 
   // Asumiendo que 'erstelt_am' es una fecha y quieres mostrarla en un formato legible
-  var ersteltAm = new Date(data.erstellt_am);
+  var ersteltAm = new Date(data.Erstellt_am);
   var erstelAmFormatted = ersteltAm.toISOString().split("T")[0];
   document.getElementById("projektediterstelt").value = erstelAmFormatted || "";
 
  
-  document.getElementById("projektediterstellt").value =data.erstellt_von || "";
+  document.getElementById("projektediterstellt").value =data.Erstellt_von || "";
 
   document.getElementById("submitProjekteButton").onclick = updateProjekte;
   document.getElementById("submitProjekteButton").value = "Edit";
@@ -421,7 +422,9 @@ $("#editProjekteModal").on("hide.bs.modal", function() {
 
 function projekteTabs(datos){
   console.log("datos", datos);
+   console.log("id", datos.ProjektID);
   //document.getElementById('modalContent').textContent = JSON.stringify(datosObjeto, null, 2);
     // Abrimos el modal (esto depende de cómo estés manejando el modal en tu proyecto, aquí un ejemplo usando Bootstrap)
     $("#tabsProjekte").modal('show');
+   
 }
