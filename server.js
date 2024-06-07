@@ -46,6 +46,7 @@ const projekteRoutes = require('./routes/projekte.routes');
 app.use('/api/projekte', projekteRoutes);
 app.use('/api/teammitglieder', projekteRoutes);
 app.use('/api/projekte/search', projekteRoutes);
+app.use('/api/projekte/searchID', projekteRoutes);
 app.use('/api/projekte/update', projekteRoutes);
 app.use('/api/projekte/add', projekteRoutes);
 
