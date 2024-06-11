@@ -182,7 +182,21 @@ Projekte.add = (dato, result) => {
   });
 };
 
-
+Projekte.getSearchID = (id, result) => { // Cambiado a searchById
+  console.log("id desde model projektID",id);
+  sql.query(`SELECT * FROM Projekte WHERE ProjektID = ?`, [id], (err, res) => {
+    if (err) {
+      console.error("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      result(null, res[0]);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
 Projekte.updateById = (id, projekte, result) => {
   sql.query(
     "UPDATE Projekte SET Projektname = ?, Projektkurzel = ?, beschreibung = ?, verantwortlicher = ?, beginn = ?, Status = ?, Erstellt_am = ?, Erstellt_von = ? WHERE ProjekteID = ?",

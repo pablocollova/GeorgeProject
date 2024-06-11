@@ -8,5 +8,5 @@ router.post("/", mitarbeiterController.create);
 // Obtener todos los registros de Kontakte
 router.get('/', mitarbeiterController.getAll);
 
-router.get('/searchMbyP', mitarbeiterController.getSearchMbyP);
+router.get('/searchMbyP/:id', mitarbeiterController.getSearchMbyP);
 module.exports = router;

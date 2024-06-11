@@ -78,8 +78,9 @@
   };
 
   exports.getSearchID = (req, res) => {
-    const searchText = req.query.texto; // Obtén el texto de búsqueda de la consulta
-  ProjekteModel.getSearchID(searchText,(error, result) => {
+    const id = req.params.id;
+    console.log("id desde controlller projektID",id);
+  ProjekteModel.getSearchID(id,(error, result) => {
     if (error) {
               console.error('Error al buscar:', error);
               res.status(500).json({ error: 'Error al buscar en la base de datos' });

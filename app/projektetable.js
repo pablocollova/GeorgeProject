@@ -1,4 +1,6 @@
 // projektetable.js
+
+
 var db;
 $(document).ready(function() {
 });
@@ -421,9 +423,10 @@ $("#editProjekteModal").on("hide.bs.modal", function() {
 });
 
 function projekteTabs(datos){
-  console.log("datos", datos);
-   console.log("id", datos.ProjektID);
-  //document.getElementById('modalContent').textContent = JSON.stringify(datosObjeto, null, 2);
+  console.log("datos", datos.ProjektID);
+   var tabsconteiner=document.getElementById('tabsConteiner');
+  tabsconteiner.textContent=datos.ProjektID;
+  console.log("tabsconteinereee",tabsconteiner.textContent);
     // Abrimos el modal (esto depende de cómo estés manejando el modal en tu proyecto, aquí un ejemplo usando Bootstrap)
     $("#tabsProjekte").modal('show');
    

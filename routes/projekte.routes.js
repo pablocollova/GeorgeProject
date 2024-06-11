@@ -8,7 +8,7 @@ router.get('/', projekteController.getAll);
 //Obtener los teamlider
 router.get('/teammitglieder', projekteController.getTeammitglieder);
 router.get('/search', projekteController.getSearch);
-router.get('/searchID', projekteController.getSearchID);
+router.get('/searchID/:id', projekteController.getSearchID);    
 router.put('/update/:id', projekteController.updateById);
 router.post('/add', projekteController.add);
 

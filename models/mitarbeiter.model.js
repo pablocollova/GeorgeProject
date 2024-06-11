@@ -92,10 +92,11 @@ Mitarbeiter.create = (newMitarbeiter, result) => {
 };
 
 Mitarbeiter.searchMbyP = (projektID, callback) => {
+  console.log("model  mitarbeitermodelsearchMbyP: ",projektID);
   sql.query(`SELECT m.* FROM Mitarbeiter m
-            JOIN mitarbeiterProjekte mp ON m.MitarbeiterID = mp.MitarbeeiterID
-            JOIN Projekte p ON mp.MitarbeiterID = p.ProjekteID
-            WHERE p.ProjekteID = ${projektID};`, (error, results) => {
+            JOIN mitarbeiterProjekte mp ON m.MitarbeiterID = mp.MitarbeiterID
+            JOIN Projekte p ON mp.MitarbeiterID = p.ProjektID
+            WHERE p.ProjektID = ${projektID};`, (error, results) => {
     if (error) {
       console.error('Error al buscar:', error);
       callback(error, null);

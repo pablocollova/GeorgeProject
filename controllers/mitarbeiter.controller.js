@@ -43,8 +43,9 @@ exports.getAll = (req, res) => {
   });
 };
 exports.getSearchMbyP = (req, res) => {
-  const projektID = req.query.ProjektID;
-  console.log("controller  mitarbeitercontrollergetSKF: ",req.query);
+
+  const projektID = req.params.id;
+ // console.log("controller  mitarbeitercontrollergetSKF: ",req.id);
   MitarbeiterModel.searchMbyP(projektID, (error, mitarbeiter) => {
     if (error) {
       res.status(500).send({

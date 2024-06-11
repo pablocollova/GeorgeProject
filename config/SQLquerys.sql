@@ -101,12 +101,29 @@ CREATE TABLE kontakteFirma (
 );
 
 CREATE TABLE mitarbeiterProjekte (
-    MitareiterID INT,
-    ProjekteID INT,
-    FOREIGN KEY (PojekteID) REFERENCES Projekte( ProjekteID),
+    MitarbeiterID INT,
+    ProjektID INT,
+    FOREIGN KEY (ProjektID) REFERENCES Projekte( ProjektID),
     FOREIGN KEY (MitarbeiterID) REFERENCES Mitarbeiter(MitarbeiterID),
-    PRIMARY KEY (MitarbeiterID, ProjekteID)
+    PRIMARY KEY (MitarbeiterID, ProjektID)
 );
+
+INSERT INTO mitarbeiterProjekte (MitarbeiterID, ProjektID) VALUES
+(1, 1),
+(2, 1),
+(5, 1),
+(2, 2),
+(6, 2),
+(3, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(1, 5),
+(2, 5),
+(5, 3),
+(1, 4),
+(2, 3);
+
 CREATE TABLE Akquise (
     Akquisedetails TEXT,
     Änderungsdatum DATE,
