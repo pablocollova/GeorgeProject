@@ -597,7 +597,7 @@
                                 </a>
                             </li>
                             <li class="darkerli">
-                                <a href="#">
+                                <a href="#" onclick ="leistungsphasen()">
                                     <i class="fa fa-line-chart fa-lg"></i>
                                     <span class="nav-text">Leistungsphasen</span>
                                 </a>
@@ -643,9 +643,44 @@
     </div>
     
       
+ <!-- Modal para agregar nuevo hito -->
+ <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Hito</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addHitoForm">
+          <div class="form-group">
+            <label for="projektname">Nombre del Proyecto</label>
+            <input type="text" class="form-control" id="projektname" required>
+          </div>
+          <div class="form-group">
+            <label for="beschreibung">Descripción</label>
+            <textarea class="form-control" id="beschreibung" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="verantwortlicher">Responsable</label>
+            <input type="text" class="form-control" id="verantwortlicher" required>
+          </div>
+          <div class="form-group">
+            <label for="faelligkeit">Fecha de Vencimiento</label>
+            <input type="date" class="form-control" id="faelligkeit" required>
+          </div>
+          <!-- Agregar más campos según sea necesario -->
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- jQuery y JS de Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 

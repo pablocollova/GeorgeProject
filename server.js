@@ -56,8 +56,15 @@ app.use('/api/aufgaben', aufgabenRoutes);
 const firmaRoutes = require('./routes/firma.routes');
 app.use('/api/firma', firmaRoutes);
 app.use('/api/firma/searchFbyK', firmaRoutes);
+
+
+const leistungsphasenRoutes = require('./routes/leistungsphasen.routes');
+app.use('/api/leistungsphasen', leistungsphasenRoutes);
+
 // Setup app folders.
 app.use(express.static('app'));
+
+
 
 // Set up a route for index.html
 app.get('*', (req, res) => {
