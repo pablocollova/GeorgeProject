@@ -586,8 +586,8 @@
 
       <div id="tabsProjekte" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" id="modal-tabs">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="wrapper wrapper-tabs modal-content">
+                <div class="column left" class="modal-header">
                     <nav class="main-menu">
                         <ul>
                             <li class="darkerli">
@@ -635,7 +635,9 @@
                         </ul>
                     </nav>
                 </div>
-                <div style="width: 760px;  height: 300px;"   id="tabsConteiner">
+                <div  class="column right"   id="tabsConteiner">
+                  <div class="row" id="details"></div>
+                  <div class="row" id="projekteinfo"></div>
                     <!-- Contenido dinámico aquí -->
                 </div>
             </div>

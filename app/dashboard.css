@@ -379,11 +379,6 @@ body {
 }
 
 
-
-
-
-
-
 /* Ocultar el menú desplegable por defecto */
 .sidebar-dropdown {
     display: none;
@@ -536,9 +531,8 @@ table.table .avatar {
   }
   
   #modal-tabs {
-	position: relative;
+	
 	display: flex;
-	align-content: center;
 	width: 800px;
 	height: 800px;
   }
@@ -565,6 +559,29 @@ table.table .avatar {
 	box-shadow: none;
 	border-color: #dddddd;
   }
+  .wrapper-tabs {
+	display: grid;
+	grid-template-columns: 5% 6fr;
+  }
+  
+  * {
+	box-sizing: border-box;
+  }
+  
+  .wrapper {
+	border: 2px solid #f76707;
+	border-radius: 5px;
+	background-color: #fff4e6;
+  }
+  
+  .wrapper > div {
+	border: 2px solid #ffa94d;
+	border-radius: 5px;
+	background-color: #ffd8a8;
+	padding: 1em;
+	color: #d9480f;
+  }
+  
   
   .modal textarea.form-control {
 	resize: vertical;
@@ -819,9 +836,10 @@ li {
   }
 
   #tabsConteiner{
+	grid-template-rows: 2fr 1fr;
 	  background-color: #333;
-	  width: 400px;
-	  height: 500px;
+	  width: 100%;
+	  height: 100%;
   }
 
   #searchInput{
@@ -987,25 +1005,51 @@ div#toggle-navbar{
 	cursor: move;
   }
   
-
   .card-header {
 	background-color: #007bff;
 	color: white;
 	font-size: 1.25rem;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
   }
-  .card-title {
-	font-size: 1.5rem;
-	margin-bottom: 20px;
+  .card-header i {
+	margin-right: 10px;
   }
-  .card-text {
-	margin-bottom: 10px;
+  .card-body {
+	padding: 20px;
   }
-  .project-detail {
-	margin-bottom: 20px;
+  .project-detail, .project-calculations {
+	margin-bottom: 15px;
   }
   .project-calculations {
 	background-color: #f8f9fa;
 	padding: 15px;
 	border-radius: 5px;
+	margin-top: 20px;
+  }
+  .project-calculations h5 {
+	color: #007bff;
+  }
+  .icon {
+	color: #007bff;
+	margin-right: 5px;
+  }
+
+  
+
+  .left {
+	width: 25%;
+  }
+  
+  .right {
+	width: 75%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+	content: "";
+	display: table;
+	clear: both;
   }
